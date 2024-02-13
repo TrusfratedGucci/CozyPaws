@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons'; // Correct import statement
-import SignInComponents from './SignUpScreen';
+import SignInComponents from './SignInScreen';
 
 const Stack = createStackNavigator();
 
