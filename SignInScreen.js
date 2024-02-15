@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         borderWidth: 1, // Add button border width
         borderRadius: 6, // Add button border radius
         height: 45, // Set button height
-        
+        width: 300,
     },
     signInButtonTextStyle: {
         color: 'white', // Change text color
