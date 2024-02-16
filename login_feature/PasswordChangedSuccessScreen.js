@@ -6,16 +6,20 @@ import { Button } from 'react-native-elements'; // Import Button component
 const PasswordChangedSuccessScreen = () => {
     return (
         <View style={styles.container}>
-            <Image source={require('./assets/password_success.png')} style={styles.image} />
+            <Image source={require('../assets/password_success.png')} style={styles.image} />
             <Text style={styles.text}>Your account password has {'\n'}been successfully changed.</Text>
 
-             {/* Continue button */}
-             <Button 
-                title="Continue"
-                // onPress={handleSignIn}
-                buttonStyle={styles.continueButtonStyle} // Apply button style
-                titleStyle={styles.continueButtonTextStyle} // Apply text style
-            />
+            <View style={styles.continueButtonContainer}>
+                    {/* Continue button */}
+                <Button 
+                    title="Continue"
+                    // onPress={handleSignIn}
+                    buttonStyle={styles.continueButtonStyle} // Apply button style
+                    titleStyle={styles.continueButtonTextStyle} // Apply text style
+                />
+            </View>
+
+             
         </View>
     );
 };
@@ -37,17 +41,17 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
     },
-
-
+    continueButtonContainer: {
+        alignItems: 'center', // Align center horizontally
+        marginTop: 45,
+    },
     continueButtonStyle: {
-        backgroundColor: '#F86919', // Change button background color
+        backgroundColor: '#FF8D4D', // Change button background color
         borderColor: '#F86919', // Change button border color
         borderWidth: 1, // Add button border width
-        height: 45, // Set button height
+        borderRadius: 16, // Add button border radius
+        height: 55, // Set button height
         width: 300,
-        borderRadius: 6, // Add border radius
-        margin: 15,
-        marginTop: 150,
     },
     continueButtonTextStyle: {
         color: 'white', // Change text color

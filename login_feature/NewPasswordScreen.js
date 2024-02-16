@@ -13,7 +13,12 @@ const NewPasswordComponents = () => {
     '1 Special Character (. , # , @)'
   ];
 
-    // Function to toggle the rememberMe state
+    const handleContinue = () => {
+        // Navigate to PasswordChangedSuccessScreen.js
+        navigation.navigate('PasswordChangedSuccessScreen');
+    };
+
+   
 
     return (
         <View style={styles.container}>
@@ -37,7 +42,7 @@ const NewPasswordComponents = () => {
 
             <View style={styles.body}>
                 <View style={styles.password}>
-                    {/* Email input */}
+                    {/* New Password input */}
                     <Text style={styles.inputTextHeader}>New Password</Text>
                     <TextInput
                         style={styles.inputText}
@@ -47,21 +52,22 @@ const NewPasswordComponents = () => {
                 </View>
 
                 <View>
-                    {/* Password input */}
+                    {/* Confirm Password input */}
                     <Text style={styles.inputTextHeader}>Confirm New Password</Text>
                     <TextInput
                         style={styles.inputText}
-                        placeholder="Re-enter you password"
+                        placeholder="Re-enter your password"
                         secureTextEntry={true}
                     />
                 </View>
                 
                 <View style={styles.continueButton}>
-                    {/* Sign In button */}
+                    {/* Continue button */}
                     <Button 
                         title="Continue"
                         buttonStyle={styles.signInButtonStyle} // Apply button style
                         titleStyle={styles.signInButtonTextStyle} // Apply text style
+                        onPress={handleContinue} // Call handleContinue function when pressed
                     />
                 </View>
 
@@ -74,7 +80,7 @@ const NewPasswordComponents = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1, // Make the container occupy the entire screen
-        backgroundColor: '#F5F5DCFF',
+        backgroundColor: 'white',
         padding: 20,
     },
     header: {
@@ -86,24 +92,25 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     headerText: {
-        fontSize: 30, // Adjust font size as needed
+        fontSize: 20, // Adjust font size as needed
         color: 'black',
         fontWeight: 'bold', // Make the text bold
     },
     inputTextHeader: {
-        fontSize: 16,
+        fontSize: 15,
+        paddingBottom: 10,
         marginBottom: 10,
+        marginLeft: 10,
         fontWeight: 'semibold', // Make the text semibold
     },
     inputText: {
-        height: 45,
-        borderColor: '#CDCDCD',
+        height: 55,
+        borderColor: '#F7F7F7',
         borderWidth: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#F7F7F7',
         paddingLeft: 10, // Add left padding
         marginBottom: 10, // Add bottom margin
-        elevation: 3, // Add elevation for drop shadow
-        borderRadius: 6, // Add border radius
+        borderRadius: 16, // Add border radius
     },
     password: {
         marginBottom: 20
@@ -115,14 +122,16 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     continueButton: {
-        borderRadius: 6, // Add border radius
-        elevation: 3, // Add elevation for drop shadow
         marginTop: 25,
+        alignItems: 'center',
     },
     signInButtonStyle: {
-        backgroundColor: '#F86919', // Change button background color
-        borderRadius: 6, // Add button border radius
+        backgroundColor: '#FF8D4D', // Change button background color
+        borderColor: '#F86919', // Change button border color
+        borderWidth: 1, // Add button border width
+        borderRadius: 16, // Add button border radius
         height: 55, // Set button height
+        width: 300,
         
     },
     signInButtonTextStyle: {

@@ -68,12 +68,12 @@ const SignInComponents = () => {
                 <View style={styles.socialMediaContainer}>
                     {/* Facebook sign-up option */}
                     <TouchableOpacity style={[styles.socialMediaButton, styles.facebookButton]}>
-                        <Image source={require('./assets/facebook_logo.png')} style={styles.socialMediaButtonIcon} />
+                        <Image source={require('../assets/facebook_logo.png')} style={styles.socialMediaButtonIcon} />
                     </TouchableOpacity>
 
                     {/* Google sign-up option */}
                     <TouchableOpacity style={[styles.socialMediaButton, styles.googleButton]}>
-                        <Image source={require('./assets/google_logo.png')} style={styles.socialMediaButtonIcon} />
+                        <Image source={require('../assets/google_logo.png')} style={styles.socialMediaButtonIcon} />
                     </TouchableOpacity>
                 </View>
 
@@ -94,7 +94,7 @@ const SignInComponents = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1, // Make the container occupy the entire screen
-        backgroundColor: '#F5F5DCFF',
+        backgroundColor: 'white',
         padding: 20,
     },
     header: {
@@ -114,17 +114,17 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingBottom: 10,
         marginBottom: 10,
+        marginLeft: 10,
         fontWeight: 'semibold', // Make the text semibold
     },
     inputText: {
-        height: 45,
-        borderColor: '#CDCDCD',
+        height: 55,
+        borderColor: '#F7F7F7',
         borderWidth: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#F7F7F7',
         paddingLeft: 10, // Add left padding
         marginBottom: 10, // Add bottom margin
-        elevation: 3, // Add elevation for drop shadow
-        borderRadius: 6, // Add border radius
+        borderRadius: 16, // Add border radius
     },
     email: {
         marginBottom: 20
@@ -161,15 +161,15 @@ const styles = StyleSheet.create({
     signInButton: {
         borderRadius: 6, // Add border radius
         margin: 15,
-        elevation: 3, // Add elevation for drop shadow
         marginTop: 15,
+        alignItems: 'center',
     },
     signInButtonStyle: {
-        backgroundColor: '#F86919', // Change button background color
+        backgroundColor: '#FF8D4D', // Change button background color
         borderColor: '#F86919', // Change button border color
         borderWidth: 1, // Add button border width
-        borderRadius: 6, // Add button border radius
-        height: 45, // Set button height
+        borderRadius: 16, // Add button border radius
+        height: 55, // Set button height
         width: 300,
     },
     signInButtonTextStyle: {
@@ -179,18 +179,19 @@ const styles = StyleSheet.create({
     socialMediaContainer: {
         flexDirection: 'row',
         justifyContent: 'center', // Center items horizontally
-        margin: 10, // Add margin between buttons
+        // margin: 10, // Add margin between buttons
     },
     socialMediaButtonIcon: {
+        borderWidth: 5, // Add button border width
+        borderColor: '#F7F7F7', // Change button border color
+        borderRadius: 27, // Add button border radius
         width: 55, // Adjust width as needed
         height: 55, // Adjust height as needed
-        margin: 30, // Add margin between buttons
+        margin: 25, // Add margin between buttons
     },
     signUpTextContainer: {
         alignItems: 'center', // Align center horizontally
-    },
-    signUpText: {
-        
+        marginTop: 15,
     },
     signUpLink:{
         textDecorationLine: 'underline',
