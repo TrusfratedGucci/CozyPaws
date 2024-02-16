@@ -1,27 +1,28 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
+import LottieView from 'lottie-react-native';
 
 
 const PasswordChangedSuccessScreen = () => {
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/password_success.png')} style={styles.image} />
-            <Text style={styles.text}>Your account password has {'\n'}been successfully changed.</Text>
+           <LottieView source={require('../assets/Animation - 1708081356002.json')}style={styles.lottieView}autoPlay loop />
+           <Text style={styles.text}>Your account password has {'\n'}been successfully changed.</Text>
 
-            <View style={styles.continueButtonContainer}>
-                    {/* Continue button */}
-                <Button 
-                    title="Continue"
-                    // onPress={handleSignIn}
-                    buttonStyle={styles.continueButtonStyle} // Apply button style
-                    titleStyle={styles.continueButtonTextStyle} // Apply text style
-                />
-            </View>
+<View style={styles.continueButtonContainer}>
+        {/* Continue button */}
+    <Button 
+        title="Continue"
+        // onPress={handleSignIn}
+        buttonStyle={styles.continueButtonStyle} // Apply button style
+        titleStyle={styles.continueButtonTextStyle} // Apply text style
+    />
+</View>
 
-             
-        </View>
-    );
+ 
+</View>
+);
 };
 
 const styles = StyleSheet.create({
@@ -29,13 +30,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#F5F5DC',
+        backgroundColor: '#FFFFFF',
 
     },
-    image: {
-        width: 450,
+    lottieView: {
+        width: 250,
         height: 450,
-        marginBottom:-50,
+        marginBottom:-40,
     },
 
     text: {

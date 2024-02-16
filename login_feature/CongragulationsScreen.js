@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image,TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
+import LottieView from 'lottie-react-native';
+
 
 const CongragulationsScreen = () => {
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/congragulations_image.png')} style={styles.image} />
+            <LottieView source={require('../assets/Animation - 1708082118221.json')}style={styles.lottieView}autoPlay loop />           
             <Text style={styles.shortText}>Congragulations!</Text>
             <Text style={styles.longText}>You are now a CozyPaws user, enjoy {'\n'}access to all the features of CozyPaws.</Text>
 
@@ -30,11 +32,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: '#F5F5DC',
+        backgroundColor: '#FFFFFF',
         
 
     },
-    image: {
+    lottieView: {
         width: 300,
         height: 300,
         marginBottom: 20,
