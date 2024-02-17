@@ -4,8 +4,13 @@ import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
 
 const VerificationCodeComponents = () => {
+    // State to hold the verification code
     const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
+
+    // State to track whether input is focused or not
     const [isFocused, setIsFocused] = useState(false);
+
+     // Array to hold references to TextInput elements
     const textInputsRefs = [
         React.createRef(),
         React.createRef(),
@@ -13,6 +18,7 @@ const VerificationCodeComponents = () => {
         React.createRef()
     ];
 
+     // Function to handle code change in TextInput
     const handleCodeChange = (index, value) => {
         // Update the corresponding box value in the verificationCode array
         let updatedVerificationCode = [...verificationCode];
@@ -25,12 +31,14 @@ const VerificationCodeComponents = () => {
         }
     };
 
+    // Function to handle focus event
     const handleFocus = () => {
-        setIsFocused(true);
+        setIsFocused(true); 
     };
 
+    // Function to handle blur event
     const handleBlur = () => {
-        setIsFocused(false);
+        setIsFocused(false); // Set isFocused state to false when input loses focus
     };
 
     return (
@@ -120,12 +128,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         textAlign: 'center',
         fontSize: 35,
+        color: '#FF8D4D',
     },
     focusedWrapper: {
         borderBottomColor: '#FFBA69', // Change color when focused
-    },
-    focusedInput: {
-        color: '#FF8D4D', // Change text color when focused
     },
     continueButton: {
         marginTop: 45,
