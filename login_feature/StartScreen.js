@@ -1,135 +1,110 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View, Text, ImageBackground , Image, Platform} from 'react-native';
-import { Button } from 'react-native-elements'; // Import Button component
-import { useNavigation } from '@react-navigation/native';
-import { BlurView } from '@react-native-community/blur';
-
+import React from 'react';
+import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Image, Button } from 'react-native';
 
 const StartScreenComponents = () => {
-    const [rememberMe, setRememberMe] = useState(false);
-    const navigation = useNavigation();
-
-    const handlePress = () => {
-        // Do something when the button is pressed
-    };
 
     return (
         <View style={styles.container}>
 
-                {/* icon */}
+            <View style={styles.header}>
                 <Image source={require('../assets/CozyPawsLogo.png')} style={styles.icon}/>
-
-                {/* text */}
                 <Text style={styles.headerText}>COZY PAWS</Text>
-            
-                {/* sentence */}
                 <Text style={styles.sentence}>We take care of your pet</Text>
+            </View>
 
-                {/* background*/}
+            <View style={styles.body}>
+                
                 <ImageBackground source={require('../assets/StSc.png')} style={styles.bgImg}>
-                    {/* Blurred Box */}
-                {Platform.OS === 'ios' ? (
-                    <BlurView
-                        style={styles.blurBox}
-                        blurType="light"
-                        blurAmount={10}
-                        borderRadius={20} // Add borderRadius for rounded corners
-                    >
-                    <View style = {styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button} onPress={handlePress}>
-                            <Text style={styles.buttonText}>Press Me</Text>
-                        </TouchableOpacity>
-                    </View>
-                        
-                    </BlurView>
+                    {/* Content inside the blurred box */}
+                    <View style={styles.blurBox}>
 
-                    ) :(
-                <View style={styles.blurBoxAndroid} />
-                )}
+                        <View style={styles.buttonContainer}>
+                            <Button 
+                                title="Sign In"
+                                // onPress={handleSignIn}
+                                buttonStyle={styles.signInButtonStyle} // Apply button style
+                                titleStyle={styles.signInButtonTextStyle} // Apply text style
+                            />
+
+                            <Button 
+                                title="Sign Up"
+                                // onPress={handleSignIn}
+                                buttonStyle={styles.signInButtonStyle} // Apply button style
+                                titleStyle={styles.signInButtonTextStyle} // Apply text style
+                            />
+                        </View>
+                          
+                    </View>
                 </ImageBackground>
+            </View>
 
         </View>
-    );
-};
+    )
+}
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F49F6F',
-        flex:1,
-        padding: 0,
+        flex: 1,
+        backgroundColor: '#FF9029',
+        // padding: 20,
     },
-
-    sentence: {
-        marginBottom: 20,
-        color: 'black',
-        fontSize: 20,
-        textAlign: 'center',
-    },
-
     header: {
-        backgroundColor: '#F49F6F',
+        marginBottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-
-    headerText: {
-        color: '#FFFFFF',
-        fontSize: 28,
-        textAlign: 'center',
-        
+    body: {
+        flex: 1,
+        marginTop: 15,
     },
-
     bgImg: {
         flex: 1,
+        height:610,
+        resizeMode: 'cover',
+        width: '100%', // Make the width equal to the device width
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-
-    icon: {
-        marginLeft: 130,
-    },
-
-    blurredText: {
-        fontSize: 20,
-        color: 'white',
-        },
-
     blurBox: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 290, // Adjust the height of the blurred box
-        zIndex: 2, // Ensure the blurred box is above the background image
-      },
-
-      blurBoxAndroid: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 290, // Adjust the height of the blurred box
-        backgroundColor: 'rgba(255, 255, 255, 0.5)', // Adjust the background color and opacity
-        borderRadius: 20, // Add borderRadius for rounded corners
-        zIndex: 2, // Ensure the blurred box is above the background image
-      },
-
-      buttonContainer:{
-        zIndex: 10, // Ensure the button is above the blurred box
-      },
-
-      button: {
-        backgroundColor: '#FFFFFF',
+        marginTop: 210,
+        height: 320,
+        width: '100%', // Make the width equal to the device width
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent white background
+        borderRadius: 20,
+    },
+    button: {
+        backgroundColor: '#FF8D4D',
+        borderRadius: 8,
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 10,
-        alignSelf: 'center',
-        bottom: 20, // Adjust the bottom position as needed
-        zIndex: 3, // Ensure the button is above the blurred box
+        alignItems: 'center',
     },
-    
     buttonText: {
-        color: '#000000',
-        fontSize: 16,
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
     },
+    signInButton: {
+        borderRadius: 6, // Add border radius
+        margin: 15,
+        marginTop: 15,
+        alignItems: 'center',
+    },
+    signInButtonStyle: {
+        backgroundColor: '#FF8D4D', // Change button background color
+        borderColor: '#F86919', // Change button border color
+        borderWidth: 1, // Add button border width
+        borderRadius: 16, // Add button border radius
+        height: 55, // Set button height
+        width: 300,
+    },
+    signInButtonTextStyle: {
+        color: 'white', // Change text color
+        fontSize: 18,
+    },
+});
 
-
-}
-);
 export default StartScreenComponents;
