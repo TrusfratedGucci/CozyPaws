@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         marginBottom: 10,
         marginLeft: 10,
-        fontWeight: 'semibold', // Make the text semibold
+        fontWeight: '600', // Updated font weight
     },
     inputText: {
         height: 55,

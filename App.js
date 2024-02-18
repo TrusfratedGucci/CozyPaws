@@ -37,21 +37,14 @@ const App = () => {
 
           
 
-          <Stack.Screen 
+           <Stack.Screen 
                   name="StartScreen" 
                   component={StartScreenComponents}
                     options={({ navigation }) => ({
                     title: '',
                     headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: '#FF9029' }, // Set the background color of the header // Align the title to the center
-                    // headerLeft: () => ( // Add custom headerLeft component
-                    //             <TouchableOpacity onPress={() => navigation.goBack()}>
-                    //               <View style={styles.backButton}>
-                    //               <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
-                    //               </View>                         
-                    //             </TouchableOpacity>
-                    //         )
-                  })} />
+                    headerStyle: { backgroundColor: '#FF9029' }, 
+                  })} /> 
 
 
             <Stack.Screen 
@@ -60,11 +53,11 @@ const App = () => {
                     options={({ navigation }) => ({
                     title: '',
                     headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                    headerStyle: { backgroundColor: '#FD9340' }, // Set the background color of the header // Align the title to the center
                     headerLeft: () => ( // Add custom headerLeft component
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                   <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="black" />
                                   </View>                         
                                 </TouchableOpacity>
                             )
