@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 
-const SignInComponents = () => {
+const SignUpComponents = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const navigation = useNavigation();
 
@@ -13,14 +14,34 @@ const SignInComponents = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
 
             <View style={styles.header}>
-                <Text style={styles.headerText}>Sign In</Text>
+                <Text style={styles.headerText}>Sign Up</Text>
             </View>
 
             <View style={styles.body}>
-                <View style={styles.email}>
+                <View style={styles.inputTextContainer}>
+                    {/* First name input */}
+                    <Text style={styles.inputTextHeader}>First Name</Text>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Enter your first name"
+                        keyboardType="default"
+                    />
+                </View>
+
+                <View style={styles.inputTextContainer}>
+                    {/* Last name input */}
+                    <Text style={styles.inputTextHeader}>Last Name</Text>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Enter your last name"
+                        keyboardType="default"
+                    />
+                </View>
+
+                <View style={styles.inputTextContainer}>
                     {/* Email input */}
                     <Text style={styles.inputTextHeader}>Email</Text>
                     <TextInput
@@ -30,7 +51,7 @@ const SignInComponents = () => {
                     />
                 </View>
 
-                <View>
+                <View style={styles.inputTextContainer}>
                     {/* Password input */}
                     <Text style={styles.inputTextHeader}>Password</Text>
                     <TextInput
@@ -39,21 +60,18 @@ const SignInComponents = () => {
                         secureTextEntry={true}
                     />
                 </View>
-            
-                <View style={styles.rememberMeContainer}>
-                    {/* Remember Me toggle */}
-                    <TouchableOpacity onPress={toggleRememberMe} style={styles.rememberMeTouchable}>
-                        <View style={[styles.checkbox, rememberMe && styles.checked]}>
-                            {rememberMe && <Text>X</Text>}
-                        </View>
-                        <Text>Remember Me</Text>
-                    </TouchableOpacity>
-                    
-                    {/* Forgot Password link */}
-                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                        <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                    </TouchableOpacity>
+
+                <View style={styles.inputTextContainer}>
+                    {/* Password input */}
+                    <Text style={styles.inputTextHeader}>Confirm Password</Text>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Enter your password"
+                        secureTextEntry={true}
+                    />
                 </View>
+            
+            
                 
                 <View style={styles.signInButton}>
                     {/* Sign In button */}
@@ -79,15 +97,15 @@ const SignInComponents = () => {
 
 
                 <View style={styles.signUpTextContainer}>
-                    <Text style={styles.signUpText}>Don't have an account?</Text>
+                    <Text style={styles.signUpText}>Already have an account?</Text>
 
                     <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                            <Text style={styles.signUpLink}>Sign Up</Text>
+                            <Text style={styles.signUpLink}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
             </View>
 
-        </View>
+        </ScrollView>
     );
 };
 
@@ -104,6 +122,7 @@ const styles = StyleSheet.create({
     },
     body: {
         marginTop: 15,
+        marginBottom: 45,
     },
     headerText: {
         fontSize: 20, // Adjust font size as needed
@@ -126,7 +145,7 @@ const styles = StyleSheet.create({
         marginBottom: 10, // Add bottom margin
         borderRadius: 16, // Add border radius
     },
-    email: {
+    inputTextContainer: {
         marginBottom: 20
     },
     rememberMeContainer: {
@@ -199,13 +218,14 @@ const styles = StyleSheet.create({
     },
     signUpTextContainer: {
         alignItems: 'center', // Align center horizontally
-        marginTop: 15,
+        margin: 25, // Increase marginTop to create more space
     },
     signUpLink:{
         textDecorationLine: 'underline',
         color: '#F86919',
         
     },
+    
 });
 
-export default SignInComponents;
+export default SignUpComponents;
