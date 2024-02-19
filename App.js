@@ -12,6 +12,7 @@ import VerificationCodeComponents from './login_feature/VerificationCodeScreen.j
 import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
+import VerificationEmailComponents from './login_feature/VerificationEmail.js';
 
 const Stack = createStackNavigator();
 
@@ -19,9 +20,11 @@ const App = () => {
   return (
       <NavigationContainer>
           <Stack.Navigator>
-          <Stack.Screen 
-                  name="SignUp" 
-                  component={SignUpComponents}
+
+
+            <Stack.Screen 
+                  name="VerificationEmail" 
+                  component={VerificationEmailComponents}
                     options={({ navigation }) => ({
                     title: '',
                     headerTitleAlign: 'center',
@@ -35,6 +38,22 @@ const App = () => {
                             )
                   })} />
 
+            <Stack.Screen 
+                    name="SignUp" 
+                    component={SignUpComponents}
+                      options={({ navigation }) => ({
+                      title: '',
+                      headerTitleAlign: 'center',
+                      headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                      headerLeft: () => ( // Add custom headerLeft component
+                                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <View style={styles.backButton}>
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                    </View>                         
+                                  </TouchableOpacity>
+                              )
+                    })} />
+
           
 
            <Stack.Screen 
@@ -47,21 +66,7 @@ const App = () => {
                   })} /> 
 
 
-            <Stack.Screen 
-                  name="PetInfoForm" 
-                  component={PetInfoFormComponents}
-                    options={({ navigation }) => ({
-                    title: '',
-                    headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: '#FD9340' }, // Set the background color of the header // Align the title to the center
-                    headerLeft: () => ( // Add custom headerLeft component
-                                <TouchableOpacity onPress={() => navigation.goBack()}>
-                                  <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="black" />
-                                  </View>                         
-                                </TouchableOpacity>
-                            )
-                  })} />
+            
 
 
 

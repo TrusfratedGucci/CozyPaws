@@ -68,7 +68,7 @@ const SignInComponents = () => {
                 <View style={styles.socialMediaContainer}>
                     {/* Facebook sign-up option */}
                     <TouchableOpacity style={[styles.socialMediaButton, styles.facebookButton]}>
-                        <Image source={require('../assets/facebook_logo.png')} style={styles.socialMediaButtonIcon} />
+                        <Image source={require('../assets/facebook_logo.png')} style={styles.socialMediaButtonIconFacebook} />
                     </TouchableOpacity>
 
                     {/* Google sign-up option */}
@@ -187,6 +187,14 @@ const styles = StyleSheet.create({
         borderRadius: 27, // Add button border radius
         width: 55, // Adjust width as needed
         height: 55, // Adjust height as needed
+        margin: 25, // Add margin between buttons
+    },
+    socialMediaButtonIconFacebook: {
+        borderWidth: 5, // Add button border width
+        borderColor: '#F7F7F7', // Change button border color
+        borderRadius: 34, // Add button border radius
+        width: 60, // Adjust width as needed
+        height: 60, // Adjust height as needed
         margin: 25, // Add margin between buttons
     },
     signUpTextContainer: {

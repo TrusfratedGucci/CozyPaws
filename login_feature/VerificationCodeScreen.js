@@ -44,7 +44,7 @@ const VerificationCodeComponents = () => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Verification</Text>
+                <Text style={styles.headerText}>Verify your email</Text>
             </View>
 
             <View style={styles.body}>
