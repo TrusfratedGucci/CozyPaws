@@ -75,7 +75,7 @@ const App = () => {
                     options={({ navigation }) => ({
                     title: '',
                     headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: '#FF9029' }, 
+                    headerStyle: { backgroundColor: '#FF8D4D' }, 
                   })} /> 
 
             <Stack.Screen 
