@@ -4,7 +4,7 @@ import { Button } from 'react-native-elements'; // Import Button component
 import LottieView from 'lottie-react-native';
 
 
-const CongragulationsScreen = () => {
+const CongratulationsScreen = () => {
     return (
         <View style={styles.container}>
             <LottieView source={require('../assets/Animation - 1708082118221.json')}style={styles.lottieView} 
@@ -12,7 +12,7 @@ const CongragulationsScreen = () => {
                loop={false} // Set loop to false to play the animation only once
                onAnimationFinish={() => console.log('Animation finished')} // Callback when animation finishes
                />          
-            <Text style={styles.shortText}>Congragulations!</Text>
+            <Text style={styles.shortText}>Congratulations!</Text>
             <Text style={styles.longText}>You are now a CozyPaws user, enjoy {'\n'}access to all the features of CozyPaws.</Text>
 
 
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CongragulationsScreen;
+export default CongratulationsScreen;

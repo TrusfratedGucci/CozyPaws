@@ -6,10 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'; // Correct import statement
 import SignInComponents from './login_feature/SignInScreen';
 import PasswordChangedSuccessScreen from './login_feature/PasswordChangedSuccessScreen';
-import CongragulationsScreen from './login_feature/CongragulationsScreen.js';
+import CongratulationsScreen from './login_feature/CongratulationsScreen.js';
 import NewPasswordComponents from './login_feature/NewPasswordScreen.js';
 import VerificationCodeComponents from './login_feature/VerificationCodeScreen.js';
-import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
@@ -21,6 +20,22 @@ const App = () => {
       <NavigationContainer>
           <Stack.Navigator>
 
+          <Stack.Screen 
+                name="Congratulations" 
+                component={CongratulationsScreen}
+                  options={({ navigation }) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                </View>                         
+                              </TouchableOpacity>
+                          
+                          )
+                })} />
 
           <Stack.Screen 
                   name="VerificationEmail" 
@@ -54,9 +69,7 @@ const App = () => {
                               )
                     })} />
 
-          
-
-           <Stack.Screen 
+            <Stack.Screen 
                   name="StartScreen" 
                   component={StartScreenComponents}
                     options={({ navigation }) => ({
@@ -80,26 +93,6 @@ const App = () => {
                               </TouchableOpacity>
                           )
                 })} />
-
-
-
-            <Stack.Screen 
-                name="Congragulations" 
-                component={CongragulationsScreen}
-                  options={({ navigation }) => ({
-                  title: '',
-                  headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
-                  headerLeft: () => ( // Add custom headerLeft component
-                              <TouchableOpacity onPress={() => navigation.goBack()}>
-                                <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
-                                </View>                         
-                              </TouchableOpacity>
-                          
-                          )
-                })} />
-
 
             <Stack.Screen 
                 name="PasswordChangedSuccess" 
@@ -133,7 +126,6 @@ const App = () => {
                           )
                 })} /> 
 
-
             <Stack.Screen  style={styles.header}
                   name="SignIn" 
                   component={SignInComponents} 
@@ -151,8 +143,6 @@ const App = () => {
                 })} // Specify the custom header title here
                   />
 
-            
-        
                 {/* You need to import ForgotPassword component */}
                 {/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
           </Stack.Navigator>
