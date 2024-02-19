@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image,TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text,TouchableOpacity, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import LottieView from 'lottie-react-native';
 
@@ -7,7 +7,11 @@ import LottieView from 'lottie-react-native';
 const CongragulationsScreen = () => {
     return (
         <View style={styles.container}>
-            <LottieView source={require('../assets/Animation - 1708082118221.json')}style={styles.lottieView}autoPlay loop />           
+            <LottieView source={require('../assets/Animation - 1708082118221.json')}style={styles.lottieView} 
+               autoPlay 
+               loop={false} // Set loop to false to play the animation only once
+               onAnimationFinish={() => console.log('Animation finished')} // Callback when animation finishes
+               />          
             <Text style={styles.shortText}>Congragulations!</Text>
             <Text style={styles.longText}>You are now a CozyPaws user, enjoy {'\n'}access to all the features of CozyPaws.</Text>
 
@@ -27,6 +31,8 @@ const CongragulationsScreen = () => {
     );
 };
 
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -37,6 +43,8 @@ const styles = StyleSheet.create({
 
     },
     lottieView: {
+        width: windowWidth * 0.8, // Set the animation width to 80% of the screen width
+        aspectRatio: 1, // Maintain aspect ratio
         width: 300,
         height: 300,
         marginBottom: 20,

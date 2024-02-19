@@ -9,6 +9,7 @@ import PasswordChangedSuccessScreen from './login_feature/PasswordChangedSuccess
 import CongragulationsScreen from './login_feature/CongragulationsScreen.js';
 import NewPasswordComponents from './login_feature/NewPasswordScreen.js';
 import VerificationCodeComponents from './login_feature/VerificationCodeScreen.js';
+import PetInfoScreen from './login_feature/PetInfoScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,21 @@ const App = () => {
       <NavigationContainer>
           <Stack.Navigator>
 
+            <Stack.Screen
+                name="PetInfo" 
+                component={PetInfoScreen}
+                  options={({ navigation }) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: '#FF8D4D' }, // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="black" />
+                                </View>                         
+                              </TouchableOpacity>
+                          )
+                })}/>
 
             <Stack.Screen 
                 name="VerificationCode" 
@@ -118,6 +134,12 @@ const styles = StyleSheet.create({
   backButton: {
     // Adjust padding or margin as needed
     padding: 20, // Add padding around the back button
+  },
+
+  petInfoBackButton: {
+    // Adjust padding or margin as needed
+    padding: 20, // Add padding around the back button
+    paddingBottom:120,
   },
 });
 

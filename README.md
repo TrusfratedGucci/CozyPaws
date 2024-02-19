@@ -31,6 +31,6 @@ CozyPaws is a mobile app designed to help pet owners manage various aspects of t
 ## Getting Started
 
 To get started with the CozyPaws pet care app, follow these steps:
-1. Download and install the app from the App Store or Google Play Store.
+1. Download and install the app.
 2. Sign up for an account or log in if you already have one.
 3. Explore the various features of the app and start managing your pets' care more efficiently!
