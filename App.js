@@ -9,10 +9,10 @@ import PasswordChangedSuccessScreen from './login_feature/PasswordChangedSuccess
 import CongragulationsScreen from './login_feature/CongragulationsScreen.js';
 import NewPasswordComponents from './login_feature/NewPasswordScreen.js';
 import VerificationCodeComponents from './login_feature/VerificationCodeScreen.js';
-import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
+import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +20,23 @@ const App = () => {
   return (
       <NavigationContainer>
           <Stack.Navigator>
+
+
+             <Stack.Screen 
+                    name="PetInfoForm" 
+                    component={PetInfoFormComponents}
+                      options={({ navigation }) => ({
+                      title: '',
+                      headerTitleAlign: 'center',
+                      headerStyle: { backgroundColor: '#FD9340' }, // Set the background color of the header // Align the title to the center
+                      headerLeft: () => ( // Add custom headerLeft component
+                                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <View style={styles.backButton}>
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="black" />
+                                    </View>                         
+                                  </TouchableOpacity>
+                              )
+                    })} /> 
 
 
             <Stack.Screen 
