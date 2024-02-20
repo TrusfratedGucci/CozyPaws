@@ -51,7 +51,7 @@ const NewPasswordComponents = () => {
                     />
                 </View>
 
-                <View>
+                <View style={styles.password}>
                     {/* Confirm Password input */}
                     <Text style={styles.inputTextHeader}>Confirm New Password</Text>
                     <TextInput
@@ -98,22 +98,22 @@ const styles = StyleSheet.create({
     },
     inputTextHeader: {
         fontSize: 15,
-        paddingBottom: 10,
+        paddingBottom: 2,
         marginBottom: 10,
         marginLeft: 10,
         fontWeight: 'semibold', // Make the text semibold
     },
     inputText: {
-        height: 55,
-        borderColor: '#F7F7F7',
+        height: 50,
+        borderColor: '#DEEBE9',
         borderWidth: 1,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#DEEBE9',
         paddingLeft: 10, // Add left padding
         marginBottom: 10, // Add bottom margin
         borderRadius: 16, // Add border radius
     },
     password: {
-        marginBottom: 20
+        marginBottom: 15,
     },
     instructions: {
         color: 'grey'
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signInButtonStyle: {
-        backgroundColor: '#FF8D4D', // Change button background color
-        borderColor: '#F86919', // Change button border color
+        backgroundColor: '#5B8F86', // Change button background color
+        borderColor: '#5B8F86', // Change button border color
         borderWidth: 1, // Add button border width
         borderRadius: 16, // Add button border radius
         height: 55, // Set button height
