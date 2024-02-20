@@ -131,14 +131,14 @@ const styles = StyleSheet.create({
         color: '#FF8D4D',
     },
     focusedWrapper: {
-        borderBottomColor: '#FFBA69', // Change color when focused
+        borderBottomColor: '#68A69B', // Change color when focused
     },
     continueButton: {
         marginTop: 45,
         alignItems: 'center',
     },
     verifyButtonStyle: {
-        backgroundColor: '#FF8D4D',
+        backgroundColor: '#68A69B',
         borderRadius: 16,
         height: 55,
         width: 300,

@@ -98,16 +98,16 @@ const styles = StyleSheet.create({
     },
     inputTextHeader: {
         fontSize: 15,
-        paddingBottom: 10,
+        paddingBottom: 2,
         marginBottom: 10,
         marginLeft: 10,
-        fontWeight: '600', // Updated font weight
+        fontWeight: 'semibold', // Make the text semibold
     },
     inputText: {
-        height: 55,
-        borderColor: '#F7F7F7',
+        height: 50,
+        borderColor: '#DEEBE9',
         borderWidth: 1,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#DEEBE9',
         paddingLeft: 10, // Add left padding
         marginBottom: 10, // Add bottom margin
         borderRadius: 16, // Add border radius
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     verifyButtonStyle: {
-        backgroundColor: '#FF8D4D',
+        backgroundColor: '#68A69B',
         borderRadius: 16,
         height: 55,
         width: 300,

@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Align center horizontally
     },
     body: {
-        marginTop: 15,
+        // marginTop: 15,
     },
     headerText: {
         fontSize: 20, // Adjust font size as needed
@@ -121,10 +121,10 @@ const styles = StyleSheet.create({
         fontWeight: 'semibold', // Make the text semibold
     },
     inputText: {
-        height: 55,
-        borderColor: '#F7F7F7',
+        height: 50,
+        borderColor: '#DEEBE9',
         borderWidth: 1,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#DEEBE9',
         paddingLeft: 10, // Add left padding
         marginBottom: 10, // Add bottom margin
         borderRadius: 16, // Add border radius
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     signInLink:{
         textDecorationLine: 'underline',
         color: '#68A69B',
+        marginBottom: 25,
         
     },
 });

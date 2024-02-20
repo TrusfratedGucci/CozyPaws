@@ -30,7 +30,7 @@ const App = () => {
                   headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                 </View>                         
                               </TouchableOpacity>
                           
@@ -47,7 +47,7 @@ const App = () => {
                     headerLeft: () => ( // Add custom headerLeft component
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                   <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                   </View>                         
                                 </TouchableOpacity>
                             )
@@ -63,7 +63,7 @@ const App = () => {
                       headerLeft: () => ( // Add custom headerLeft component
                                   <TouchableOpacity onPress={() => navigation.goBack()}>
                                     <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                     </View>                         
                                   </TouchableOpacity>
                               )
@@ -88,7 +88,7 @@ const App = () => {
                   headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                 </View>                         
                               </TouchableOpacity>
                           )
@@ -104,7 +104,7 @@ const App = () => {
                   headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                 </View>                         
                               </TouchableOpacity>
                           )
@@ -120,7 +120,7 @@ const App = () => {
                   headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                 </View>                         
                               </TouchableOpacity>
                           )
@@ -136,7 +136,7 @@ const App = () => {
                   headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FF9029" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                 </View>                         
                               </TouchableOpacity>
                           )
