@@ -70,7 +70,7 @@ const App = () => {
                                   </View>                         
                                 </TouchableOpacity>
                             )
-                  })} /> */}
+                  })} /> 
 
             <Stack.Screen 
                     name="SignUp" 
@@ -124,7 +124,7 @@ const App = () => {
 
             <Stack.Screen 
                 name="Congragulations" 
-                component={CongragulationsScreen}
+                component={CongratulationsScreen}
                   options={({ navigation }) => ({
                   title: '',
                   headerTitleAlign: 'center',
@@ -154,7 +154,7 @@ const App = () => {
                                 </View>                         
                               </TouchableOpacity>
                           )
-                })} /> */}
+                })} /> 
 
             <Stack.Screen 
                 name="NewPasswordScreen" 
