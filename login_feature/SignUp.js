@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const SignUpComponents = () => {
     const [rememberMe, setRememberMe] = useState(false);
@@ -19,64 +18,52 @@ const SignUpComponents = () => {
             <View style={styles.header}>
                 <Text style={styles.headerText}>Sign Up</Text>
             </View>
-
-            <View style={styles.body}>
-                <View style={styles.inputTextContainer}>
-                    {/* First name input */}
-                    <Text style={styles.inputTextHeader}>First Name</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Enter your first name"
-                        keyboardType="default"
-                    />
-                </View>
-
-                <View style={styles.inputTextContainer}>
-                    {/* Last name input */}
-                    <Text style={styles.inputTextHeader}>Last Name</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Enter your last name"
-                        keyboardType="default"
-                    />
-                </View>
-
-                <View style={styles.inputTextContainer}>
-                    {/* Email input */}
-                    <Text style={styles.inputTextHeader}>Email</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Enter your email"
-                        keyboardType="email-address"
-                    />
-                </View>
-
-                <View style={styles.inputTextContainer}>
-                    {/* Password input */}
-                    <Text style={styles.inputTextHeader}>Password</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Enter your password"
-                        secureTextEntry={true}
-                    />
-                </View>
-
-                <View style={styles.inputTextContainer}>
-                    {/* Password input */}
-                    <Text style={styles.inputTextHeader}>Confirm Password</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder="Enter your password"
-                        secureTextEntry={true}
-                    />
-                </View>
             
-            
-                
-                <View style={styles.signInButton}>
+            <View style={styles.Name}>
+                {/* Name input */}
+                <Text style={styles.inputTextHeader}> Name</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="Enter your name"
+                    keyboardType="email-address"
+                />
+            </View>
+
+
+            <View style={styles.email}>
+                {/* Email input */}
+                <Text style={styles.inputTextHeader}>Email</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="Enter your email"
+                    keyboardType="email-address"
+                />
+            </View>
+
+            <View style={styles.password}>
+                {/* Password input */}
+                <Text style={styles.inputTextHeader}>Password</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="Enter your password"
+                    secureTextEntry={true}
+                />
+            </View>
+
+            <View>
+                {/* Password input */}
+                <Text style={styles.inputTextHeader}>Confirm Password</Text>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="Confirm your password"
+                    secureTextEntry={true}
+                />
+            </View>
+
+            <View style={styles.signInButton}>
                     {/* Sign In button */}
                     <Button 
-                        title="Sign In"
+                        title="Sign Up"
                         // onPress={handleSignIn}
                         buttonStyle={styles.signInButtonStyle} // Apply button style
                         titleStyle={styles.signInButtonTextStyle} // Apply text style
@@ -86,7 +73,7 @@ const SignUpComponents = () => {
                 <View style={styles.socialMediaContainer}>
                     {/* Facebook sign-up option */}
                     <TouchableOpacity style={[styles.socialMediaButton, styles.facebookButton]}>
-                        <Image source={require('../assets/facebook_logo.png')} style={styles.socialMediaButtonIconFacebook} />
+                        <Image source={require('../assets/facebook_logo.png')} style={styles.socialMediaButtonIcon} />
                     </TouchableOpacity>
 
                     {/* Google sign-up option */}
@@ -95,16 +82,14 @@ const SignUpComponents = () => {
                     </TouchableOpacity>
                 </View>
 
+                <View style={styles.signInTextContainer}>
+                    <Text style={styles.signInText}>Already have an account?</Text>
 
-                <View style={styles.signUpTextContainer}>
-                    <Text style={styles.signUpText}>Already have an account?</Text>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                            <Text style={styles.signUpLink}>Sign In</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+                            <Text style={styles.signInLink}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
-
+            
         </ScrollView>
     );
 };
@@ -122,7 +107,6 @@ const styles = StyleSheet.create({
     },
     body: {
         marginTop: 15,
-        marginBottom: 45,
     },
     headerText: {
         fontSize: 20, // Adjust font size as needed
@@ -131,10 +115,10 @@ const styles = StyleSheet.create({
     },
     inputTextHeader: {
         fontSize: 15,
-        paddingBottom: 10,
+        paddingBottom: 2,
         marginBottom: 10,
         marginLeft: 10,
-        fontWeight: '600', // Updated font weight
+        fontWeight: 'semibold', // Make the text semibold
     },
     inputText: {
         height: 55,
@@ -145,38 +129,18 @@ const styles = StyleSheet.create({
         marginBottom: 10, // Add bottom margin
         borderRadius: 16, // Add border radius
     },
-    inputTextContainer: {
-        marginBottom: 20
+    
+    email: {
+        marginBottom: 15
     },
-    rememberMeContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: 20,
-        fontSize: 15,
-        flexWrap: 'wrap', // Allow items to wrap to the next line if needed
+    
+    Name: {
+        marginBottom: 15
     },
-    rememberMeTouchable: {
-        flexDirection: 'row',
-        alignItems: 'center'
+    password: {
+        marginBottom: 15
     },
-    checkbox: {
-        width: 15,
-        height: 15,
-        borderWidth: 1,
-        borderColor: 'black',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10
-    },
-    checked: {
-        backgroundColor: 'black'
-    },
-    forgotPassword: {
-        marginTop: 10,
-        textDecorationLine: 'underline',
-        color: '#F86919'
-    },
+    
     signInButton: {
         borderRadius: 6, // Add border radius
         margin: 15,
@@ -184,10 +148,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signInButtonStyle: {
-        backgroundColor: '#FF8D4D', // Change button background color
-        borderColor: '#F86919', // Change button border color
+        backgroundColor: '#68A69B', // Change button background color
+        borderColor: '#68A69B', // Change button border color
         borderWidth: 1, // Add button border width
-        borderRadius: 16, // Add button border radius
+        borderRadius: 20, // Add button border radius
         height: 55, // Set button height
         width: 300,
     },
@@ -195,6 +159,8 @@ const styles = StyleSheet.create({
         color: 'white', // Change text color
         fontSize: 18,
     },
+
+
     socialMediaContainer: {
         flexDirection: 'row',
         justifyContent: 'center', // Center items horizontally
@@ -206,26 +172,17 @@ const styles = StyleSheet.create({
         borderRadius: 27, // Add button border radius
         width: 55, // Adjust width as needed
         height: 55, // Adjust height as needed
-        margin: 25, // Add margin between buttons
+        margin: 10, // Add margin between buttons
     },
-    socialMediaButtonIconFacebook: {
-        borderWidth: 5, // Add button border width
-        borderColor: '#F7F7F7', // Change button border color
-        borderRadius: 34, // Add button border radius
-        width: 60, // Adjust width as needed
-        height: 60, // Adjust height as needed
-        margin: 25, // Add margin between buttons
-    },
-    signUpTextContainer: {
+    signInTextContainer: {
         alignItems: 'center', // Align center horizontally
-        margin: 25, // Increase marginTop to create more space
+        marginTop: 5,
     },
-    signUpLink:{
+    signInLink:{
         textDecorationLine: 'underline',
-        color: '#F86919',
+        color: '#68A69B',
         
     },
-    
 });
 
 export default SignUpComponents;
