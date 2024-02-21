@@ -5,8 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'; // Correct import statement
 import SignInComponents from './login_feature/SignInScreen';
-import PasswordChangedSuccessScreen from './login_feature/PasswordChangedSuccessScreen';
 import CongratulationsScreen from './login_feature/CongratulationsScreen.js';
+import PasswordChangedSuccessScreen from './login_feature/PasswordChangedSuccessScreen.js'
 import NewPasswordComponents from './login_feature/NewPasswordScreen.js';
 import VerificationCodeComponents from './login_feature/VerificationCodeScreen.js';
 import StartScreenComponents from './login_feature/StartScreen.js';

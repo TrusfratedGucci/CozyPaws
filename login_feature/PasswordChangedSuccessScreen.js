@@ -7,11 +7,8 @@ const PasswordChangedSuccessScreen = () => {
     return (
         <View style={styles.container}>
            <LottieView 
-               source={require('../assets/Animation - 1708081356002 .json')} 
+               source={require('../assets/Animation - 1708490105550.json')} 
                style={styles.lottieView} 
-               autoPlay
-               loop={false} // Set loop to false to play the animation only once
-               onAnimationFinish={() => console.log('Animation finished')} // Callback when animation finishes
            />
            <View style={styles.textContainer}>
            <Text style={styles.text}>Your account password has {'\n'}been successfully changed.</Text>
@@ -58,9 +55,7 @@ const styles = StyleSheet.create({
         marginTop: 45,
     },
     continueButtonStyle: {
-        backgroundColor: '#FF8D4D', // Change button background color
-        borderColor: '#F86919', // Change button border color
-        borderWidth: 1, // Add button border width
+        backgroundColor: '#5B8F86', // Change button background color
         borderRadius: 16, // Add button border radius
         height: 55, // Set button height
         width: 300,
@@ -72,3 +67,4 @@ const styles = StyleSheet.create({
 });
 
 export default PasswordChangedSuccessScreen;
+
