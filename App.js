@@ -12,6 +12,7 @@ import VerificationCodeComponents from './login_feature/VerificationCodeScreen.j
 import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
+import litterInfo from './litterInfo_feature/litterInfo.js';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,7 @@ const App = () => {
       <NavigationContainer>
           <Stack.Navigator>
 
-          <Stack.Screen 
+          {/* <Stack.Screen 
                 name="Congratulations" 
                 component={CongratulationsScreen}
                   options={({ navigation }) => ({
@@ -140,11 +141,27 @@ const App = () => {
                                 </View>                         
                               </TouchableOpacity>
                           )
-                })} // Specify the custom header title here
-                  />
+                })} // Specify the custom header title here */}
+                  {/* /> */}
 
                 {/* You need to import ForgotPassword component */}
                 {/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
+
+                <Stack.Screen  style={styles.header}
+                  name="litter Information" 
+                  component={litterInfo} 
+                  options={({ navigation }) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                </View>                         
+                              </TouchableOpacity>
+                          )
+                })}/> 
           </Stack.Navigator>
       </NavigationContainer>
   );
