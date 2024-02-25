@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
         // margin: 10, // Add margin between buttons
     },
     socialMediaButtonIcon: {
-        borderWidth: 5, // Add button border width
+        // borderWidth: 5, // Add button border width
         borderColor: '#F7F7F7', // Change button border color
         borderRadius: 27, // Add button border radius
         width: 55, // Adjust width as needed
