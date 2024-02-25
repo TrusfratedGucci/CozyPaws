@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Platform, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Button } from "react-native-elements";
 
 const PetInfoScreen = () => {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     upperContainer: {
         flex: 1,
-        backgroundColor: '#FF8D4D',
+        backgroundColor: '#649F95',
     },
     lowerContainer: {
         position: 'absolute',
@@ -63,17 +63,19 @@ const styles = StyleSheet.create({
     
     headerText: {
         fontSize: 20,
-        marginBottom: 30, // Add some space between the header text and other text items
+        marginBottom: 20, // Add some space between the header text and other text items
         textAlign:'center',
         marginLeft: 20,
+        
     },
 
     box:{
-        marginBottom: 50, // Add some space between the header text and other text items
+        marginBottom: -20, // Add some space between the header text and other text items
         borderWidth: 2, // Border width
         borderRadius: 20, // Border radius
-        borderColor: '#F6F3F3', // Border color
-        padding: 10, // Padding inside the box
+        borderColor:'#DEEBE9', // Border color
+        padding: 30, // Padding inside the box
+        backgroundColor: '#DEEBE9',
     },
 
     button:{
@@ -82,20 +84,21 @@ const styles = StyleSheet.create({
     },
 
     buttonText:{
-        color: "#FF8D4D",
+        color: "#649F95",
+        fontWeight: 'bold',
     },
 
     buttonContainer:{
         marginLeft: 250,
-        marginBottom: 20,
-        marginTop: -20,
+        marginBottom: -20,
+        marginTop: 30,
     },
 
     biggerCircle: {
         position: 'absolute',
         top: -15,
         left: '27.2%',
-        backgroundColor: 'white',
+        backgroundColor: '#DEEBE9',
         height: 180,
         width: 180,
         borderRadius: 90,

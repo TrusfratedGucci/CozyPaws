@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -14,6 +14,7 @@ import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
 import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 import PetInfoScreen from './home_feature/PetInfoScreen.js';
+import PetProfileScreen from './home_feature/PetProfileScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,29 @@ const App = () => {
       <NavigationContainer>
           <Stack.Navigator>
 
+          <Stack.Screen
+                name="PetProfile" 
+                component={PetProfileScreen}
+                  options={({ navigation }) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                </View>                         
+                              </TouchableOpacity>
+                          ),
+                  headerTitle: () => (
+                            <View>
+                              <Image source={require('./assets/chubby.jpg')} style={styles.profilePic} />
+                              <Text style = {styles.headerText}>Pet Name</Text>
+                            </View>
+                          ),
+                })}/>
+
+
 
             <Stack.Screen
                 name="PetInfo" 
@@ -29,11 +53,11 @@ const App = () => {
                   options={({ navigation }) => ({
                   title: '',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: '#FF8D4D' }, // Set the background color of the header // Align the title to the center
+                  headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
                   headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="black" />
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                 </View>                         
                               </TouchableOpacity>
                           )
@@ -208,6 +232,23 @@ const styles = StyleSheet.create({
     padding: 20, // Add padding around the back button
     paddingBottom:120,
   },
+
+  profilePic: {
+    height: 100,
+    width: 100,
+    borderRadius: 90,
+    bottom: -45,
+    marginLeft: 215,
+  },
+
+  headerText: {
+    marginLeft: 105,
+    bottom: 25,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+
 });
 
 export default App;

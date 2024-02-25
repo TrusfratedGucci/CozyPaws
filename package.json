@@ -16,6 +16,7 @@
     "@react-native-community/checkbox": "^0.5.17",
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/stack": "^6.3.21",
+    "@shopify/react-native-skia": "^0.1.240",
     "expo": "~50.0.5",
     "expo-image-picker": "^14.7.1",
     "expo-status-bar": "~1.11.1",
