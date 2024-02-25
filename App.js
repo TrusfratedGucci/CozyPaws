@@ -67,13 +67,14 @@ const App = () => {
                     name="PetInfoForm" 
                     component={PetInfoFormComponents}
                       options={({ navigation }) => ({
-                      title: '',
+                      title: 'Create Pet Profile',
                       headerTitleAlign: 'center',
-                      headerStyle: { backgroundColor: '#FD9340' }, // Set the background color of the header // Align the title to the center
+                      headerTintColor: '#FFFFFF', // Change the text color of the header title
+                      headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
                       headerLeft: () => ( // Add custom headerLeft component
                                   <TouchableOpacity onPress={() => navigation.goBack()}>
                                     <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="black" />
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                     </View>                         
                                   </TouchableOpacity>
                               )
@@ -210,11 +211,9 @@ const App = () => {
                                 </View>                         
                               </TouchableOpacity>
                           )
-                })} // Specify the custom header title here
+                })} 
                   />
 
-                {/* You need to import ForgotPassword component */}
-                {/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
           </Stack.Navigator>
       </NavigationContainer>
   );
