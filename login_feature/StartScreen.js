@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+
 
 const StartScreenComponents = () => {
+    const navigation = useNavigation(); 
 
     return (
         <View style={styles.container}>
@@ -21,15 +24,15 @@ const StartScreenComponents = () => {
                         <View style={styles.buttonContainer}>
                             <TouchableOpacity 
                                 style={styles.signInButtonStyle}
-                                onPress={() => handleSignIn()}>
+                                onPress={() => navigation.navigate('SignIn')}>
                                 <Text style={styles.signInButtonTextStyle}>Sign In</Text>
                             </TouchableOpacity>
 
 
 
                             <TouchableOpacity 
-                                style={styles.signInButtonStyle}
-                                onPress={() => handleSignUp()}>
+                                style={styles.signUpButtonStyle}
+                                onPress={() => navigation.navigate('SignUp')}>
                                 <Text style={styles.signInButtonTextStyle}>Sign Up</Text>
                             </TouchableOpacity>
                         </View>
@@ -45,21 +48,25 @@ const StartScreenComponents = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FF8D4D',
+        backgroundColor: '#649F95',
         // padding: 20,
     },
     header: {
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 45,
     },
     headerText: {
         color: 'white',
         fontSize: 36,
+        fontWeight:'bold',
     },
     sentence: {
-        fontSize: 24,
+        fontSize: 21,
         color: '#343232',
+        zIndex: 1, // Ensure the text appears in front of the background image
+        fontWeight:'600',
     },
     body: {
         flex: 1,
@@ -67,14 +74,15 @@ const styles = StyleSheet.create({
     },
     bgImg: {
         flex: 1,
-        height:610,
+        height:700,
         resizeMode: 'cover',
         width: '100%', // Make the width equal to the device width
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: -120,
     },
     blurBox: {
-        marginTop: 210,
+        marginTop: 400,
         marginBottom: -100,
         height: 320,
         width: '100%', // Make the width equal to the device width
@@ -88,20 +96,31 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signInButtonStyle: {
-        backgroundColor: '#FF9029', // Change button background color to F86919
-        borderColor: '#FF9029', // Change button border color
+        backgroundColor: '#305C55', // Change button background color to F86919
+        borderColor: '#305C55', // Change button border color
         borderWidth: 1, // Add button border width
-        borderRadius: 6, // Add button border radius
+        borderRadius: 20, // Add button border radius
         height: 55, // Set button height
         width: 300,
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 10,
-        marginBottom: 45,
+        marginBottom: 40,
+    },
+    signUpButtonStyle: {
+        backgroundColor: '#305C55', // Change button background color to F86919
+        borderColor: '#305C55', // Change button border color
+        borderWidth: 1, // Add button border width
+        borderRadius: 20, // Add button border radius
+        height: 55, // Set button height
+        width: 300,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 80,
     },
     signInButtonTextStyle: {
         color: 'white', // Change text color
-        fontSize: 22,
+        fontSize: 20,
+        fontWeight: '600',
     },
 
 });

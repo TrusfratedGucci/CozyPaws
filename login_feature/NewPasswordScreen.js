@@ -67,7 +67,7 @@ const NewPasswordComponents = () => {
                         title="Continue"
                         buttonStyle={styles.signInButtonStyle} // Apply button style
                         titleStyle={styles.signInButtonTextStyle} // Apply text style
-                        onPress={handleContinue} // Call handleContinue function when pressed
+                        onPress={() => navigation.navigate('PasswordChangedSuccess')}
                     />
                 </View>
 
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
         fontSize: 20, // Adjust font size as needed
         color: 'black',
         fontWeight: 'bold', // Make the text bold
+        marginTop: 100,
     },
     inputTextHeader: {
         fontSize: 15,
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#5B8F86', // Change button background color
         borderColor: '#5B8F86', // Change button border color
         borderWidth: 1, // Add button border width
-        borderRadius: 16, // Add button border radius
+        borderRadius: 20, // Add button border radius
         height: 55, // Set button height
         width: 300,
         

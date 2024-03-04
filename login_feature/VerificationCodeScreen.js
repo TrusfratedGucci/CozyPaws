@@ -4,6 +4,7 @@ import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
 
 const VerificationCodeComponents = () => {
+    const navigation = useNavigation();
     // State to hold the verification code
     const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
 
@@ -74,7 +75,7 @@ const VerificationCodeComponents = () => {
                 <View style={styles.continueButton}>
                     <Button 
                         title="Verify"
-                        // onPress={handleVerification}
+                        onPress={() => navigation.navigate('NewPasswordScreen')}
                         buttonStyle={styles.verifyButtonStyle}
                         titleStyle={styles.verifyButtonTextStyle}
                     />
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'black',
         fontWeight: 'bold',
+        marginTop: 100,
     },
     instructions: {
         fontSize: 15,

@@ -4,12 +4,51 @@ import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
 
 const SignInComponents = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const navigation = useNavigation();
 
     // Function to toggle the rememberMe state
     const toggleRememberMe = () => {
         setRememberMe(!rememberMe);
+    };
+
+    // Function to handle email input change and validate email format
+    const handleEmailChange = (email) => {
+        setEmail(email);
+        setEmailError(
+            email.trim() === '' // Check if the email field is empty
+                ? 'Required Field'
+                : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) // Check if the email format is invalid
+                ? 'Invalid email format'
+                : '' // No error
+        );
+    };
+
+    // Function to handle password input change and validate password format
+    const handlePasswordChange = (password) => {
+        setPassword(password);
+        setPasswordError(
+            password.trim() === '' // Check if the password field is empty
+                ? 'Required field'
+                : !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}/.test(password) // Check if the password format is invalid
+                ? 'Password must contain at least 8 characters including uppercase and lowercase letters, numbers, and special characters'
+                : '' // No error
+        );
+    };
+
+
+    // Function to handle sign-in button press
+    const handleSignIn = () => {
+        if (!email || !password) {
+            setEmailError(email ? '' : 'Required field');
+            setPasswordError(password ? '' : 'Required field');
+            return;
+        }
+        // Add logic for signing in with email and password
     };
 
     return (
@@ -24,20 +63,26 @@ const SignInComponents = () => {
                     {/* Email input */}
                     <Text style={styles.inputTextHeader}>Email</Text>
                     <TextInput
-                        style={styles.inputText}
+                        style={[styles.inputText, emailError && styles.errorInput]}
                         placeholder="Enter your email"
                         keyboardType="email-address"
+                        value={email}
+                        onChangeText={handleEmailChange}
                     />
+                    {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
                 </View>
 
                 <View style={styles.email}>
                     {/* Password input */}
                     <Text style={styles.inputTextHeader}>Password</Text>
                     <TextInput
-                        style={styles.inputText}
+                        style={[styles.inputText, passwordError && styles.errorInput]}
                         placeholder="Enter your password"
                         secureTextEntry={true}
+                        value={password}
+                        onChangeText={handlePasswordChange}
                     />
+                    {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
                 </View>
             
                 <View style={styles.rememberMeContainer}>
@@ -50,8 +95,8 @@ const SignInComponents = () => {
                     </TouchableOpacity>
                     
                     {/* Forgot Password link */}
-                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('VerificationEmail')}>
+                        <Text style={[styles.forgotPassword, {marginTop:0}]}>Forgot Password?</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -59,7 +104,7 @@ const SignInComponents = () => {
                     {/* Sign In button */}
                     <Button 
                         title="Sign In"
-                        // onPress={handleSignIn}
+                        onPress={handleSignIn} // Call handleSignIn function when pressed
                         buttonStyle={styles.signInButtonStyle} // Apply button style
                         titleStyle={styles.signInButtonTextStyle} // Apply text style
                     />
@@ -106,14 +151,15 @@ const styles = StyleSheet.create({
         marginTop: 15,
     },
     headerText: {
-        fontSize: 20, // Adjust font size as needed
+        fontSize: 22, // Adjust font size as needed
         color: 'black',
         fontWeight: 'bold', // Make the text bold
+        marginTop: 80,
     },
     inputTextHeader: {
         fontSize: 15,
         paddingBottom: 2,
-        marginBottom: 10,
+        marginBottom: 5,
         marginLeft: 10,
         fontWeight: 'semibold', // Make the text semibold
     },
@@ -126,6 +172,16 @@ const styles = StyleSheet.create({
         marginBottom: 10, // Add bottom margin
         borderRadius: 16, // Add border radius
     },
+    errorInput: {
+        borderColor: 'red', // Change border color to red for error
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginLeft: 10,
+        marginTop: -5,
+        marginBottom: 8, // Add bottom margin
+    },
     email: {
         marginBottom: 15,
     },
@@ -136,6 +192,7 @@ const styles = StyleSheet.create({
         margin: 20,
         fontSize: 15,
         flexWrap: 'wrap', // Allow items to wrap to the next line if needed
+        marginTop: -2,
     },
     rememberMeTouchable: {
         flexDirection: 'row',
@@ -161,7 +218,7 @@ const styles = StyleSheet.create({
     signInButton: {
         borderRadius: 6, // Add border radius
         margin: 15,
-        marginTop: 15,
+        marginTop: 45,
         alignItems: 'center',
     },
     signInButtonStyle: {
@@ -183,18 +240,16 @@ const styles = StyleSheet.create({
     },
     socialMediaButtonIcon: {
         borderWidth: 5, // Add button border width
-        borderColor: '#F7F7F7', // Change button border color
         borderRadius: 27, // Add button border radius
-        width: 55, // Adjust width as needed
-        height: 55, // Adjust height as needed
+        width: 40, // Adjust width as needed
+        height: 40, // Adjust height as needed
         margin: 25, // Add margin between buttons
     },
     socialMediaButtonIconFacebook: {
         borderWidth: 5, // Add button border width
-        borderColor: '#F7F7F7', // Change button border color
         borderRadius: 34, // Add button border radius
-        width: 60, // Adjust width as needed
-        height: 60, // Adjust height as needed
+        width: 40, // Adjust width as needed
+        height: 40, // Adjust height as needed
         margin: 25, // Add margin between buttons
     },
     signUpTextContainer: {

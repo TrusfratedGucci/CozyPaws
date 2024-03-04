@@ -2,14 +2,16 @@ import React from 'react';
 import { StyleSheet, View, Text,TouchableOpacity, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import LottieView from 'lottie-react-native';
-
+import { useNavigation } from '@react-navigation/native';
 
 const CongratulationsScreen = () => {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
-            <LottieView source={require('../assets/Animation - 1708489734916.json')}style={styles.lottieView} 
+            <LottieView source={require('../assets/congratulations.json')}style={styles.lottieView} 
                autoPlay 
                loop={false} // Set loop to false to play the animation only once
+               speed={1.5} // Increase speed to 2x
                onAnimationFinish={() => console.log('Animation finished')} // Callback when animation finishes
                />          
             <Text style={styles.shortText}>Congratulations!</Text>
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
         width: 300,
         height: 300,
         marginBottom: 20,
+        marginTop: 100,
     },
 
     longText: {
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
     },
     goButtonStyle: {
         backgroundColor: '#5B8F86', // Change button background color
-        borderRadius: 16, // Add button border radius
+        borderRadius: 20, // Add button border radius
         height: 55, // Set button height
         width: 300,
     },

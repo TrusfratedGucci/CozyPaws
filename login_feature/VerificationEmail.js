@@ -61,7 +61,7 @@ const VerificationEmailComponents = () => {
                 <View style={styles.continueButton}>
                     <Button 
                         title="Submit"
-                        onPress={handleEmailSubmit}
+                        onPress={() => navigation.navigate('VerificationCode')}
                         buttonStyle={styles.verifyButtonStyle}
                         titleStyle={styles.verifyButtonTextStyle}
                     />
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 100,
     },
     body: {
         marginTop: 55,
@@ -95,6 +96,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'center',
         fontWeight: 'semibold', // Make the text semibold
+        marginLeft: 10,
+        marginRight: 10,
     },
     inputTextHeader: {
         fontSize: 15,
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     },
     verifyButtonStyle: {
         backgroundColor: '#68A69B',
-        borderRadius: 16,
+        borderRadius: 20,
         height: 55,
         width: 300,
     },
