@@ -1,24 +1,54 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const New_Reminders = () => {
     // States to hold the reminder name, date, and time
     const [reminderName, setReminderName] = useState('');
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
+    const [date, setDate] = useState(null);
+    const [time, setTime] = useState(null);
+    const [datePickerVisibility, setDatePickerVisibility] = useState(false);
+    const [timePickerVisibility, setTimePickerVisibility] = useState(false);
 
     // Function to handle the creation of the reminder
     const handleCreateReminder = () => {
         // Format the date
-        const formattedDate = new Date(date).toDateString();
+        const formattedDate = date ? date.toDateString() : '';
         // Format the time
-        const formattedTime = new Date(time).toLocaleTimeString('en-US');
+        const formattedTime = time ? new Date(time).toLocaleTimeString('en-US') : '';
 
         // Implement the logic to create the reminder here
         console.log("Reminder created:");
         console.log("Name:", reminderName);
         console.log("Date:", formattedDate);
         console.log("Time:", formattedTime);
+    };
+
+    // Function to open date picker
+    const openDatePicker = () => {
+        setDate(new Date());
+        setDatePickerVisibility(true);
+        setTimePickerVisibility(false);
+    };
+
+    // Function to open time picker
+    const openTimePicker = () => {
+        setTimePickerVisibility(true);
+        setDatePickerVisibility(false);
+    };
+
+    // Function to handle date change
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setDatePickerVisibility(false);
+        setDate(currentDate);
+    };
+
+    // Function to handle time change
+    const handleTimeChange = (event, selectedTime) => {
+        const currentTime = selectedTime || time;
+        setTimePickerVisibility(false);
+        setTime(currentTime);
     };
 
     return (
@@ -43,26 +73,48 @@ const New_Reminders = () => {
                             onChangeText={text => setReminderName(text)}
                         />
                         {/* Second white box */}
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Date (Optional)"
-                            value={date}
-                            onChangeText={text => setDate(text)}
-                        />
+                        <TouchableOpacity onPress={openDatePicker}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Date (Optional)"
+                                value={date ? date.toDateString() : ''}
+                                editable={false}
+                            />
+                        </TouchableOpacity>
                         {/* Third white box */}
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Time (Optional)"
-                            value={time}
-                            onChangeText={text => setTime(text)}
-                        />
+                        <TouchableOpacity onPress={openTimePicker}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Time (Optional)"
+                                value={time ? new Date(time).toLocaleTimeString('en-US') : ''}
+                                editable={false}
+                            />
+                        </TouchableOpacity>
                     </View>
                     {/* Create button */}
                     <TouchableOpacity style={styles.createButton} onPress={handleCreateReminder}>
-                        <Text style={styles.createButtonText}>      Create</Text>
+                        <Text style={styles.createButtonText}>Create</Text>
                     </TouchableOpacity>
                 </View>
             </View>
+            {datePickerVisibility && (
+                <DateTimePicker
+                    value={date || new Date()}
+                    mode="date"
+                    is24Hour={true}
+                    display="default"
+                    onChange={handleDateChange}
+                />
+            )}
+            {timePickerVisibility && (
+                <DateTimePicker
+                    value={time || new Date()}
+                    mode="time"
+                    is24Hour={true}
+                    display="default"
+                    onChange={handleTimeChange}
+                />
+            )}
         </View>
     );
 };
@@ -112,6 +164,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 6,
         padding: 10,
+        color: 'black',
     },
     createReminderText: {
         fontSize: 18,
@@ -127,6 +180,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginTop: 10,
         width: '40%',
+        alignItems: 'center',
     },
     createButtonText: {
         color: 'white',
