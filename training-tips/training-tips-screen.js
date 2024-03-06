@@ -20,20 +20,7 @@ const TrainingTips = () => {
             <View style={styles.lowerContainer}>
                 {/* Content */}
                 <View style={styles.content}>
-                    {/* <View style={styles.box}>
-                        <View>
-                            <Image
-                                style={styles.img}
-                                source={require('../assets/play.png')}
-                            />
-                        </View>
-                        <View>
-                            <View style={styles.set}>
-                                <Text style={styles.info} >Play</Text>
-                                <Text style={styles.info} >Commands</Text>
-                            </View>
-                        </View>
-                    </View> */}
+
                     <View style={styles.tableRow}>
                         <View style={styles.tableCell}>
                             <Image
@@ -41,90 +28,50 @@ const TrainingTips = () => {
                             source={require('../assets/play.png')}
                             />
                         </View>
-                    <View style={styles.tableCell}>
-                        <Text style={styles.info}>Play</Text>
-                        <Text style={styles.info}>Commands</Text>
-                    </View>
-                    </View>
-                    <View style={styles.tableRow}>
-                    <View style={styles.tableCell}>
-                        <Image
-                        style={styles.img}
-                        source={require('../assets/sit.png')}
-                        />
-                    </View>
-                    <View style={styles.tableCell}>
-                        <Text style={styles.info}>Sit</Text>
-                        <Text style={styles.info}>Commands</Text>
-                    </View>
-                    </View>
-                    <View style={styles.tableRow}>
-                    <View style={styles.tableCell}>
-                        <Image
-                        style={styles.img}
-                        source={require('../assets/down.png')}
-                        />
-                    </View>
-                    <View style={styles.tableCell}>
-                        <Text style={styles.info}>Lay Down</Text>
-                        <Text style={styles.info}>Commands</Text>
-                    </View>
-                    </View>
-                    <View style={styles.tableRow}>
-                    <View style={styles.tableCell}>
-                        <Image
-                        style={styles.img}
-                        source={require('../assets/fetch.png')}
-                        />
-                    </View>
-                    <View style={styles.tableCell}>
-                        <Text style={styles.info}>Fetch</Text>
-                        <Text style={styles.info}>Commands</Text>
-                    </View>
+                        <View style={styles.tableCell}>
+                            <Text style={styles.info}>Play</Text>
+                            <Text style={styles.info}>Commands</Text>
+                        </View>
                     </View>
 
-                    {/* <View style={styles.box}>
-                        <View>
+                    <View style={styles.tableRow}>
+                        <View style={styles.tableCell}>
                             <Image
-                                style={styles.img}
-                                source={require('../assets/sit.png')}
+                            style={styles.img}
+                            source={require('../assets/sit.png')}
                             />
                         </View>
-                        <View>
-                            <View style={styles.set}>
-                                <Text style={styles.info} >Sit</Text>
-                                <Text style={styles.info} >Commands</Text>
-                            </View>
+                        <View style={styles.tableCell}>
+                            <Text style={styles.info}>Sit</Text>
+                            <Text style={styles.info}>Commands</Text>
                         </View>
                     </View>
-                    <View style={styles.box}>
-                        <View>
+
+                    <View style={styles.tableRow}>
+                        <View style={styles.tableCell}>
                             <Image
-                                style={styles.img}
-                                source={require('../assets/down.png')}
+                            style={styles.img}
+                            source={require('../assets/down.png')}
                             />
                         </View>
-                        <View>
-                            <View style={styles.set}>
-                                <Text style={styles.info} >Lay down</Text>
-                                <Text style={styles.info} >Commands</Text>
-                            </View>
+                        <View style={styles.tableCell}>
+                            <Text style={styles.info}>Lay Down</Text>
+                            <Text style={styles.info}>Commands</Text>
                         </View>
                     </View>
-                    <View style={styles.box}>
-                        <View>
+
+                    <View style={styles.tableRow}>
+                        <View style={styles.tableCell}>
                             <Image
-                                style={styles.img}
-                                source={require('../assets/fetch.png')}
+                            style={styles.img}
+                            source={require('../assets/fetch.png')}
                             />
                         </View>
-                        <View>
-                            <View style={styles.set}>
-                                <Text style={styles.info} >Fetch</Text>
-                                <Text style={styles.info} >Commands</Text>
-                            </View>
+                        <View style={styles.tableCell}>
+                            <Text style={styles.info}>Fetch</Text>
+                            <Text style={styles.info}>Commands</Text>
                         </View>
-                    </View> */}
+                    </View>
                 </View>
             </View>
         </View>
@@ -169,15 +116,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         paddingBottom: 2,
     },
-    // info: {
-    //     fontSize: 20,
-    //     fontWeight:'bold',
-    //     // marginBottom: 10,
-    //     // marginTop: -3,
-    // },
-    // img:{
-    //     height: '100%',
-    // },
     tableRow: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -193,29 +131,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     img: {
-        // width: 150,  // Adjust the width as needed
-        height: 120, // Adjust the height as needed
+        height: 120,
         marginRight: 10,
         objectFit: 'contain',
     },
     info: {
         fontSize: 20,
         fontWeight: '500',
-    },
-    date_time: {
-        fontSize: 14
-    },
-    box: {
-        width: '90%',
-        height: 130,
-        marginBottom: 10,
-        backgroundColor: 'white',
-        borderWidth: 2,
-        borderRadius: 15,
-        borderColor: '#8b9e9b',
-        paddingLeft: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
     },
 });
 
