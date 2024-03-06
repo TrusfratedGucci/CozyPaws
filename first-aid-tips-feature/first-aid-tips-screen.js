@@ -16,7 +16,7 @@ const FirstAidTips = () => {
                 {/* Upper Container */}
                 <View style={styles.upperContainer}>
                     {/* Title */}
-                    <Text style={styles.title}>Training Tips</Text>
+                    <Text style={styles.title}>First-Aid Tips</Text>
                 </View>
                 {/* Lower Container */}
                 <View style={styles.lowerContainer}>
