@@ -11,6 +11,10 @@ const PasswordChangedSuccessScreen = () => {
            <LottieView 
                source={require('../assets/passwordChanged.json')} 
                style={styles.lottieView} 
+               autoPlay 
+               loop={false} // Set loop to false to play the animation only once
+               speed={1.5} // Increase speed to 2x
+               onAnimationFinish={() => console.log('Animation finished')} // Callback when animation finishes
            />
            <View style={styles.textContainer}>
            <Text style={styles.text}>Your account password has {'\n'}been successfully changed.</Text>
