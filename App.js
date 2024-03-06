@@ -12,6 +12,7 @@ import VerificationCodeComponents from './login_feature/VerificationCodeScreen.j
 import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
+import FirstAidTips from './first-aid-tips-feature/first-aid-tips-screen.js';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,16 @@ const App = () => {
   return (
       <NavigationContainer>
           <Stack.Navigator>
+
+          <Stack.Screen 
+                  name="FirstAidTips" 
+                  component={FirstAidTips}
+                    options={({ navigation }) => ({
+                    title: 'FirstAidTips',
+                    headerTitleAlign: 'center',
+                    headerStyle: { backgroundColor: '#FF8D4D' }, 
+                    headerShown: false,
+                  })} />
 
           <Stack.Screen 
                   name="StartScreen" 
