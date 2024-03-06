@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, Image } from 'react-native';
+import { ScrollView } from "react-native-gesture-handler";
 
 // Import the image using require
 const img = require('../assets/Tayo.png');
@@ -7,6 +8,7 @@ const img = require('../assets/Tayo.png');
 const GoWithPet = () => {
     return (
         <View style={styles.container}>
+            <ScrollView>
             {/* Upper Container */}
             <View style={styles.upperContainer}>
                 {/* Title */}
@@ -17,6 +19,8 @@ const GoWithPet = () => {
             <View style={styles.lowerContainer}>
                 {/* Content */}
                 <View style={styles.content}>
+
+                    {/* Tayo Bear */}
                     <View style={styles.box}>
                         <View>
                             <View style={styles.set}>
@@ -37,7 +41,7 @@ const GoWithPet = () => {
                             </View>
                             <View style={styles.set}>
                                 <Text style={styles.heading}>Website:</Text>
-                                <Text style={styles.info}>tayobear.com</Text>
+                                <Text style={styles.info}>bit.ly/TayoBear</Text>
                             </View>
                         </View>
                         <View>
@@ -47,9 +51,74 @@ const GoWithPet = () => {
                             />
                         </View>
                     </View>
-                    
+
+                    {/* The One Ella */}
+                    <View style={styles.box}>
+                        <View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Name:</Text>
+                                <Text style={styles.info}>The One Ella</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Location:</Text>
+                                <Text style={styles.info}>Ella</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Type:</Text>
+                                <Text style={styles.info}>Hotel</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Telephone number:</Text>
+                                <Text style={styles.info}>+94 77 411 6802</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Website:</Text>
+                                <Text style={styles.info}>bit.ly/OneElla</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <Image
+                                style={styles.img}
+                                source={require('../assets/TheOne.png')}
+                            />
+                        </View>
+                    </View>
+
+                    {/* Black Cat */}
+                    <View style={styles.box}>
+                        <View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Name:</Text>
+                                <Text style={styles.info}>Black Cat</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Location:</Text>
+                                <Text style={styles.info}>Colombo 7</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Type:</Text>
+                                <Text style={styles.info}>Cafe</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Telephone number:</Text>
+                                <Text style={styles.info}>+94 112 675 111</Text>
+                            </View>
+                            <View style={styles.set}>
+                                <Text style={styles.heading}>Website:</Text>
+                                <Text style={styles.info}>bit.ly/BLACKcat</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <Image
+                                style={styles.img}
+                                source={require('../assets/Tayo.png')}
+                            />
+                        </View>
+                    </View>
+
                 </View>
             </View>
+            </ScrollView>
         </View>
     );
 };
@@ -64,6 +133,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#649F95',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingVertical: 25,
     },
     lowerContainer: {
         flex: 8,
