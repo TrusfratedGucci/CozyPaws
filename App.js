@@ -25,10 +25,16 @@ const App = () => {
                   name="FirstAidTips" 
                   component={FirstAidTips}
                     options={({ navigation }) => ({
-                    title: 'FirstAidTips',
+                    title: '',
                     headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: '#FF8D4D' }, 
-                    headerShown: false,
+                    headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                    headerLeft: () => ( // Add custom headerLeft component
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                  <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  </View>                         
+                                </TouchableOpacity>
+                            )
                   })} />
 
           <Stack.Screen 

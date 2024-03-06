@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#649F95',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingVertical: 25,
     },
     lowerContainer: {
         flex: 8,
@@ -153,12 +154,13 @@ const styles = StyleSheet.create({
     },
     img: {
         height: 120,
-        marginRight: 10,
         objectFit: 'contain',
+        
     },
     info: {
         fontSize: 25,
         fontWeight: '500',
+        marginLeft: -40,
     },
 });
 
