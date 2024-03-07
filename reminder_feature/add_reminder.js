@@ -122,6 +122,7 @@ const New_Reminders = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#649F95',
     },
     upperContainer: {
         flex: 1,

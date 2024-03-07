@@ -22,7 +22,7 @@ const App = () => {
       <NavigationContainer>
           <Stack.Navigator>
 
-          <Stack.Screen 
+          {/* <Stack.Screen 
                   name="add_reminder" 
                   component={New_Reminders}
                     options={({ navigation }) => ({
@@ -36,7 +36,7 @@ const App = () => {
                                   </View>                         
                                 </TouchableOpacity>
                             )
-                  })} />
+                  })} /> */}
 
           <Stack.Screen 
                   name="reminder" 

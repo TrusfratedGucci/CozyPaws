@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 
 // Import the image using require
 const addIcon = require('../assets/Vector.png');
+const addImg = require('../assets/🦆 icon _Alternate Trash_.png')
 
 const Reminders = () => {
     return (
@@ -17,9 +18,14 @@ const Reminders = () => {
             <View style={styles.lowerContainer}>
                 {/* Content */}
                 <View style={styles.content}>
-                    <View style={styles.box1}>
-                        <Text style={styles.text}>Meet the vet</Text>
-                        <Text style={styles.date_time}>On 20 Jun 2023</Text>
+                    <View style={styles.box2}>
+                        <View style={styles.box1}>
+                            <Text style={styles.text}>Meet the vet</Text>
+                            <Text style={styles.date_time}>On 20 Jun 2023</Text>
+                        </View>
+                        <View>
+                            <Image source={addImg} style={styles.addImg} />
+                        </View>
                     </View>
                     <View style={styles.addReminderContainer}>
                         {/* Use the imported image */}
@@ -35,6 +41,7 @@ const Reminders = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#649F95',
     },
     upperContainer: {
         flex: 1,
@@ -70,32 +77,41 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     box1: {
-        height: 100,
+        // height: 100,
         width: '90%',
         marginBottom: 10,
         backgroundColor: '#EBEBEB',
         borderWidth: 2,
-        borderRadius: 6,
+        borderRadius: 10,
         borderColor: '#EBEBEB',
         padding: 10,
+    },
+    box2:{
+        flexDirection: 'row',
     },
     addReminderContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center', // Align horizontally center
     },
     addIcon: {
-        width: 36.5,
+        width: 36.7,
         height: 36.8,
-        marginRight: 5,
+        marginLeft: 26,
     },
     addText: {
         fontSize: 18,
         lineHeight: 40,
         marginBottom: 10,
         marginTop: 90,
-        marginLeft: -80,
         color: '#343232',
-    }
+        marginLeft:-80
+    },
+    // addImg: {
+    //     marginLeft: 290,
+    //     marginRight: 0,
+    //     marginTop: -30
+    // }
 });
 
 export default Reminders;
