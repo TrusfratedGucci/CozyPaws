@@ -15,6 +15,7 @@ import VerificationEmailComponents from './login_feature/VerificationEmail.js';
 import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 import PetInfoScreen from './home_feature/PetInfoScreen.js';
 import PetProfileScreen from './home_feature/PetProfileScreen.js';
+import AddPetComponents from './home_feature/AddPetProfile.js';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,24 @@ const App = () => {
   return (
       <NavigationContainer>
           <Stack.Navigator>
+
+          <Stack.Screen 
+                    name="AddPet" 
+                    component={AddPetComponents}
+                      options={({ navigation }) => ({
+                      title: 'Add Pet Profile',
+                      headerTitleAlign: 'center',
+                      headerTintColor: '#FFFFFF', // Change the text color of the header title
+                      headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                      headerLeft: () => ( // Add custom headerLeft component
+                                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <View style={styles.backButton}>
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                    </View>                         
+                                  </TouchableOpacity>
+                              )
+                    })} /> 
+
 
           <Stack.Screen
                 name="PetProfile" 

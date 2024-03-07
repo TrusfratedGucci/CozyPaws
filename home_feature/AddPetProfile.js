@@ -5,11 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCirclePlus} from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const AddPetComponents = () => {
-    const [birthday, setBirthday] = useState('');
-    const [petData, setPetData] = useState(initialPetData);
+    const [petData, setPetData] = useState([]);
     const navigation = useNavigation();
+
 
     
 
@@ -22,23 +23,19 @@ const AddPetComponents = () => {
     const fetchPetData = async () => {
         try {
             // Make a network request to your backend API to fetch pet data
-            const response = await fetch('https://your-api-url/pets');
-            if (!response.ok) {
-                throw new Error('Failed to fetch pet data');
-            }
-            const data = await response.json();
-            setPetData(data); // Update the state with the fetched pet data
+            const response = await axios.get('http://localhost:3000/petProfile/pets/:id');
+            setPetData(response.data); // Update the state with the fetched pet data
         } catch (error) {
             console.error('Error fetching pet data:', error);
         }
     };
-
+    
 
     const handlePetProfileClick = (petId) => {
         // Navigate to the pet profile screen with the corresponding pet ID
         navigation.navigate('PetProfile', { petId });
     };
-  
+    
 
     return (
         <ScrollView style={styles.container}>
@@ -59,32 +56,24 @@ const AddPetComponents = () => {
                         <Text style={styles.addPhotoLink}>Create Profile</Text>
                     </TouchableOpacity>
                 </View>
-                    
-                
             </View>
 
             
 
 
             <View style={styles.body}>
-
-                   
-                   
-
-                {/* Display pet profiles */}
-                {petData.map(pet => (
+                {petData.map((pet, index) => (
                     <TouchableOpacity
                         key={pet.id}
-                        style={styles.petProfileContainer}
+                        style={[styles.petProfileContainer, (index + 1) % 2 === 0 ? styles.lastInRow : null]}
                         onPress={() => handlePetProfileClick(pet.id)}>
                         <Image
-                            source={pet.photo}
+                            source={{ uri: pet.photo }} // Assuming photo is a URL
                             style={styles.petProfileImage}
                             resizeMode="cover"
                         />
                     </TouchableOpacity>
-                ))}       
-
+                ))}
             </View>
 
         </ScrollView>
@@ -137,55 +126,9 @@ const styles = StyleSheet.create({
     profilePhotoIcon: {
         color: '#5B8F86', // Placeholder icon color
     },
-    inputTextHeader: {
-        fontSize: 15,
-        paddingBottom: 2,
-        marginBottom: 10,
-        marginLeft: 10,
-        fontWeight: 'semibold', // Make the text semibold
-    },
-    inputText: {
-        height: 50,
-        borderColor: '#DEEBE9',
-        borderWidth: 1,
-        backgroundColor: '#DEEBE9',
-        paddingLeft: 10, // Add left padding
-        marginBottom: 10, // Add bottom margin
-        borderRadius: 16, // Add border radius
-    },
     name: {
         marginBottom: 15
-    },
-    birthdayInputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    birthdayInput: {
-        flex: 1,
-    },
-    birthdaySeparator: {
-        paddingHorizontal: 10,
-        fontSize: 20,
-        color: '#333',
-    },
-    signInButton: {
-        borderRadius: 6, // Add border radius
-        margin: 15,
-        marginTop: 15,
-        alignItems: 'center',
-    },
-    signInButtonStyle: {
-        backgroundColor: '#5B8F86', // Change button background color
-        borderColor: '#5B8F86', // Change button border color
-        borderWidth: 1, // Add button border width
-        borderRadius: 16, // Add button border radius
-        height: 55, // Set button height
-        width: 300,
-    },
-    signInButtonTextStyle: {
-        color: 'white', // Change text color
-        fontSize: 18,
-    },
+    }, 
     addPhotoContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -198,6 +141,22 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '600', // Semi-bold
         // textDecorationLine: 'underline',
+    },
+    petProfileContainer: {
+        width: 150,
+        height: 150,
+        marginVertical: 10,
+        borderRadius: 75,
+        overflow: 'hidden',
+    },
+    petProfileImage: {
+        flex: 1,
+        width: null,
+        height: null,
+    },
+    lastInRow: {
+        marginRight: 10, // Adjust the margin between elements in the same row
+        marginBottom: 10, // Add margin bottom to move to the next row
     },
 });
 
