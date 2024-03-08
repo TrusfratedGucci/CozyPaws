@@ -51,6 +51,13 @@ const New_Reminders = () => {
         setTime(currentTime);
     };
 
+    // Function to delete the reminder
+    const deleteReminder = () => {
+        setReminderName('');
+        setDate(null);
+        setTime(null);
+    };
+
     return (
         <View style={styles.container}>
             {/* Upper Container */}
@@ -94,6 +101,10 @@ const New_Reminders = () => {
                     {/* Create button */}
                     <TouchableOpacity style={styles.createButton} onPress={handleCreateReminder}>
                         <Text style={styles.createButtonText}>Create</Text>
+                    </TouchableOpacity>
+                    {/* Delete reminder button */}
+                    <TouchableOpacity style={styles.deleteButton} onPress={deleteReminder}>
+                        <Text style={styles.deleteButtonText}>Delete Reminder</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -187,7 +198,16 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
         fontWeight: 'bold',
-    }
+    },
+    deleteButton: {
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    deleteButtonText: {
+        color: '#FF6347',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
 
 export default New_Reminders;
