@@ -13,6 +13,7 @@ import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
 import MedicalHistory from './medical_history_feature/medical_history_screen.js';
+import CreateHistory from './medical_history_feature/create_history_screen.js';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,22 @@ const App = () => {
   return (
       <NavigationContainer>
           <Stack.Navigator>
+
+          <Stack.Screen 
+                  name="CreateHistory" 
+                  component={CreateHistory}
+                    options={({ navigation }) => ({
+                    title: '',
+                    headerTitleAlign: 'center',
+                    headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                    headerLeft: () => ( // Add custom headerLeft component
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                  <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  </View>                         
+                                </TouchableOpacity>
+                            )
+                  })} />  
 
           <Stack.Screen 
                   name="MedicalHistory" 

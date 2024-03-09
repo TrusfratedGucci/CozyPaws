@@ -78,6 +78,9 @@ const MedicalHistory = () => {
                         </View>
                     </View>
 
+                    <View>
+                    <Image source={require('../assets/Vector (1).png')} />
+                    </View>
                 </View>
             </View>
             </ScrollView>
