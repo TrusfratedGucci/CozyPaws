@@ -59,6 +59,38 @@ export const signUp = async (username, email, password) => {
     }
 };
 
+
+// Function to get token stored in AsyncStorage
+const getToken = async () => {
+    try {
+        const token = await AsyncStorage.getItem('token'); // Retrieving token using the same key used for storing it
+        return token;
+    } catch (error) {
+        console.error('Error getting token from AsyncStorage:', error);
+        throw error;
+    }
+};
+
+
+// Function to get userId from token stored in AsyncStorage
+export const getUserId = async () => {
+    try {
+        const token = await getToken();
+        if (token) {
+            // If token exists, decode it to get userId
+            const decodedToken = jwt_decode(token);
+            return decodedToken.userId;
+        } else {
+            // If token doesn't exist, return null
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting userId from token:', error);
+        throw error;
+    }
+};
+
+
 //backed call for forgotpassword
 export const forgotPassword = async (email) => {
     try {
@@ -129,4 +161,4 @@ export const resetPassword = async (token, newPassword) => {
     }
 };
 
-export default { signIn, signUp, forgotPassword, verifyVerificationCode, resetPassword };
+export default { signIn, signUp, getToken, getUserId, forgotPassword, verifyVerificationCode, resetPassword };

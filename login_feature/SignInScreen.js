@@ -8,15 +8,11 @@ import { signIn } from '../api/auth'; // Import the signUp function from api.js
 const SignInComponents = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const navigation = useNavigation();
 
-    // Function to toggle the rememberMe state
-    const toggleRememberMe = () => {
-        setRememberMe(!rememberMe);
-    };
+    
 
     // Function to handle email input change and validate email format
     const handleEmailChange = (email) => {

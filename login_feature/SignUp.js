@@ -64,7 +64,7 @@ const SignUpComponents = () => {
         }
 
         try {
-            // Call the signUp function from api.js
+            // Calling the signUp function from api.js
             const success = await signUp(username, email, password);
 
             if (success) {
@@ -72,7 +72,7 @@ const SignUpComponents = () => {
                 navigation.navigate('Congratulations');
             } else {
                 // Sign up failed
-                // Handle sign up failure, such as displaying an error message
+                // Displaying an error message
                 console.log('Sign up failed');
             }
         } catch (error) {
@@ -152,8 +152,8 @@ const SignUpComponents = () => {
                 <Button 
                     title="Sign Up"
                     onPress={handleSignUp}
-                    buttonStyle={styles.signInButtonStyle} // Apply button style
-                    titleStyle={styles.signInButtonTextStyle} // Apply text style
+                    buttonStyle={styles.signInButtonStyle} 
+                    titleStyle={styles.signInButtonTextStyle} 
                 />
             </View>
 

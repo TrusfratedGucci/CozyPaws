@@ -12,6 +12,11 @@ import VerificationCodeComponents from './login_feature/VerificationCodeScreen.j
 import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
+import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
+import PetInfoScreen from './home_feature/PetInfoScreen.js';
+import PetProfileScreen from './home_feature/PetProfileScreen.js';
+import AddPetComponents from './home_feature/AddPetProfile.js';
+
 
 const Stack = createStackNavigator();
 
@@ -153,6 +158,78 @@ const App = () => {
                           )
                 })} 
                   />
+
+
+                <Stack.Screen 
+                    name="AddPet" 
+                    component={AddPetComponents}
+                      options={({ navigation }) => ({
+                      title: 'Add Pet Profile',
+                      headerTitleAlign: 'center',
+                      headerTintColor: '#FFFFFF', 
+                      headerStyle: { backgroundColor: '#649F95' }, 
+                      headerLeft: () => ( 
+                                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <View style={styles.backButton}>
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                    </View>                         
+                                  </TouchableOpacity>
+                              )
+                    })} /> 
+
+
+          <Stack.Screen
+                name="PetProfile" 
+                component={PetProfileScreen}
+                  options={({ navigation }) => ({
+                  title: 'Pet Profile',
+                  headerTitleAlign: 'center',
+                  headerTintColor: '#FFFFFF', 
+                   headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+                  headerLeft: () => ( 
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                </View>                         
+                              </TouchableOpacity>
+                          ),
+                })}/>
+
+
+
+            <Stack.Screen
+                name="PetInfo" 
+                component={PetInfoScreen}
+                  options={({ navigation }) => ({
+                  title: '',
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: '#649F95' }, 
+                  headerLeft: () => ( 
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                </View>                         
+                              </TouchableOpacity>
+                          )
+                })}/>
+
+             <Stack.Screen 
+                    name="PetInfoForm" 
+                    component={PetInfoFormComponents}
+                      options={({ navigation }) => ({
+                      title: 'Create Pet Profile',
+                      headerTitleAlign: 'center',
+                      headerTintColor: '#FFFFFF', 
+                      headerStyle: { backgroundColor: '#649F95' }, 
+                      headerLeft: () => ( 
+                                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <View style={styles.backButton}>
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                    </View>                         
+                                  </TouchableOpacity>
+                              )
+                    })} /> 
+
           </Stack.Navigator>
       </NavigationContainer>
   );
@@ -161,15 +238,14 @@ const App = () => {
 const styles = StyleSheet.create({
 
   backButton: {
-    // Adjust padding or margin as needed
     padding: 20, // Add padding around the back button
   },
 
   petInfoBackButton: {
-    // Adjust padding or margin as needed
     padding: 20, // Add padding around the back button
     paddingBottom:120,
   },
 });
 
 export default App;
+
