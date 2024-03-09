@@ -1,110 +1,343 @@
-import React from "react";
-import { View, StyleSheet, Text } from 'react-native';
-import { Button } from "react-native-elements";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Dimensions, Modal } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faPaw } from '@fortawesome/free-solid-svg-icons';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+// import axios from 'axios';
 
-const PetInfoScreen = () => {
+const PetInfoScreen= ({ route }) => {
+    const petID = route.params.petID;
+    const navigation = useNavigation(); // Access the navigation object
+    const [petData, setPetData] = useState(null);
+    const [editModalVisible, setEditModalVisible] = useState(false);
+    const [editedPetData, setEditedPetData] = useState({});
+
+    const windowHeight = Dimensions.get('window').height;
+
+    useEffect(() => {
+        fetchPetData();
+    }, []);
+
+    const fetchPetData = async () => {
+        try {
+            const token = await getToken(); // Get the JWT token from AsyncStorage
+            const response = await axios.get(`http://localhost:3000/petProfile/pets/${petID}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the request headers
+                }
+            });
+            setPetData(response.data);
+        } catch (error) {
+            console.error('Error fetching pet data:', error);
+        }
+    };
+    
+    const handleEdit = () => {
+        setEditModalVisible(true);
+        setEditedPetData(petData);
+    };
+
+    const handleSaveEdit = async () => {
+        try {
+            const token = await getToken(); // Get the JWT token from AsyncStorage
+            const response = await axios.put(`http://localhost:3000/petProfile/pets/${petID}`, editedPetData, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the request headers
+                }
+            });
+            console.log('Edited pet data:', response.data);
+            setEditModalVisible(false);
+        } catch (error) {
+            console.error('Error editing pet data:', error);
+        }
+    };
+
     return (
-        <View style={styles.container}>
-             <View style={styles.biggerCircle}></View>
-            <View style={styles.upperContainer}></View>
-
-            <View style={styles.lowerContainer}>
-                <Text style={styles.headerText}>Pet Name</Text>
-                <View style={styles.box}>
-                <Text style = {styles.text}>Name:</Text>
-                <Text style = {styles.text}>Date of Birth:</Text>
-                <Text style = {styles.text}>Breed:</Text>
-                <Text style = {styles.text}>Color:</Text>
-                <Text style = {styles.text}>Achievements:</Text>
-                <Text style = {styles.text}>Special Features:</Text>
-                <Text style = {styles.text}>Allergies:</Text>
-                </View>
-
-                <View style={styles.buttonContainer}>
-                    <Button
-                    title="Edit"
-                    buttonStyle={styles.button}
-                    titleStyle={styles.buttonText}
-                    />
+        <ScrollView style={styles.container}>
+            <View style={styles.header}>
+                <View style={styles.profilePhotoContainer}>
+                        {petData && petData.photo ? (
+                            <Image source={{ uri: petData.photo }} style={styles.profilePhoto} />
+                        ) : (
+                            <FontAwesomeIcon icon={faPaw} style={styles.profilePhotoIcon} size={100} />
+                        )}             
                 </View>
             </View>
-        
-        </View>
+
+            <View style={[styles.body, { height: windowHeight -125 }]}>
+                <View style={styles.detailCard}>
+                    <View style={styles.name}>
+                        <View>
+                            <Text style={styles.inputTextHeader}>Name</Text>
+                        </View>
+                        <View>
+                            <Text>{petData && petData.name}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.name}>
+                        <View>
+                            <Text style={styles.inputTextHeader}>Type</Text>
+                        </View>
+                        <View>
+                            <Text>{petData && petData.type}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.name}>
+                        <View>
+                            <Text style={styles.inputTextHeader}>Breed</Text>
+                        </View>
+                        <View>
+                            <Text>{petData && petData.breed}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.name}>
+                        <View>
+                            <Text style={styles.inputTextHeader}>Gender</Text>
+                        </View>
+                        <View>
+                            <Text>{petData && petData.gender}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.name}>
+                        <View>
+                            <Text style={styles.inputTextHeader}>Date of Birth</Text>
+                        </View>
+                        <View>
+                            <Text>{petData && petData.birthday}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={handleEdit}>
+                            <Text style={styles.buttonText}>Edit</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>  
+                
+                <Modal
+                animationType="slide"
+                transparent={true}
+                visible={editModalVisible}
+                onRequestClose={() => setEditModalVisible(false)}
+            >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+
+                        <TouchableOpacity onPress={() => setEditModalVisible(false)} style={styles.closeButton}>
+                            <Text style={styles.closeButtonText}>X</Text>
+                        </TouchableOpacity>
+
+                            <Text style={styles.modalHeader}>Edit Pet Details</Text>
+                            
+                            <View  style={styles.email}>
+                                <Text style={styles.inputTextHeader}>Name</Text>   
+                                <TextInput
+                                    style={styles.modalInput}
+                                    placeholder="Name"
+                                    value={editedPetData.name}
+                                    onChangeText={(text) => setEditedPetData({ ...editedPetData, name: text })}
+                                />
+                            </View>
+                            
+                            <View style={styles.email}>
+                                <Text style={styles.inputTextHeader}>Name</Text>
+                            <TextInput
+                                style={styles.modalInput}
+                                placeholder="Type"
+                                value={editedPetData.type}
+                                onChangeText={(text) => setEditedPetData({ ...editedPetData, type: text })}
+                            />
+                            </View>
+
+                            <View style={styles.email}>
+                                <Text style={styles.inputTextHeader}>Name</Text>
+                            <TextInput
+                                style={styles.modalInput}
+                                placeholder="Breed"
+                                value={editedPetData.breed}
+                                onChangeText={(text) => setEditedPetData({ ...editedPetData, breed: text })}
+                            />
+                            </View>
+
+                            <View style={styles.email}> 
+                                <Text style={styles.inputTextHeader}>Name</Text>
+                            <TextInput
+                                style={styles.modalInput}
+                                placeholder="Gender"
+                                value={editedPetData.gender}
+                                onChangeText={(text) => setEditedPetData({ ...editedPetData, gender: text })}
+                            />
+                            </View>
+
+                            <TouchableOpacity style={styles.saveButton} onPress={handleSaveEdit}>
+                                <Text style={styles.saveButtonText}>Save</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    upperContainer: {
-        flex: 1,
         backgroundColor: '#649F95',
     },
-    lowerContainer: {
-        position: 'absolute',
-        justifyContent: 'center', // Align children vertically in the center
-        paddingHorizontal:20,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: '90%', // Adjust the height as needed
+    header: {
+        marginTop: 20,
+        marginBottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+    },
+    body: {
+        paddingTop: 115,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         backgroundColor: 'white',
-        borderTopLeftRadius: 20, // Adjust the border radius as needed
-        borderTopRightRadius: 20, // Adjust the border radius as needed
+        width: '100%',
+        padding: 20,
+        paddingBottom: 40,
+        marginTop: -110,
+        position: 'relative',
     },
-
-    text: {
-        fontSize: 16, // Adjust the font size as needed
-        lineHeight: 20, // Adjust the line height to increase the gap between lines
-        marginBottom: 10, // Adjust the margin bottom to bring text items closer to the header text
-        marginTop:10,
+    profilePhotoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 150,
+        height: 150,
+        borderRadius: 75,
+        backgroundColor: '#DEEBE9',
+        overflow: 'hidden',
+        zIndex: 1,
     },
-    
-    headerText: {
-        fontSize: 20,
-        marginBottom: 20, // Add some space between the header text and other text items
-        textAlign:'center',
-        marginLeft: 20,
-        
+    profilePhoto: {
+        width: '100%',
+        height: '100%',
     },
-
-    box:{
+    profilePhotoIcon: {
+        color: '#5B8F86',
+    },
+    inputTextHeader: {
+        fontSize: 15,
+        paddingBottom: 2,
+        marginBottom: 10,
+        marginLeft: 10,
+        fontWeight: '600', // Make the text semibold
+    },
+    inputText: {
+        height: 50,
+        borderColor: '#DEEBE9',
+        borderWidth: 1,
+        backgroundColor: '#DEEBE9',
+        paddingLeft: 10, // Add left padding
+        marginBottom: 10, // Add bottom margin
+        borderRadius: 16, // Add border radius
+    },
+    name: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+        justifyContent: 'space-between',
+    },
+    birthdayInput: {
+        flex: 1,
+    },
+    signInButton: {
+        borderRadius: 6,
+        margin: 15,
+        marginTop: 15,
+        alignItems: 'center',
+    },
+    signInButtonStyle: {
+        backgroundColor: '#5B8F86',
+        borderColor: '#5B8F86',
+        borderWidth: 1,
+        borderRadius: 16,
+        height: 55,
+        width: 300,
+    },
+    signInButtonTextStyle: {
+        color: 'white',
+        fontSize: 18,
+    },
+    addPhotoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        bottom: -10,
+        zIndex: 12,
+        alignSelf: 'center',
+    },
+    addPhotoLink: {
+        color: '#5B8F86',
+        fontSize: 15,
+        fontWeight: '600',
+    },
+    detailCard: {
         marginBottom: -20, // Add some space between the header text and other text items
         borderWidth: 2, // Border width
         borderRadius: 20, // Border radius
         borderColor:'#DEEBE9', // Border color
-        padding: 30, // Padding inside the box
+        padding: 50, // Padding inside the box
         backgroundColor: '#DEEBE9',
     },
-
-    button:{
-        backgroundColor: "white",
-        
+     buttonContainer:{
+        alignItems:'flex-end',
+        marginBottom: -20,
+        marginTop: 30,
     },
-
     buttonText:{
         color: "#649F95",
         fontWeight: 'bold',
     },
-
-    buttonContainer:{
-        marginLeft: 250,
-        marginBottom: -20,
-        marginTop: 30,
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
-
-    biggerCircle: {
-        position: 'absolute',
-        top: -15,
-        left: '27.2%',
+    modalContent: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 20,
+        width: '80%',
+    },
+    modalHeader: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    modalInput: {
+        height: 40,
+        borderColor: '#DEEBE9',
+        borderWidth: 1,
         backgroundColor: '#DEEBE9',
-        height: 180,
-        width: 180,
-        borderRadius: 90,
-        zIndex: 3, // Higher zIndex to bring it to the front
+        paddingLeft: 10,
+        marginBottom: 10,
+        borderRadius: 10,
     },
-
+    saveButton: {
+        backgroundColor: '#649F95',
+        borderRadius: 10,
+        paddingVertical: 10,
+        alignItems: 'center',
+    },
+    saveButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    email: {
+        marginBottom: 15
+    }, 
+    closeButtonText: {
+        fontSize: '3vw', // Adjust the font size relative to the viewport width
+        fontWeight: 'bold',
+        color: 'black',
+    }
 });
 
 export default PetInfoScreen;

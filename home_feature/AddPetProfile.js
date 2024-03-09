@@ -1,41 +1,33 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
-import { Button } from 'react-native-elements';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCirclePlus} from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
+
 
 const AddPetComponents = () => {
     const [petData, setPetData] = useState([]);
     const navigation = useNavigation();
 
+    useEffect(() => {
+        fetchPetData();
+    }, []);
 
-    
-
-    const handleContinue = () => {
-        // Navigate to PetInfoForm
-        navigation.navigate('PetInfoForm');
-    };
-
-    
     const fetchPetData = async () => {
         try {
-            // Make a network request to your backend API to fetch pet data
-            const response = await axios.get('http://localhost:3000/petProfile/pets/:id');
-            setPetData(response.data); // Update the state with the fetched pet data
+            const response = await axios.get('http://localhost:3000/petProfile/pets');
+            setPetData(response.data);
         } catch (error) {
             console.error('Error fetching pet data:', error);
         }
     };
-    
 
-    const handlePetProfileClick = (petId) => {
-        // Navigate to the pet profile screen with the corresponding pet ID
-        navigation.navigate('PetProfile', { petId });
+    const handleContinue = () => {
+        navigation.navigate('PetInfoForm');
     };
     
+    const windowHeight = Dimensions.get('window').height;
 
     return (
         <ScrollView style={styles.container}>
@@ -61,19 +53,32 @@ const AddPetComponents = () => {
             
 
 
-            <View style={styles.body}>
-                {petData.map((pet, index) => (
-                    <TouchableOpacity
-                        key={pet.id}
-                        style={[styles.petProfileContainer, (index + 1) % 2 === 0 ? styles.lastInRow : null]}
-                        onPress={() => handlePetProfileClick(pet.id)}>
-                        <Image
-                            source={{ uri: pet.photo }} // Assuming photo is a URL
-                            style={styles.petProfileImage}
-                            resizeMode="cover"
-                        />
+            <View style={[styles.body, { height: windowHeight -125 }]}>
+                <View style={styles.profileListContainer}>
+                    {petData.map((pet, index) => (
+                        <TouchableOpacity
+                        key={pet._id}
+                        style={[
+                            index % 2 === 1 ? styles.lastInRow : null, // Check if index is odd
+                        ]}
+                        onPress= {() =>
+                            navigation.navigate('PetProfile', {
+                                petId: pet._id,
+                            })
+                          }>
+                            <View style={styles.petProfileContainer}> 
+                                <Image
+                                    source={{ uri: pet.photo }}
+                                    style={styles.petProfileImage}
+                                    resizeMode="cover"
+                                />
+                            </View>
+                            <Text style={styles.petName}>{pet.name}</Text>                       
                     </TouchableOpacity>
-                ))}
+                    
+                    ))}
+                </View>
+                
             </View>
 
         </ScrollView>
@@ -142,18 +147,32 @@ const styles = StyleSheet.create({
         fontWeight: '600', // Semi-bold
         // textDecorationLine: 'underline',
     },
+    profileListContainer: {
+        flexDirection: 'row', // Display pet profiles in a row
+        flexWrap: 'wrap', // Allow profiles to wrap to the next row
+        justifyContent: 'space-between', // Distribute profiles evenly
+        paddingBottom:900,
+    },
     petProfileContainer: {
         width: 150,
         height: 150,
         marginVertical: 10,
         borderRadius: 75,
         overflow: 'hidden',
+        justifyContent: 'flex-end', // Align items at the bottom
     },
     petProfileImage: {
         flex: 1,
         width: null,
         height: null,
     },
+    petName: {
+        textAlign: 'center', // Center the name horizontally
+        fontSize: 15,
+        fontWeight: '600', // Semi-bold
+        color: '#5B8F86', // Customize the color of the name
+    },
+    
     lastInRow: {
         marginRight: 10, // Adjust the margin between elements in the same row
         marginBottom: 10, // Add margin bottom to move to the next row

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-elements';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import axios from 'axios';
+// import axios from 'axios';
 
 const PetInfoFormComponents = () => {
     const [petPhoto, setPetPhoto] = useState(null);
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         paddingBottom: 2,
         marginBottom: 10,
         marginLeft: 10,
-        fontWeight: 'bold',
+        fontWeight: '600',
     },
     inputText: {
         height: 50,

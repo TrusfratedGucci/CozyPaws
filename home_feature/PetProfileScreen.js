@@ -1,366 +1,373 @@
-import React from "react";
-import { View, StyleSheet, Text, ScrollView, Image } from 'react-native';
-import { Button } from "react-native-elements";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
+import { Button } from 'react-native-elements';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faPaw } from '@fortawesome/free-solid-svg-icons';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 
-const PetProfileScreen = () => {
+
+const PetProfile = ({ route }) => {
+    const petID = route.params.petId;
+    const navigation = useNavigation(); // Access the navigation object
+    const [petData, setPetData] = useState(null);
+    
+
+
+    useEffect(() => {
+        fetchPetData();
+    }, []);
+
+    const fetchPetData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/petProfile/pets/${petID}`);
+            setPetData(response.data);
+        } catch (error) {
+            console.error('Error fetching pet data:', error);
+        }
+    };   
+
+    const handleContinue = () => {
+        // Navigate to PetInfoScreen with the petId parameter
+        navigation.navigate('PetInfoScreen', { petID: petID });
+    };
+
+    const continueToMedical = (petID) => {
+        // Navigate to Medical History
+        navigation.navigate('Medical', { petId: petID });
+    };
+
+    const continueToVaccines = (petID) => {
+        // Navigate to Vaccine History
+        navigation.navigate('VaccineList', { petId: petID });
+    };
+
+    const continueToHeatCycle = (petID) => {
+        // Navigate to Heat Cycle
+        navigation.navigate('HeatCycle', { petId: petID });
+    };
+
+    const continueToReminder = (petID) => {
+        // Navigate to Reminder
+        navigation.navigate('Reminder', { petId: petID });
+    };
+
+    const continueToFirstAid = () => {
+        // Navigate to First Aid
+        navigation.navigate('FirstAidTips');
+    };
+
+    const continueToTraining = () => {
+        // Navigate to Training
+        navigation.navigate('TrainingTips');
+    };
+
+    const continueToGoWithPet = () => {
+        // Navigate to Training
+        navigation.navigate('GoWithPet');
+    };
+    
+
     return (
-        <View style={styles.container}>
-            <View style={styles.upperContainer}></View>
+        <ScrollView style={styles.container}>
+            <View style={styles.header}>
+                <View style={styles.addprofileContainer}>
+                    {/* TouchableOpacity to navigate to pet profile details */}
+                    <TouchableOpacity onPress={handleContinue}>
+                        {petData && petData.photo ? (
+                            <Image source={{ uri: petData.photo }} style={styles.profilePhoto} />
+                        ) : (
+                            <FontAwesomeIcon icon={faPaw} style={styles.profilePhotoIcon} size={100} />
+                        )}
+                    </TouchableOpacity>
 
-            <ScrollView style={styles.lowerContainer}>
-                <View style={styles.firstSpace}></View>
-                <View style={styles.buttonContainer}>
-                    <Image 
-                        source={require('../assets/medical_history.png')}
-                        style={styles.medicalIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                        title={
-                        <View style={styles.buttonTitle}>
-                            <Text style={styles.firstLine}>Medical</Text>
-                            <Text style={styles.secondLine}>History</Text>
-                            <Image 
-                                    source={require('../assets/medical_history.png')} 
-                                    style={styles.medicalIcon2} // Apply the icon styles
-                                />
-                        </View>
+                </View>
+
+
+                <View style={styles.addPhotoContainer}> 
+                    <TouchableOpacity onPress={handleContinue} >
+                        {/* Text link to  profile */}
+                        <Text style={styles.addPhotoLink}>{petData && petData.name}</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            
+
+
+            <View style={styles.body}>
+
+                <View style={styles.profileButtons}>
+                    <Button
+                        title= {
+                                <View style={styles.buttonInside}>
+                                    <View style={styles.profileButtonTextContainer}>
+                                        <Text style={styles.profileButtonTextStyle}>Medical History</Text>
+                                    </View>
+                                    
+                                    <View style={styles.profileButtonImageContainer}>
+                                        <Image 
+                                                source={require('../assets/medicalHistory.png')} 
+                                                style={styles.buttonImage} // Apply the icon styles
+                                            />
+                                    </View>
+                                    
+                                </View>
                         }
-                        buttonStyle={styles.button}
-                    />
-                </View>
-                <View style={styles.space}></View>
-                <View style={styles.buttonContainer}>
-                    <Image 
-                            source={require('../assets/vaccination_record.png')}
-                            style={styles.vaccinationIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                            title={
-                            <View style={styles.buttonTitle}>
-                                <Text style={styles.firstLine}>Vaccination</Text>
-                                <Text style={styles.secondLine}>Records</Text>
-                                <Image 
-                                        source={require('../assets/vaccination_record.png')} 
-                                        style={styles.vaccinationIcon2} // Apply the icon styles
-                                    />
+                        onPress={continueToMedical}
+                        buttonStyle={styles.profileButtonStyle} // Apply button style
+                        >  
+                    </Button>
+
+                    <Button
+                            title= {
+                                <View style={styles.buttonInside}>
+                                <View style={styles.profileButtonTextContainer}>
+                                    <Text style={styles.profileButtonTextStyle}>Vaccination History</Text>
+                                </View>
+                                
+                                <View style={styles.profileButtonImageContainer}>
+                                    <Image 
+                                            source={require('../assets/veterinarian.png')} 
+                                            style={styles.buttonImage} // Apply the icon styles
+                                        />
+                                </View>
+                                
                             </View>
-                            }
-                            buttonStyle={styles.button}
-                    />
-                </View>
-                <View style={styles.space}></View>
-                <View style={styles.buttonContainer}>
-                <Image 
-                            source={require('../assets/litter_info.png')}
-                            style={styles.litterIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                            title={
-                            <View style={styles.buttonTitle}>
-                                <Text style={styles.firstLine}>Litter</Text>
-                                <Text style={styles.secondLine}>Information</Text>
-                                <Image 
-                                        source={require('../assets/litter_info.png')} 
-                                        style={styles.litterIcon2} // Apply the icon styles
-                                    />
+                        }
+                        onPress={continueToVaccines}
+                        buttonStyle={styles.profileButtonStyle} // Apply button style
+                        >  
+                    </Button>
+
+                    <Button
+                            title= {
+                                <View style={styles.buttonInside}>
+                                <View style={styles.profileButtonTextContainer}>
+                                    <Text style={styles.profileButtonTextStyle}>Pet Heat Cycle Tracker</Text>
+                                </View>
+                                
+                                <View style={styles.profileButtonImageContainer}>
+                                    <Image 
+                                            source={require('../assets/heat.png')} 
+                                            style={styles.buttonImage} // Apply the icon styles
+                                        />
+                                </View>
+                                
                             </View>
-                            }
-                            buttonStyle={styles.button}
-                    />
-                </View>
-                <View style={styles.space}></View>
-                <View style={styles.buttonContainer}>
-                <Image 
-                            source={require('../assets/heat.png')}
-                            style={styles.heatIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                            title={
-                            <View style={styles.buttonTitle}>
-                                <Text style={styles.firstLine}>Pet Heat</Text>
-                                <Text style={styles.secondLine}>Tracker</Text>
-                                <Image 
-                                        source={require('../assets/heat.png')} 
-                                        style={styles.heatIcon2} // Apply the icon styles
-                                    />
+                        }
+                        onPress={continueToHeatCycle}
+                        buttonStyle={styles.profileButtonStyle} // Apply button style
+                        >  
+                    </Button>
+
+                    <Button
+                            title= {
+                                <View style={styles.buttonInside}>
+                                <View style={styles.profileButtonTextContainer}>
+                                    <Text style={styles.profileButtonTextStyle}>Reminders</Text>
+                                </View>
+                                
+                                <View style={styles.profileButtonImageContainer}>
+                                    <Image 
+                                            source={require('../assets/calendar.png')} 
+                                            style={styles.buttonImage} // Apply the icon styles
+                                        />
+                                </View>
+                                
                             </View>
-                            }
-                            buttonStyle={styles.button}
-                    />
-                </View>
-                <View style={styles.space}></View>
-                <View style={styles.buttonContainer}>
-                <Image 
-                            source={require('../assets/reminders.png')}
-                            style={styles.reminderIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                            title={
-                            <View style={styles.buttonTitle}>
-                                <Text style={styles.firstLine}>Reminders</Text>
-                                <Image 
-                                        source={require('../assets/reminders.png')} 
-                                        style={styles.reminderIcon2} // Apply the icon styles
-                                    />
+                        }
+                        onPress={continueToReminder}
+                        buttonStyle={styles.profileButtonStyle} // Apply button style
+                        >  
+                    </Button>
+
+                    <Button
+                            title= {
+                                <View style={styles.buttonInside}>
+                                <View style={styles.profileButtonTextContainer}>
+                                    <Text style={styles.profileButtonTextStyle}>First Aid Tips</Text>
+                                </View>
+                                
+                                <View style={styles.profileButtonImageContainer}>
+                                    <Image 
+                                            source={require('../assets/firstAid.png')} 
+                                            style={styles.buttonImage} // Apply the icon styles
+                                        />
+                                </View>
+                                
                             </View>
-                            }
-                            buttonStyle={[styles.button, {paddingTop: 25}]}
-                    />
-                </View>
-                <View style={styles.space}></View>
-                <View style={styles.buttonContainer}>
-                <Image 
-                            source={require('../assets/firstaid.png')}
-                            style={styles.firstaidIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                            title={
-                            <View style={styles.buttonTitle}>
-                                <Text style={styles.firstLine}>First Aid</Text>
-                                <Text style={styles.secondLine}>Tips</Text>
-                                <Image 
-                                        source={require('../assets/firstaid.png')} 
-                                        style={styles.firstaidIcon2} // Apply the icon styles
-                                    />
+                        }
+                        onPress={continueToFirstAid}
+                        buttonStyle={styles.profileButtonStyle} // Apply button style
+                        >  
+                    </Button>
+
+                    <Button
+                            title= {
+                                <View style={styles.buttonInside}>
+                                <View style={styles.profileButtonTextContainer}>
+                                    <Text style={styles.profileButtonTextStyle}>Training Tips</Text>
+                                </View>
+                                
+                                <View style={styles.profileButtonImageContainer}>
+                                    <Image 
+                                            source={require('../assets/medal.png')} 
+                                            style={styles.buttonImage} // Apply the icon styles
+                                        />
+                                </View>
+                                
                             </View>
-                            }
-                            buttonStyle={styles.button}
-                    />
-                </View>
-                <View style={styles.space}></View>
-                <View style={styles.buttonContainer}>
-                <Image 
-                            source={require('../assets/training.png')}
-                            style={styles.trainingIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                            title={
-                            <View style={styles.buttonTitle}>
-                                <Text style={styles.firstLine}>Training</Text>
-                                <Text style={styles.secondLine}>Tips</Text>
-                                <Image 
-                                        source={require('../assets/training.png')} 
-                                        style={styles.trainingIcon2} // Apply the icon styles
-                                    />
+                        }
+                        onPress={continueToTraining}
+                        buttonStyle={styles.profileButtonStyle} // Apply button style
+                        >  
+                    </Button>
+
+                    <Button
+                            title= {
+                                <View style={styles.buttonInside}>
+                                <View style={styles.profileButtonTextContainer}>
+                                    <Text style={styles.profileButtonTextStyle}>Go with Pet</Text>
+                                </View>
+                                
+                                <View style={styles.profileButtonImageContainer}>
+                                    <Image 
+                                            source={require('../assets/hippies.png')} 
+                                            style={styles.buttonImage} // Apply the icon styles
+                                        />
+                                </View>
+                                
                             </View>
-                            }
-                            buttonStyle={styles.button}
-                    />
+                        }
+                        onPress={continueToGoWithPet}
+                        buttonStyle={styles.profileButtonStyle} // Apply button style
+                        >  
+                    </Button>
                 </View>
-                <View style={styles.space}></View>
-                <View style={styles.buttonContainer}>
-                <Image 
-                            source={require('../assets/travel.png')}
-                            style={styles.travelIcon1} // Apply the icon styles
-                    />
-                    <Button 
-                            title={
-                            <View style={styles.buttonTitle}>
-                                <Text style={styles.firstLine}>Travel</Text>
-                                <Text style={styles.secondLine}>Planner</Text>
-                                <Image 
-                                        source={require('../assets/travel.png')} 
-                                        style={styles.travelIcon2} // Apply the icon styles
-                                    />
-                            </View>
-                            }
-                            buttonStyle={styles.button}
-                    />
-                    <View style={styles.lastSpace}></View>
-                </View>
-            </ScrollView>
-        </View>
+                
+            </View>
+
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    upperContainer: {
-        flex: 1,
         backgroundColor: '#649F95',
+        // padding: 20,
     },
-    lowerContainer: {
-        position: 'absolute',
-        paddingHorizontal:20,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: '94%', // Adjust the height as needed
-        backgroundColor: 'white',
+    header: {
+        marginTop: 20,
+        marginBottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative', // Make the header position relative
+    },
+    headerText: {
+        fontSize: 24,
+        color: 'black',
+        fontWeight: 'bold',
+    },
+    body: {
+        paddingTop: 115,
         borderTopLeftRadius: 20, // Adjust the border radius as needed
         borderTopRightRadius: 20, // Adjust the border radius as needed
+        backgroundColor: 'white',
+        width: '100%', // Make the width equal to the device width
+        padding: 20,
+        paddingBottom: 40,
+        marginTop: -110, // Adjust the top margin to overlap with the profile picture container
+        position: 'relative', // Make the body position relative
     },
-
-    buttonContainer: {
-        marginVertical: 10, // Adjust vertical spacing between buttons
-        marginHorizontal: 15,
+    addprofileContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 150,
+        height: 150,
+        borderRadius: 75,
+        backgroundColor: '#DEEBE9', // Light gray background when no image selected
+        overflow: 'hidden', // Ensure the image is clipped to the border radius
+        zIndex: 1, // Ensure the profile picture container is above the body
     },
-
-    button: {
-        alignSelf: 'center',
-        borderRadius: 20,
-        height: 90, 
-        width: 280,
-        backgroundColor: '#649F95',
-        justifyContent: 'flex-start', // Align button content to the left
-        alignItems: 'flex-start', // Align button content to the left
-        paddingLeft: 25,
-        paddingTop: 15,
+    profilePhoto: {
+        width: '100%',
+        height: '100%',
     },
-
-    space: {
-        height: 10, // Adjust height of space between buttons
+    profilePhotoIcon: {
+        color: '#5B8F86', // Placeholder icon color
     },
-
-    firstSpace: {
-        height: 39,
+    profileButtons: {
+        borderRadius: 6, // Add border radius
+        margin: 15,
+        marginTop: 15,
+        // alignItems: 'center',
     },
-
-    lastSpace: {
-        height: 35,
+    profileButtonStyle: {
+        backgroundColor: '#5B8F86', // Change button background color
+        borderColor: '#5B8F86', // Change button border color
+        borderWidth: 1, // Add button border width
+        borderRadius: 16, // Add button border radius
+        height: 100, // Set button height
+        marginVertical: 15,
+        
+        // width: 300,
     },
-
-    firstLine: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 23,
+    profileButtonTextStyle: {
+        color: 'white', // Change text color
+        fontSize: 20,  
     },
-
-    secondLine: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 17,
-
+    buttonInside: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 15,
+        width: '100%', // Ensure the button takes the full width
     },
-
-    medicalIcon1: {
-        position: 'absolute',
-        left: 135, // Adjust the distance of the icon from the right side
-        width: 185,
-        height: 185,
-        top: -71.8,
+    profileButtonTextContainer: {
+        flex: 1, // Take remaining space
+        marginRight: 10, // Add some space between text and image
     },
-
-    medicalIcon2: {
-        position: 'absolute',
-        left: 105, // Adjust the distance of the icon from the right side
-        width: 185,
-        height: 185,
-        top: -88,
+    profileButtonImageContainer: {
+        // No need for any styles here
     },
-
-    vaccinationIcon1: {
-        position: 'absolute',
-        left: 174, // Adjust the distance of the icon from the right side
-        width: 143,
-        height: 130,
-        top: -41.5,
+    buttonImage: {
+        width: 70,
+        height: 70,
+    },    
+    name: {
+        marginBottom: 15
+    }, 
+    addPhotoContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        bottom: -10,
+        zIndex: 12, // Ensure it's above the profile photo container
+        alignSelf: 'center', // Align it to the center horizontally
     },
-
-    vaccinationIcon2: {
-        position: 'absolute',
-        left: 145, // Adjust the distance of the icon from the right side
-        width: 143,
-        height: 130,
-        top: -56,
+    addPhotoLink: {
+        color: '#5B8F86', // Change text color
+        fontSize: 15,
+        fontWeight: '600', // Semi-bold
+        // textDecorationLine: 'underline',
     },
-    litterIcon1: {
-        position: 'absolute',
-        left: 200, // Adjust the distance of the icon from the right side
-        width: 100,
-        height: 100,
-        top: -14.5,
+    petProfileContainer: {
+        width: 150,
+        height: 150,
+        marginVertical: 10,
+        borderRadius: 75,
+        overflow: 'hidden',
     },
-
-    litterIcon2: {
-        position: 'absolute',
-        left: 170, // Adjust the distance of the icon from the right side
-        width: 100,
-        height: 100,
-        top: -30,
+    petProfileImage: {
+        flex: 1,
+        width: null,
+        height: null,
     },
-
-    heatIcon1: {
-        position: 'absolute',
-        left: 200, // Adjust the distance of the icon from the right side
-        width: 110,
-        height: 100,
-        top: -10.5,
-    },
-
-    heatIcon2: {
-        position: 'absolute',
-        left: 170, // Adjust the distance of the icon from the right side
-        width: 110,
-        height: 100,
-        top: -25,
-    },
-
-    reminderIcon1: {
-        position: 'absolute',
-        left: 190, // Adjust the distance of the icon from the right side
-        width: 120,
-        height: 120,
-        top: -25.5,
-    },
-
-    reminderIcon2: {
-        position: 'absolute',
-        left: 160, // Adjust the distance of the icon from the right side
-        width: 120,
-        height: 120,
-        top: -50,
-    },
-
-    firstaidIcon1: {
-        position: 'absolute',
-        left: 200, // Adjust the distance of the icon from the right side
-        width: 90,
-        height: 100,
-        top: -15.5,
-    },
-
-    firstaidIcon2: {
-        position: 'absolute',
-        left: 170, // Adjust the distance of the icon from the right side
-        width: 90,
-        height: 100,
-        top: -30,
-    },
-
-    trainingIcon1: {
-        position: 'absolute',
-        left: 185, // Adjust the distance of the icon from the right side
-        width: 120,
-        height: 90,
-        top: -4,
-    },
-
-    trainingIcon2: {
-        position: 'absolute',
-        left: 155, // Adjust the distance of the icon from the right side
-        width: 120,
-        height: 90,
-        top: -20,
-    },
-
-    travelIcon1: {
-        position: 'absolute',
-        left: 200, // Adjust the distance of the icon from the right side
-        width: 105,
-        height: 100,
-        top: -22,
-    },
-
-    travelIcon2: {
-        position: 'absolute',
-        left: 170, // Adjust the distance of the icon from the right side
-        width: 105,
-        height: 115,
-        top: -45,
+    lastInRow: {
+        marginRight: 10, // Adjust the margin between elements in the same row
+        marginBottom: 10, // Add margin bottom to move to the next row
     },
 });
 
-export default PetProfileScreen;
+export default PetProfile;

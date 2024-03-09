@@ -24,7 +24,7 @@ const App = () => {
       <NavigationContainer>
           <Stack.Navigator>
 
-          <Stack.Screen 
+                <Stack.Screen 
                     name="AddPet" 
                     component={AddPetComponents}
                       options={({ navigation }) => ({
@@ -46,21 +46,16 @@ const App = () => {
                 name="PetProfile" 
                 component={PetProfileScreen}
                   options={({ navigation }) => ({
-                  title: '',
+                  title: 'Pet Profile',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                  headerTintColor: '#FFFFFF', // Change the text color of the header title
+                   headerStyle: { backgroundColor: '#649F95',height: 100,}, // Set the background color of the header // Align the title to the center
                   headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
                                 <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                 </View>                         
                               </TouchableOpacity>
-                          ),
-                  headerTitle: () => (
-                            <View>
-                              <Image source={require('./assets/chubby.jpg')} style={styles.profilePic} />
-                              <Text style = {styles.headerText}>Pet Name</Text>
-                            </View>
                           ),
                 })}/>
 
