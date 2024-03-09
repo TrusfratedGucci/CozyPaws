@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Image } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
+import { verifyVerificationCode } from '../api/auth'; // Import the verifyVerificationCode function from your API file
 
 const VerificationCodeComponents = () => {
     const navigation = useNavigation();
@@ -42,6 +43,23 @@ const VerificationCodeComponents = () => {
         setIsFocused(false); // Set isFocused state to false when input loses focus
     };
 
+
+     // Function to verify the verification code
+     const verifyCode = async () => {
+        try {
+            const isVerified = await verifyVerificationCode(verificationCode);
+            if (isVerified) {
+                navigation.navigate('NewPasswordScreen');
+            } else {
+                // Handle verification failure
+                console.log('Verification failed');
+            }
+        } catch (error) {
+            // Handle error
+            console.error('Error verifying code:', error);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -72,10 +90,14 @@ const VerificationCodeComponents = () => {
                     ))}
                 </View>
 
+                <View style={styles.imageContainer}>
+                    <Image source={require('../assets/protection.png')} style={styles.imageStyle} />
+                </View>
+
                 <View style={styles.continueButton}>
                     <Button 
                         title="Verify"
-                        onPress={() => navigation.navigate('NewPasswordScreen')}
+                        onPress= {verifyCode}
                         buttonStyle={styles.verifyButtonStyle}
                         titleStyle={styles.verifyButtonTextStyle}
                     />
@@ -120,7 +142,8 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Align input boxes vertically in the container
     },
     inputWrapper: {
-        borderBottomWidth: 1,
+        borderBottomWidth: 2,
+        borderRadius: 2,
         borderBottomColor: '#CBCBCB',
         width: 50,
         marginHorizontal: 5,
@@ -130,24 +153,37 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         textAlign: 'center',
         fontSize: 35,
-        color: '#FF8D4D',
+        color: '#5B8F86',
     },
     focusedWrapper: {
         borderBottomColor: '#68A69B', // Change color when focused
     },
     continueButton: {
-        marginTop: 45,
+        borderRadius: 6, // Add border radius
+        margin: 15,
+        marginTop: 60,
         alignItems: 'center',
     },
     verifyButtonStyle: {
-        backgroundColor: '#68A69B',
-        borderRadius: 16,
-        height: 55,
+        backgroundColor: '#5B8F86', // Change button background color
+        borderColor: '#5B8F86', // Change button border color
+        borderWidth: 1, // Add button border width
+        borderRadius: 16, // Add button border radius
+        height: 55, // Set button height
         width: 300,
     },
     verifyButtonTextStyle: {
         color: 'white',
         fontSize: 18,
+    },
+    imageContainer: {
+        alignItems: 'center',
+        // padding: 20,
+        marginTop: 60,
+    },
+    imageStyle: {
+        width: 150, // Adjust width as needed
+        height: 150, // Adjust height as needed
     },
 });
 

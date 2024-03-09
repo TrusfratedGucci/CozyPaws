@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
+import { signIn } from '../api/auth'; // Import the signUp function from api.js
+
 
 const SignInComponents = () => {
     const [email, setEmail] = useState('');
@@ -42,14 +44,25 @@ const SignInComponents = () => {
 
 
     // Function to handle sign-in button press
-    const handleSignIn = () => {
+    const handleSignIn = async () => {
         if (!email || !password) {
             setEmailError(email ? '' : 'Required field');
             setPasswordError(password ? '' : 'Required field');
             return;
         }
-        // Add logic for signing in with email and password
+
+        // Call the signIn function from the api.js file
+        const success = await signIn(email, password);
+
+        if (success) {
+            // Navigate to the next screen if sign-in was successful
+            navigation.navigate('Home');
+        } else {
+            // Display error message to the user
+            console.log('Sign in failed');
+        }
     };
+
 
     return (
         <View style={styles.container}>
@@ -69,7 +82,10 @@ const SignInComponents = () => {
                         value={email}
                         onChangeText={handleEmailChange}
                     />
-                    {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+                    <View style={styles.errorBox}>
+                        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+                    </View>
+                    
                 </View>
 
                 <View style={styles.email}>
@@ -82,55 +98,53 @@ const SignInComponents = () => {
                         value={password}
                         onChangeText={handlePasswordChange}
                     />
-                    {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                    <View style={styles.errorBox}>
+                        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                    </View>
+                    
                 </View>
             
                 <View style={styles.rememberMeContainer}>
                     {/* Remember Me toggle */}
-                    <TouchableOpacity onPress={toggleRememberMe} style={styles.rememberMeTouchable}>
+                    {/* <TouchableOpacity onPress={toggleRememberMe} style={styles.rememberMeTouchable}>
                         <View style={[styles.checkbox, rememberMe && styles.checked]}>
                             {rememberMe && <Text>X</Text>}
                         </View>
                         <Text>Remember Me</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     
                     {/* Forgot Password link */}
                     <TouchableOpacity onPress={() => navigation.navigate('VerificationEmail')}>
                         <Text style={[styles.forgotPassword, {marginTop:0}]}>Forgot Password?</Text>
                     </TouchableOpacity>
                 </View>
-                
-                <View style={styles.signInButton}>
-                    {/* Sign In button */}
-                    <Button 
-                        title="Sign In"
-                        onPress={handleSignIn} // Call handleSignIn function when pressed
-                        buttonStyle={styles.signInButtonStyle} // Apply button style
-                        titleStyle={styles.signInButtonTextStyle} // Apply text style
-                    />
+
+                <View style={styles.imageContainer}>
+                    <Image source={require('../assets/cat.png')} style={styles.imageStyle} />
                 </View>
 
-                <View style={styles.socialMediaContainer}>
-                    {/* Facebook sign-up option */}
-                    <TouchableOpacity style={[styles.socialMediaButton, styles.facebookButton]}>
-                        <Image source={require('../assets/facebook_logo.png')} style={styles.socialMediaButtonIconFacebook} />
-                    </TouchableOpacity>
+                <View style={styles.lowerPart}>
+                    <View style={styles.signInButton}>
+                        {/* Sign In button */}
+                        <Button 
+                            title="Sign In"
+                            onPress={handleSignIn} // Call handleSignIn function when pressed
+                            buttonStyle={styles.signInButtonStyle} // Apply button style
+                            titleStyle={styles.signInButtonTextStyle} // Apply text style
+                        />
+                    </View>
 
-                    {/* Google sign-up option */}
-                    <TouchableOpacity style={[styles.socialMediaButton, styles.googleButton]}>
-                        <Image source={require('../assets/google_logo.png')} style={styles.socialMediaButtonIcon} />
-                    </TouchableOpacity>
-                </View>
+                    <View style={styles.signUpTextContainer}>
+                        <Text style={styles.signUpText}>Don't have an account?</Text>
 
-
-                <View style={styles.signUpTextContainer}>
-                    <Text style={styles.signUpText}>Don't have an account?</Text>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                            <Text style={styles.signUpLink}>Sign Up</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                                <Text style={styles.signUpLink}>Sign Up</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
+                
+                
 
         </View>
     );
@@ -148,6 +162,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Align center horizontally
     },
     body: {
+        // marginTop: 15,
         marginTop: 15,
     },
     headerText: {
@@ -175,12 +190,14 @@ const styles = StyleSheet.create({
     errorInput: {
         borderColor: 'red', // Change border color to red for error
     },
+    errorBox: {
+        alignItems:'flex-end',
+    },
     errorText: {
         color: 'red',
         fontSize: 12,
         marginLeft: 10,
-        marginTop: -5,
-        marginBottom: 8, // Add bottom margin
+        marginTop: -10,       
     },
     email: {
         marginBottom: 15,
@@ -189,7 +206,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        margin: 20,
+        margin: 5,
         fontSize: 15,
         flexWrap: 'wrap', // Allow items to wrap to the next line if needed
         marginTop: -2,
@@ -260,6 +277,19 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         color: '#305C55',
         
+    },
+    lowerPart: {
+        marginTop: 10,
+    },
+    imageContainer: {
+        alignItems: 'center',
+        // padding: 20,
+        marginTop: 20,
+        // marginBottom:10,
+    },
+    imageStyle: {
+        width: 150, // Adjust width as needed
+        height: 150, // Adjust height as needed
     },
 });
 

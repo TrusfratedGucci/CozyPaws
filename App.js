@@ -18,7 +18,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
       <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator initialRouteName="StartScreen">
 
           <Stack.Screen 
                   name="StartScreen" 
@@ -37,9 +37,9 @@ const App = () => {
                   options={({ navigation }) => ({
                   title: 'Congratulations',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerStyle: { backgroundColor: 'white' }, 
                   headerShown: false,
-                  headerLeft: () => ( // Add custom headerLeft component
+                  headerLeft: () => ( // Custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
                                   <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
@@ -55,9 +55,9 @@ const App = () => {
                     options={({ navigation }) => ({
                     title: 'VerificationEmail',
                     headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                    headerStyle: { backgroundColor: 'white' }, 
                     headerShown: false,
-                    headerLeft: () => ( // Add custom headerLeft component
+                    headerLeft: () => ( // Custom headerLeft component
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                   <View style={styles.backButton}>
                                   <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
@@ -72,9 +72,9 @@ const App = () => {
                       options={({ navigation }) => ({
                       title: 'SignUp',
                       headerTitleAlign: 'center',
-                      headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                      headerStyle: { backgroundColor: 'white' },
                       headerShown: false,
-                      headerLeft: () => ( // Add custom headerLeft component
+                      headerLeft: () => ( // Custom headerLeft component
                                   <TouchableOpacity onPress={() => navigation.goBack()}>
                                     <View style={styles.backButton}>
                                     <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
@@ -91,9 +91,9 @@ const App = () => {
                   options={({ navigation }) => ({
                   title: 'VerificationCode',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerStyle: { backgroundColor: 'white' }, 
                   headerShown: false,
-                  headerLeft: () => ( // Add custom headerLeft component
+                  headerLeft: () => ( // Custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
                                 <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
@@ -108,9 +108,9 @@ const App = () => {
                   options={({ navigation }) => ({
                   title: 'PasswordChangedSuccess',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerStyle: { backgroundColor: 'white' }, 
                   headerShown: false,
-                  headerLeft: () => ( // Add custom headerLeft component
+                  headerLeft: () => ( // Custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
                                   <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
@@ -125,9 +125,9 @@ const App = () => {
                   options={({ navigation }) => ({
                   title: 'NewPasswordScreen',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerStyle: { backgroundColor: 'white' }, 
                   headerShown: false,
-                  headerLeft: () => ( // Add custom headerLeft component
+                  headerLeft: () => ( // Custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
                                   <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
@@ -142,20 +142,17 @@ const App = () => {
                   options={({ navigation }) => ({
                   title: 'SignIn',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerStyle: { backgroundColor: 'white' }, 
                   headerShown: false,
-                  headerLeft: () => ( // Add custom headerLeft component
+                  headerLeft: () => ( // Custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
                                   <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
                                 </View>                         
                               </TouchableOpacity>
                           )
-                })} // Specify the custom header title here
+                })} 
                   />
-
-                {/* You need to import ForgotPassword component */}
-                {/* <Stack.Screen name="ForgotPassword" component={ForgotPassword} /> */}
           </Stack.Navigator>
       </NavigationContainer>
   );
