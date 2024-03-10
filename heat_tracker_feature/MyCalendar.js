@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 
 const MyCalendar = ({ onSelectDate }) => {
+  const [markedDates, setMarkedDates] = useState({});
+  const [selectedDate, setSelectedDate] = useState('');
+
+  const handleDayPress = (day) => {
+    const updatedMarkedDates = { ...markedDates, [day.dateString]: { selected: true, marked: true, selectedColor: 'red' } };
+    setMarkedDates(updatedMarkedDates);
+    setSelectedDate(day.dateString); // Update selected date state
+    onSelectDate(day.dateString); // Call parent function to handle selected date
+  };
+
   return (
     <View style={styles.container}>
       <Calendar
         style={styles.calendar}
-        onDayPress={onSelectDate}
-        markedDates={{
-          '2022-03-15': { selected: true, marked: true, selectedColor: 'blue' },
-        }}
+        onDayPress={handleDayPress} // Pass handleDayPress function
+        markedDates={markedDates} // Pass all marked dates
       />
     </View>
   );
