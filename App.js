@@ -17,7 +17,7 @@ import PetInfoScreen from './home_feature/PetInfoScreen.js';
 import PetProfileScreen from './home_feature/PetProfileScreen.js';
 import AddPetComponents from './home_feature/AddPetProfile.js';
 import Vaccines from './vaccination_feature/VaccineListScreen.js';
-
+import Reminders from './reminder_feature/reminder.js';
 
 const Stack = createStackNavigator();
 
@@ -249,6 +249,24 @@ const App = () => {
                                 )
                       })} /> 
 
+
+          <Stack.Screen 
+                  name="reminder" 
+                  component={Reminders}
+                    options={({ navigation }) => ({
+                    title: 'Reminders',
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#FFFFFF', 
+                    headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                    headerLeft: () => ( // Add custom headerLeft component
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                  <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  </View>                         
+                                </TouchableOpacity>
+                            )
+                  })} />
+
           </Stack.Navigator>
       </NavigationContainer>
   );
@@ -267,3 +285,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+

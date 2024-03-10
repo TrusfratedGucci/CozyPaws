@@ -99,5 +99,32 @@ export const addNewVaccine = async (newVaccineData, petId, token) => {
 };
 
 
+// Backend call to fetch reminders for a specific pet
+export const fetchReminders = async (petID) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/reminders/${petID}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching reminders:', error);
+        throw error;
+    }
+};
 
-export default { fetchPetProfiles, createPet, fetchPetData, updatePetData, fetchVaccinationHistory, addNewVaccine };
+// Backend call to add a new reminder for a specific pet
+export const addReminder = async (petID, reminderData) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/reminders/${petID}`, reminderData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding reminder:', error);
+        throw error;
+    }
+};
+
+
+
+export default { fetchPetProfiles, createPet, fetchPetData, updatePetData, fetchVaccinationHistory, addNewVaccine, fetchReminders, addReminder };
