@@ -19,7 +19,7 @@ import AddPetComponents from './home_feature/AddPetProfile.js';
 import Vaccines from './vaccination_feature/VaccineListScreen.js';
 import FirstAidTips from './firstAidTips_feature/firstAidTips.js';
 import TrainingTips from './trainingTips_feature/trainingTips.js';
-
+import GoWithPet from './goWithPet_feature/goWithPetScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -287,6 +287,24 @@ const App = () => {
                                     </TouchableOpacity>
                                 )
                       })} /> 
+
+
+              <Stack.Screen 
+                  name="GoWithPet" 
+                  component={GoWithPet}
+                    options={({ navigation }) => ({
+                    title: '',
+                    headerTitleAlign: 'center',
+                    headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                    headerLeft: () => ( // Add custom headerLeft component
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                  <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  </View>                         
+                                </TouchableOpacity>
+                            )
+                  })} />
+
 
 
           </Stack.Navigator>
