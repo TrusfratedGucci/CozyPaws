@@ -18,6 +18,7 @@ import PetProfileScreen from './home_feature/PetProfileScreen.js';
 import AddPetComponents from './home_feature/AddPetProfile.js';
 import Vaccines from './vaccination_feature/VaccineListScreen.js';
 import FirstAidTips from './firstAidTips_feature/firstAidTips.js';
+import TrainingTips from './trainingTips_feature/trainingTips.js';
 
 
 const Stack = createStackNavigator();
@@ -255,6 +256,25 @@ const App = () => {
                   component={FirstAidTips}
                     options={({ navigation }) => ({
                     title: 'Vaccination History',
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#FFFFFF', // Change the text color of the header title
+                    headerStyle: { backgroundColor: '#649F95',height: 100,},
+                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                        headerLeft: () => ( // Add custom headerLeft component
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                      <View style={styles.backButton}>
+                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                      </View>                         
+                                    </TouchableOpacity>
+                                )
+                      })} /> 
+
+
+              <Stack.Screen 
+                  name="TrainingTips" 
+                  component={TrainingTips}
+                    options={({ navigation }) => ({
+                    title: 'Training Tips',
                     headerTitleAlign: 'center',
                     headerTintColor: '#FFFFFF', // Change the text color of the header title
                     headerStyle: { backgroundColor: '#649F95',height: 100,},

@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         marginTop: -20,
     },
     blurBox: {
-        marginTop: 350,
+        marginTop: 330,
         marginBottom: -100,
         height: 320,
         width: '100%', // Make the width equal to the device width

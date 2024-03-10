@@ -54,8 +54,8 @@ const NewPasswordComponents = () => {
                     <View style={styles.list}>
                         {listItems.map((item, index) => (
                         <Text key={index} style={[styles.listItem, { color: 'grey' }]}>
-                        • {item}
-                    </Text>
+                            • {item}
+                        </Text>
                         ))}
                     </View>
                 </Text>
