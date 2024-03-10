@@ -16,7 +16,6 @@ import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 import PetInfoScreen from './home_feature/PetInfoScreen.js';
 import PetProfileScreen from './home_feature/PetProfileScreen.js';
 import AddPetComponents from './home_feature/AddPetProfile.js';
-import VaccineApp from './vaccination_feature/VaccinationScreen.js';
 import Vaccines from './vaccination_feature/VaccineListScreen.js';
 
 
@@ -232,42 +231,23 @@ const App = () => {
                               )
                     })} /> 
 
-
             <Stack.Screen 
-                name="VaccineList" 
-                component={Vaccines}
-                  options={({ navigation }) => ({
-                  title: 'Vaccination History',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#FFFFFF', // Change the text color of the header title
-                  headerStyle: { backgroundColor: '#649F95',height: 100,},
-                  headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                      headerLeft: () => ( // Add custom headerLeft component
-                                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                    </View>                         
-                                  </TouchableOpacity>
-                              )
-                    })} /> 
-
-          <Stack.Screen 
-                name="Vaccine" 
-                component={VaccineApp}
-                  options={({ navigation }) => ({
-                  title: 'Vaccination',
-                  headerTitleAlign: 'center',
-                  headerTintColor: '#FFFFFF', // Change the text color of the header title
-                  headerStyle: { backgroundColor: '#649F95',height: 100,},
-                  headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                      headerLeft: () => ( // Add custom headerLeft component
-                                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                    </View>                         
-                                  </TouchableOpacity>
-                              )
-                    })} /> 
+                  name="VaccineList" 
+                  component={Vaccines}
+                    options={({ navigation }) => ({
+                    title: 'Vaccination History',
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#FFFFFF', // Change the text color of the header title
+                    headerStyle: { backgroundColor: '#649F95',height: 100,},
+                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                        headerLeft: () => ( // Add custom headerLeft component
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                      <View style={styles.backButton}>
+                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                      </View>                         
+                                    </TouchableOpacity>
+                                )
+                      })} /> 
 
           </Stack.Navigator>
       </NavigationContainer>
@@ -287,5 +267,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
-

@@ -1,43 +1,76 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCirclePlus} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { Button } from 'react-native-elements';
+import { faCirclePlus, faSquareXmark} from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
+import DateTimePickerModal from '@react-native-community/datetimepicker';
+import { fetchVaccinationHistory, addNewVaccine } from '../api/pet';
 
 const Vaccines = () => {
-    // const [vaccines, setVaccines] = useState([]);
-    const [vaccines, setVaccines] = useState([
-        { vaccineName: 'Dummy Vaccine 1', vaccinationDate: new Date() },
-        { vaccineName: 'Dummy Vaccine 2', vaccinationDate: new Date() },
-        { vaccineName: 'Dummy Vaccine 2', vaccinationDate: new Date() },
-        { vaccineName: 'Dummy Vaccine 2', vaccinationDate: new Date() },
-        { vaccineName: 'Dummy Vaccine 2', vaccinationDate: new Date() },
-        { vaccineName: 'Dummy Vaccine 2', vaccinationDate: new Date() },
-        // Add more dummy vaccine objects as needed
-    ]);
+    const [showModal, setShowModal] = useState(false); // State variable to control modal visibility
+    const [vaccineName, setVaccineName] = useState('');
+    const [vaccineDate, setVaccineDate] = useState(new Date());
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const route = useRoute();
     const { petId } = route.params || {}; // Handle undefined route.params
     const navigation = useNavigation();
+    const [vaccines, setVaccines] = useState([]);
+    
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
 
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date) => {
+        setVaccineDate(date);
+        hideDatePicker();
+    };
+
+    const handleContinue = () => {
+        setShowModal(true); // Show modal when "Add a New Vaccine" is clicked
+    };
 
     useEffect(() => {
-        // Fetch vaccination history for the specified pet from the backend
-        if (petId) { // Check if petId is defined
-            axios.get(`YOUR_BACKEND_API_URL/pets/${petId}/vaccines`)
-                .then(response => {
-                    setVaccines(response.data);
+         // Check if petId is defined
+        if (petId) {
+            // Call the fetchVaccinationHistory function with the petId
+            fetchVaccinationHistory(petId)
+                .then(data => {
+                    // Set the fetched data to the vaccines state
+                    setVaccines(data);
                 })
                 .catch(error => {
+                    // Log an error if fetching vaccines fails
                     console.error('Error fetching vaccines:', error);
                 });
         }
     }, [petId]);
+    
 
-    const handleContinue = () => {
-        // Navigate to PetInfoForm
-        navigation.navigate('Vaccine');
+    const handleAddVaccine = () => {
+        // Create a new vaccine object with the entered name, selected date, and petId
+        const newVaccine = { petId: petId, vaccineName: vaccineName, vaccinationDate: vaccineDate };
+        
+        // Call the addNewVaccine function with the new vaccine data
+        addNewVaccine(newVaccine)
+            .then(response => {
+                // Log success message and update vaccines state with the new vaccine
+                console.log('Vaccine added successfully:', response);
+                setVaccines([...vaccines, response]);
+                // Clear input fields after adding vaccine
+                setVaccineName('');
+                setVaccineDate(new Date());
+            })
+            .catch(error => {
+                // Log an error if adding vaccine fails
+                console.error('Error adding vaccine:', error);
+            });
     };
 
 
@@ -87,8 +120,65 @@ const Vaccines = () => {
                     />
                 </View>
 
-            </View>
 
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showModal}
+                    onRequestClose={() => setShowModal(false)}>
+                        <View style={styles.modalContainer}>
+                            <View style={styles.modalContent}>
+
+                            <TouchableOpacity onPress={() => setShowModal(false)} style={styles.closeButton}>
+                                <FontAwesomeIcon icon={faSquareXmark} style={{color: "#5b8f86",}} size={25} />
+                            </TouchableOpacity>
+                                <View >
+                                    <Text style={styles.inputTextHeader}>Name</Text>
+                                    <TextInput
+                                        style={styles.modalInput}
+                                        placeholder="Enter Vaccine Name"
+                                        value={vaccineName}
+                                        onChangeText={setVaccineName}
+                                    />
+                                </View>    
+                                <View style={styles.dateContainer}>
+                                    <View>
+                                        <Text style={styles.inputTextHeader}>Date</Text>
+                                        <TextInput
+                                            style={[styles.modalInput, styles.dateInputText]}
+                                            placeholder="Selected Date"
+                                            value={vaccineDate.toLocaleDateString()} // Display selected date
+                                            editable={false} // Make it non-editable
+                                        />
+                                    </View>
+                                    <View style={styles.datePickerContainer}>
+                                        <TouchableOpacity style={styles.datePickerButton} onPress={showDatePicker}>
+                                            <FontAwesomeIcon icon={faCalendar} style={styles.calendarIcon} />
+                                        </TouchableOpacity>
+                                        {isDatePickerVisible && (
+                                            <DateTimePickerModal
+                                            value={vaccineDate} // Set the value prop to vaccineDate
+                                            mode="date"
+                                            display="spinner"
+                                            onChange={(event, date) => handleConfirm(date)}
+                                        />
+                                        
+                                            )}
+                                        </View>
+                                    </View>
+                                    <View style={styles.addButton}>
+                                    {/* Add button */}
+                                    <Button
+                                        title="Add Vaccine"
+                                        onPress={handleAddVaccine}
+                                        buttonStyle={styles.addButtonStyle} // Apply button style
+                                        titleStyle={styles.addButtonText} // Apply text style
+                                    />
+                            </View>  
+                        </View>
+                    </View>
+                </Modal>
+            </View>
         </View>
     );
 };
@@ -140,16 +230,132 @@ const styles = StyleSheet.create({
         color: 'black',
     },  
     addVaccineContainer: {
-        flexDirection: 'row', // Display children horizontally
-        alignItems: 'center', // Align items vertically in the center
+        flexDirection: 'row',
+        alignItems: 'center', // Align items at the start of the container vertically
         marginTop: -60,
-        justifyContent:'center',
-    }, 
+        justifyContent: 'center',
+    },
+    
     addVaccineText: {
         marginLeft:15,
         fontSize: 15,
         color: '#5B8F86', // Change text color
     },
+    addVaccineCard: {
+        // alignItems: 'center',
+        marginBottom: 10,
+       
+        borderWidth: 2,
+        borderRadius: 20,
+        borderColor: '#DEEAE8',
+        backgroundColor: '#DEEAE8',
+        padding: 30,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 20,
+        width: '80%',
+    },
+    modalHeader: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    modalInput: {
+        height: 50,
+        borderColor: '#DEEBE9',
+        borderWidth: 1,
+        backgroundColor: '#DEEBE9',
+        paddingLeft: 10,
+        marginBottom: 10,
+        borderRadius: 16,
+    },
+    saveButton: {
+        backgroundColor: '#649F95',
+        borderRadius: 10,
+        paddingVertical: 10,
+        alignItems: 'center',
+    },
+    saveButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    dateInputText: {
+        width: 230 ,
+    },
+    datePickerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    datePickerButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#5b8f86',
+        borderRadius: 16,
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginTop: 15,
+        marginRight: 10, // Add margin to the right of the icon
+        marginLeft: 10,
+    },
+    datePickerButtonText: {
+        color: 'white',
+        
+    },
+    dateContainer:{
+        // paddingRight: 120,
+        flexDirection: 'row',
+        // justifyContent:'space-between',
+    },
+    calendarIcon: {
+        color: 'white',
+    },
+    addButtonStyle: {
+        backgroundColor: '#5B8F86', // Change button background color
+        borderColor: '#5B8F86', // Change button border color
+        borderWidth: 1, // Add button border width
+        borderRadius: 16, // Add button border radius
+        height: 55, // Set button height
+        width: 300,
+    },
+    addButtonText: {
+        color: 'white', // Change text color
+        fontSize: 18,
+    },
+    addButton: {
+        borderRadius: 6, // Add border radius
+        margin: 15,
+        marginTop: 45,
+        alignItems: 'center',
+    },
+    inputTextHeader: {
+        fontSize: 15,
+        paddingBottom: 2,
+        marginBottom: 5,
+        marginLeft: 10,
+        fontWeight: 'semibold',
+    },
+    inputText: {
+        height: 50,
+        borderColor: '#5B8F86',
+        borderWidth: 1,
+        backgroundColor: '#EBEBEB',
+        paddingLeft: 10,
+        marginBottom: 10,
+        borderRadius: 16,
+    },
+    closeButton: {
+        marginBottom: 20,
+    }
 });
 
 export default Vaccines;

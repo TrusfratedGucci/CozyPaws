@@ -67,4 +67,37 @@ export const updatePetData = async (petID, editedPetData, token) => {
     }
 };
 
-export default { fetchPetProfiles, createPet, fetchPetData, updatePetData };
+
+// Backend call to fetch vaccination history for the specified pet
+export const fetchVaccinationHistory = async (petId, token) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/pets/${petId}/vaccines`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching vaccination history:', error);
+        throw error;
+    }
+};
+
+// Backend call to add a new vaccine
+export const addNewVaccine = async (newVaccineData, petId, token) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/pets/${petId}/vaccines`, newVaccineData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding vaccine:', error);
+        throw error;
+    }
+};
+
+
+
+export default { fetchPetProfiles, createPet, fetchPetData, updatePetData, fetchVaccinationHistory, addNewVaccine };
