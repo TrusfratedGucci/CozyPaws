@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
+import { forgotPassword } from '../api/auth'; // Import the forgotPassword function
 
 const VerificationEmailComponents = () => {
     const navigation = useNavigation();
@@ -9,28 +10,18 @@ const VerificationEmailComponents = () => {
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
 
-    const handleEmailSubmit = () => {
-        // Check if the email is registered (dummy check for demonstration)
-        const isRegistered = checkIfEmailIsRegistered(email);
+    const handleEmailSubmit = async () => {
+        // Call the forgotPassword function with the provided email
+        const requestSent = await forgotPassword(email);
 
-        if (isRegistered) {
+        if (requestSent) {
+            // Password reset request sent successfully
             // Navigate to the verification code component
             navigation.navigate('VerificationCodeComponents');
-            // Here you would typically send a verification code to the provided email
         } else {
-            // Show email not registered error
-            setEmailError('Email is not registered');
+            // Show error message
+            setEmailError('Failed to send password reset request');
         }
-    };
-
-    // Function to handle focus event
-    const handleFocus = () => {
-        setIsFocused(true); 
-    };
-
-    // Function to handle blur event
-    const handleBlur = () => {
-        setIsFocused(false); // Set isFocused state to false when input loses focus
     };
 
     return (
@@ -58,13 +49,19 @@ const VerificationEmailComponents = () => {
                     />
                 </View>
 
-                <View style={styles.continueButton}>
-                    <Button 
-                        title="Submit"
-                        onPress={() => navigation.navigate('VerificationCode')}
-                        buttonStyle={styles.verifyButtonStyle}
-                        titleStyle={styles.verifyButtonTextStyle}
-                    />
+                <View style={styles.imageContainer}>
+                    <Image source={require('../assets/dog.png')} style={styles.imageStyle} />
+                </View>
+
+                <View style={styles.lowerPart}>
+                    <View style={styles.continueButton}>
+                        <Button 
+                            title="Submit"
+                            onPress={handleEmailSubmit}
+                            buttonStyle={styles.verifyButtonStyle}
+                            titleStyle={styles.verifyButtonTextStyle}
+                        />
+                    </View>
                 </View>
             </View>
         </View>
@@ -80,16 +77,16 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 20,
         justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 100,
+        alignItems: 'center', // Align center horizontally
     },
     body: {
-        marginTop: 55,
+        marginTop: 15,
     },
     headerText: {
-        fontSize: 20,
+        fontSize: 22, // Adjust font size as needed
         color: 'black',
-        fontWeight: 'bold',
+        fontWeight: 'bold', // Make the text bold
+        marginTop: 80,
     },
     instructions: {
         fontSize: 15,
@@ -120,18 +117,34 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     continueButton: {
+        borderRadius: 6, // Add border radius
+        margin: 15,
         marginTop: 45,
         alignItems: 'center',
     },
     verifyButtonStyle: {
-        backgroundColor: '#68A69B',
-        borderRadius: 20,
-        height: 55,
+        backgroundColor: '#5B8F86', // Change button background color
+        borderColor: '#5B8F86', // Change button border color
+        borderWidth: 1, // Add button border width
+        borderRadius: 16, // Add button border radius
+        height: 55, // Set button height
         width: 300,
     },
     verifyButtonTextStyle: {
         color: 'white',
         fontSize: 18,
+    },
+    imageContainer: {
+        alignItems: 'center',
+        // padding: 20,
+        marginTop: 60,
+    },
+    imageStyle: {
+        width: 150, // Adjust width as needed
+        height: 150, // Adjust height as needed
+    },
+    lowerPart: {
+        marginTop: 40,
     },
 });
 

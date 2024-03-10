@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
+import { signUp } from '../api/auth'; // Import the signUp function from api.js
 
 const SignUpComponents = () => {
     const [username, setUsername] = useState('');
@@ -53,7 +54,7 @@ const SignUpComponents = () => {
     };
 
     // Function to handle sign-up button press
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         if (!username || !email || !password || !confirmPassword) {
             setUsernameError(username ? '' : 'Required field');
             setEmailError(email ? '' : 'Required field');
@@ -62,8 +63,21 @@ const SignUpComponents = () => {
             return;
         }
 
-        // Navigate to Congratulations screen
-        navigation.navigate('Congratulations')
+        try {
+            // Call the signUp function from api.js
+            const success = await signUp(username, email, password);
+
+            if (success) {
+                // Sign up successful, navigate to the Congratulations screen
+                navigation.navigate('Congratulations');
+            } else {
+                // Sign up failed
+                // Handle sign up failure, such as displaying an error message
+                console.log('Sign up failed');
+            }
+        } catch (error) {
+            console.error('Error signing up:', error);
+        }
     };
 
     return (
@@ -81,7 +95,10 @@ const SignUpComponents = () => {
                     placeholder="Enter your username"
                     onChangeText={handleNameChange}
                 />
-                {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
+                <View style={styles.errorBox}>
+                    {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
+                </View>
+                
             </View>
 
 
@@ -94,7 +111,10 @@ const SignUpComponents = () => {
                     keyboardType="email-address"
                     onChangeText={handleEmailChange}
                 />
-                {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+                <View style={styles.errorBox}>
+                    {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+                </View>
+                
             </View>
 
             <View style={styles.password}>
@@ -106,7 +126,10 @@ const SignUpComponents = () => {
                     secureTextEntry={true}
                     onChangeText={handlePasswordChange}
                 />
-                {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                <View style={styles.errorBox}>
+                    {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                </View>
+                
             </View>
 
             <View>
@@ -118,7 +141,10 @@ const SignUpComponents = () => {
                     secureTextEntry={true}
                     onChangeText={handleConfirmPasswordChange}
                 />
-                {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
+                <View style={styles.errorBox}>
+                    {confirmPasswordError ? <Text style={styles.errorText}>{confirmPasswordError}</Text> : null}
+                </View>
+                
             </View>
 
             <View style={styles.signInButton}>
@@ -129,18 +155,6 @@ const SignUpComponents = () => {
                     buttonStyle={styles.signInButtonStyle} // Apply button style
                     titleStyle={styles.signInButtonTextStyle} // Apply text style
                 />
-            </View>
-
-            <View style={styles.socialMediaContainer}>
-                {/* Facebook sign-up option */}
-                <TouchableOpacity style={[styles.socialMediaButton, styles.facebookButton]}>
-                    <Image source={require('../assets/facebook_logo.png')} style={styles.socialMediaButtonIcon} />
-                </TouchableOpacity>
-
-                {/* Google sign-up option */}
-                <TouchableOpacity style={[styles.socialMediaButton, styles.googleButton]}>
-                    <Image source={require('../assets/google_logo.png')} style={styles.socialMediaButtonIcon} />
-                </TouchableOpacity>
             </View>
 
             <View style={styles.signInTextContainer}>
@@ -187,6 +201,9 @@ const styles = StyleSheet.create({
         marginBottom: 10, // Add bottom margin
         borderRadius: 16, // Add border radius
     },
+    errorBox: {
+        alignItems:'flex-end',
+    },
     errorInput: {
         borderColor: 'red', // Change border color to red for error
     },
@@ -194,7 +211,7 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 12,
         marginLeft: 10,
-        marginTop: -5,
+        marginTop: -10,
     },
     email: {
         marginBottom: 15,
@@ -211,13 +228,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signInButtonStyle: {
-        backgroundColor: '#68A69B', // Change button background color
-        borderColor: '#68A69B', // Change button border color
+        backgroundColor: '#5B8F86', // Change button background color
+        borderColor: '#5B8F86', // Change button border color
         borderWidth: 1, // Add button border width
-        borderRadius: 20, // Add button border radius
+        borderRadius: 16, // Add button border radius
         height: 55, // Set button height
         width: 300,
-        marginTop: 0,
     },
     signInButtonTextStyle: {
         color: 'white', // Change text color

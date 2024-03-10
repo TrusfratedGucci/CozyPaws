@@ -2,21 +2,42 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image } from 'react-native';
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
+import { resetPassword } from '../api/auth'; // Import the resetPassword function from your API file
 
 const NewPasswordComponents = () => {
-    const [rememberMe, setRememberMe] = useState(false);
     const navigation = useNavigation();
 
     const listItems = [
-    '8 Alphabetical Characters (a,b,c)',
-    '3 Numeric Characters (1,2,3)',
-    '1 Special Character (. , # , @)'
+    '8 characters long',
+    'Contain at least one uppercase letter ',
+    'One lowercase letter',
+    'One digit',
+    'One special character',
   ];
 
-    const handleContinue = () => {
-        // Navigate to PasswordChangedSuccessScreen.js
-        navigation.navigate('PasswordChangedSuccessScreen');
-    };
+  const handleResetPassword = async () => {
+    try {
+        // Check if passwords match
+        if (newPassword !== confirmPassword) {
+            console.log('Passwords do not match');
+            return;
+        }
+
+        // Send request to reset password
+        const isPasswordReset = await resetPassword('reset_token_received_from_previous_step', newPassword);
+
+        if (isPasswordReset) {
+            // Password reset successful, navigate to success screen
+            navigation.navigate('PasswordChangedSuccessScreen');
+        } else {
+            // Handle error
+            console.log('Password reset failed');
+        }
+    } catch (error) {
+        // Handle error
+        console.error('Error resetting password:', error);
+    }
+};
 
    
 
@@ -29,7 +50,7 @@ const NewPasswordComponents = () => {
 
             <View style={styles.header}>
                 <Text style={styles.instructions}>
-                    Your password should contain at least:
+                    Your password must be at least:
                     <View style={styles.list}>
                         {listItems.map((item, index) => (
                         <Text key={index} style={[styles.listItem, { color: 'grey' }]}>
@@ -67,7 +88,7 @@ const NewPasswordComponents = () => {
                         title="Continue"
                         buttonStyle={styles.signInButtonStyle} // Apply button style
                         titleStyle={styles.signInButtonTextStyle} // Apply text style
-                        onPress={() => navigation.navigate('PasswordChangedSuccess')}
+                        onPress={handleResetPassword}
                     />
                 </View>
 
@@ -123,7 +144,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     continueButton: {
-        marginTop: 25,
+        marginTop: 85,
         alignItems: 'center',
     },
     signInButtonStyle: {

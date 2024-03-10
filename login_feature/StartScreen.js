@@ -11,13 +11,15 @@ const StartScreenComponents = () => {
 
             <View style={styles.header}>
                 <Image source={require('../assets/CozyPawsLogo.png')} style={styles.icon}/>
-                <Text style={styles.headerText}>COZY PAWS</Text>
+                <Text style={styles.headerText}>COZYPAWS</Text>
                 <Text style={styles.sentence}>We take care of your pet</Text>
             </View>
 
             <View style={styles.body}>
                 
-                <ImageBackground source={require('../assets/StSc.png')} style={styles.bgImg}>
+                <ImageBackground 
+                source={require('../assets/main.png')} style={styles.bgImg}
+                >
                     {/* Content inside the blurred box */}
                     <View style={styles.blurBox}>
 
@@ -74,15 +76,15 @@ const styles = StyleSheet.create({
     },
     bgImg: {
         flex: 1,
-        height:700,
+        height:350,
         resizeMode: 'cover',
         width: '100%', // Make the width equal to the device width
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: -120,
+        marginTop: -20,
     },
     blurBox: {
-        marginTop: 400,
+        marginTop: 350,
         marginBottom: -100,
         height: 320,
         width: '100%', // Make the width equal to the device width
