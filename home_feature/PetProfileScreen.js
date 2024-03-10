@@ -49,11 +49,6 @@ const PetProfile = ({ route }) => {
         navigation.navigate('HeatCycle', { petId: petID });
     };
 
-    const continueToReminder = (petID) => {
-        // Navigate to Reminder
-        navigation.navigate('Reminder', { petId: petID });
-    };
-
     const continueToFirstAid = () => {
         // Navigate to First Aid
         navigation.navigate('FirstAidTips');
@@ -65,7 +60,7 @@ const PetProfile = ({ route }) => {
     };
 
     const continueToGoWithPet = () => {
-        // Navigate to Training
+        // Navigate to Go with pet
         navigation.navigate('GoWithPet');
     };
     
@@ -159,27 +154,6 @@ const PetProfile = ({ route }) => {
                             </View>
                         }
                         onPress={continueToHeatCycle}
-                        buttonStyle={styles.profileButtonStyle} // Apply button style
-                        >  
-                    </Button>
-
-                    <Button
-                            title= {
-                                <View style={styles.buttonInside}>
-                                <View style={styles.profileButtonTextContainer}>
-                                    <Text style={styles.profileButtonTextStyle}>Reminders</Text>
-                                </View>
-                                
-                                <View style={styles.profileButtonImageContainer}>
-                                    <Image 
-                                            source={require('../assets/calendar.png')} 
-                                            style={styles.buttonImage} // Apply the icon styles
-                                        />
-                                </View>
-                                
-                            </View>
-                        }
-                        onPress={continueToReminder}
                         buttonStyle={styles.profileButtonStyle} // Apply button style
                         >  
                     </Button>
