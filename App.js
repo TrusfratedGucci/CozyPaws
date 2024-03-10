@@ -12,6 +12,7 @@ import VerificationCodeComponents from './login_feature/VerificationCodeScreen.j
 import StartScreenComponents from './login_feature/StartScreen.js';
 import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
+import HeatTrackerScreen from './heat_tracker_feature/HeatTrackerScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,25 @@ const App = () => {
   return (
       <NavigationContainer>
           <Stack.Navigator>
+
+          <Stack.Screen 
+                name="HeatTracker" 
+                component={HeatTrackerScreen}
+                  options={({ navigation }) => ({
+                  title: 'HeatTracker',
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerShown: false,
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                                </View>                         
+                              </TouchableOpacity>
+                          
+                          )
+                })} />
+
 
           <Stack.Screen 
                   name="StartScreen" 
