@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         padding: 10,
         marginBottom: 10,
+        color: 'black',
     },
     addButton: {
         backgroundColor: '#649F95',
@@ -182,14 +183,15 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         padding: 10,
         marginBottom: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     dropdownText: {
         fontSize: 16,
     },
     modalContainer: {
         flex: 1,
+        
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
@@ -198,6 +200,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 15,
         padding: 20,
+        // alignContent: 'flex-start',
     },
     modalItem: {
         paddingVertical: 10,
