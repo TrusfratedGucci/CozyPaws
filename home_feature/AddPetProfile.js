@@ -5,7 +5,8 @@ import { faCirclePlus} from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { fetchPetProfiles } from '../api/pet';
-import { getToken, getUserId } from '../api/auth';
+import { getToken } from '../api/auth';
+import { faPaw } from '@fortawesome/free-solid-svg-icons';
 
 
 const AddPetComponents = () => {
@@ -16,17 +17,24 @@ const AddPetComponents = () => {
         const fetchData = async () => {
             try {
                 const token = await getToken(); // Retrieving the token
-                const userId = await getUserId(); // Retrieving the userId
-                const data = await fetchPetProfiles(token, userId); // Pass userId parameter
-                setPetData(data);
+                const data = await fetchPetProfiles(token); // Passing token 
+            
+                // Check if the response contains pet profiles or a message indicating none found
+                if (data !== null && data.length > 0) {
+                    setPetData(data);
+                } else {
+                    // Display a message to the user
+                    console.log("No pet profiles found for this user");
+                }
             } catch (error) {
                 console.error('Error fetching pet data:', error);
+                // Add a console log to ensure the catch block is reached
+                console.log("Error occurred while fetching pet data:", error);
             }
-        };
+        };        
         fetchData();
     }, []);
     
-
     const handleContinue = () => {
         navigation.navigate('PetInfoForm');
     };
@@ -35,16 +43,15 @@ const AddPetComponents = () => {
 
     return (
         <ScrollView style={styles.container}>
+
+
             <View style={styles.header}>
                 <View style={styles.addprofileContainer}>
                     {/* TouchableOpacity to navigate to pet profile creation */}
                     <TouchableOpacity onPress={handleContinue}>
-                        
                         <FontAwesomeIcon icon={faCirclePlus} color="#5b8f86" size={100} />
-                    
                     </TouchableOpacity>
                 </View>
-
 
                 <View style={styles.addPhotoContainer}> 
                     <TouchableOpacity onPress={handleContinue} >
@@ -54,37 +61,29 @@ const AddPetComponents = () => {
                 </View>
             </View>
 
-            
 
-
-            <View style={[styles.body, { height: windowHeight -125 }]}>
+            <View style={[styles.body, 
+                // { height: windowHeight - 125 }
+                ]}>
                 <View style={styles.profileListContainer}>
                     {petData.map((pet, index) => (
                         <TouchableOpacity
-                        key={pet._id}
-                        style={[
-                            index % 2 === 1 ? styles.lastInRow : null, // Check if index is odd
-                        ]}
-                        onPress= {() =>
-                            navigation.navigate('PetProfile', {
-                                petId: pet._id,
-                            })
-                          }>
-                            <View style={styles.petProfileContainer}> 
-                                <Image
-                                    source={{ uri: pet.photo }}
-                                    style={styles.petProfileImage}
-                                    resizeMode="cover"
-                                />
+                            key={pet._id}
+                            style={[index % 2 === 1 ? styles.lastInRow : null]}
+                            onPress={() => navigation.navigate('PetProfile', { petId: pet._id })}
+                        >
+                            <View style={styles.petProfileContainer}>
+                                {pet.photo && pet.photo !== '' ? (
+                                    <Image source={{ uri: pet.photo }} style={styles.profilePhoto} />
+                                ) : (
+                                    <FontAwesomeIcon icon={faPaw} style={styles.profilePhotoIcon} size={100} />
+                                )}
                             </View>
-                            <Text style={styles.petName}>{pet.name}</Text>                       
-                    </TouchableOpacity>
-                    
+                            <Text style={styles.petName}>{pet.name}</Text>
+                        </TouchableOpacity>
                     ))}
                 </View>
-                
             </View>
-
         </ScrollView>
     );
 };
@@ -102,22 +101,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'relative', // Make the header position relative
     },
-    headerText: {
-        fontSize: 24,
-        color: 'black',
-        fontWeight: 'bold',
-    },
-    body: {
-        paddingTop: 115,
-        borderTopLeftRadius: 20, // Adjust the border radius as needed
-        borderTopRightRadius: 20, // Adjust the border radius as needed
-        backgroundColor: 'white',
-        width: '100%', // Make the width equal to the device width
-        padding: 20,
-        paddingBottom: 40,
-        marginTop: -110, // Adjust the top margin to overlap with the profile picture container
-        position: 'relative', // Make the body position relative
-    },
     addprofileContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -131,13 +114,13 @@ const styles = StyleSheet.create({
     profilePhoto: {
         width: '100%',
         height: '100%',
+        resizeMode: 'cover', // Ensure the image covers the entire container
     },
     profilePhotoIcon: {
-        color: '#5B8F86', // Placeholder icon color
+        color: '#5B8F86',
+        width: '100%',
+        height: '100%',
     },
-    name: {
-        marginBottom: 15
-    }, 
     addPhotoContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -151,11 +134,23 @@ const styles = StyleSheet.create({
         fontWeight: '600', // Semi-bold
         // textDecorationLine: 'underline',
     },
+    body: {
+        paddingTop: 115,
+        borderTopLeftRadius: 20, // Adjust the border radius as needed
+        borderTopRightRadius: 20, // Adjust the border radius as needed
+        backgroundColor: 'white',
+        width: '100%', // Make the width equal to the device width
+        padding: 20,
+        paddingBottom: 40,
+        marginTop: -110, // Adjust the top margin to overlap with the profile picture container
+        position: 'relative', // Make the body position relative
+    },
     profileListContainer: {
         flexDirection: 'row', // Display pet profiles in a row
         flexWrap: 'wrap', // Allow profiles to wrap to the next row
         justifyContent: 'space-between', // Distribute profiles evenly
-        paddingBottom:900,
+        // paddingBottom: 900,
+        // // marginBottom: 9100,
     },
     petProfileContainer: {
         width: 150,
@@ -163,20 +158,21 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         borderRadius: 75,
         overflow: 'hidden',
-        justifyContent: 'flex-end', // Align items at the bottom
-    },
-    petProfileImage: {
-        flex: 1,
-        width: null,
-        height: null,
+        justifyContent: 'center', // Center items vertically
+        alignItems: 'center', // Center items horizontally
+        backgroundColor: '#DEEBE9',
     },
     petName: {
+        // position: 'absolute',
+        paddingBottom:15,
+        bottom: 10, // Adjust as needed to position the name
+        left: 0, // Align the name to the left edge
+        right: 0, // Align the name to the right edge
         textAlign: 'center', // Center the name horizontally
         fontSize: 15,
-        fontWeight: '600', // Semi-bold
+        fontWeight: '600',
         color: '#5B8F86', // Customize the color of the name
     },
-    
     lastInRow: {
         marginRight: 10, // Adjust the margin between elements in the same row
         marginBottom: 10, // Add margin bottom to move to the next row

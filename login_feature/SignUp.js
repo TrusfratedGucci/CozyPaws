@@ -3,6 +3,8 @@ import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image, ScrollView 
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
 import { signUp } from '../api/auth'; // Import the signUp function from api.js
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'; // Add faEyeSlash for hidden password
 
 const SignUpComponents = () => {
     const [username, setUsername] = useState('');
@@ -14,6 +16,7 @@ const SignUpComponents = () => {
     const [passwordError, setPasswordError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const navigation = useNavigation();
+    const [passwordVisible, setPasswordVisible] = useState(false); // State to track password visibility
 
     // Function to handle name input change
     const handleNameChange = (username) => {
@@ -80,6 +83,12 @@ const SignUpComponents = () => {
         }
     };
 
+
+    // Function to toggle password visibility
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
+
     return (
         <ScrollView style={styles.container}>
 
@@ -120,17 +129,23 @@ const SignUpComponents = () => {
             <View style={styles.password}>
                 {/* Password input */}
                 <Text style={styles.inputTextHeader}>Password</Text>
-                <TextInput
-                    style={[styles.inputText, passwordError && styles.errorInput]}
-                    placeholder="Enter your password"
-                    secureTextEntry={true}
-                    onChangeText={handlePasswordChange}
-                />
+                <View style={styles.passwordInputContainer}>
+                    <TextInput
+                        style={[styles.inputText, passwordError && styles.errorInput]}
+                        placeholder="Enter your password"
+                        secureTextEntry={!passwordVisible} // Show or hide password based on passwordVisible state
+                        onChangeText={handlePasswordChange}
+                    />
+                    {/* Eye icon button to toggle password visibility */}
+                    <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIconContainer}>
+                        <FontAwesomeIcon icon={passwordVisible ? faEye : faEyeSlash} size={20} style={styles.eyeIcon} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.errorBox}>
                     {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
                 </View>
-                
             </View>
+
 
             <View>
                 {/* Confirm Password input */}
@@ -260,6 +275,22 @@ const styles = StyleSheet.create({
         color: '#68A69B',
         marginBottom: 25,
     },
+    passwordInputContainer: {
+        position: 'relative',
+    },
+    eyeIconContainer: {
+        position: 'absolute',
+        top: '25%', // Align vertically centered
+        right: 30,
+        zIndex: 1, // Ensure the icon appears above the input field
+    },
+    eyeIcon: {
+        color: '#12634c',
+        fontSize: 25, // Adjust the size as needed
+       
+    },
+    
+    
 });
 
 export default SignUpComponents;

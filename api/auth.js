@@ -1,20 +1,74 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'
+// import { decodeJwtToken } from '../utility/utils'; // Assuming you have a utils folder with a jwt.js file
+import { decode } from 'base64-js';
 
-const BASE_URL = 'http://localhost:3000';
+
+// // Function to decode JWT token manually
+// const decodeJwtToken = (token) => {
+//     try {
+//         const payloadBase64 = token.split('.')[1];
+//         const decodedPayload = decode(payloadBase64);
+//         const payloadString = new TextDecoder().decode(decodedPayload);
+//         return JSON.parse(payloadString);
+//     } catch (error) {
+//         console.error('Error decoding JWT token:', error);
+//         throw error;
+//     }
+// };
+
+const BASE_URL = 'http://192.168.1.9:3000';
+
+
+// Function to get token stored in AsyncStorage
+export const getToken = async () => {
+    console.log("hello first:");
+    try {
+        const token = await AsyncStorage.getItem('token'); // Retrieving token using the same key used for storing it
+        console.log("hello:");
+        if (token !== null) {
+            // Token retrieved successfully
+            console.log(token);
+            return token;
+            
+        } else {
+            // Token does not exist in AsyncStorage
+            console.error('Token does not exist in AsyncStorage');
+            return null;
+        }
+    } catch (error) {
+        // Error occurred while retrieving token
+        console.error('Error getting token from AsyncStorage:', error);
+        throw error;
+    }
+};
+
 
 //backend call for signin
 export const signIn = async (email, password) => {
     try {
-        const response = await axios.post(`${BASE_URL}/signin`, {
+        console.log("Email:", email); // Log the email before making the request
+        console.log("Password:", password); // Log the password before making the request
+        const response = await axios.post('http://192.168.1.9:3000/auth/signin', {
             email,
             password
-        });
+        }, {
+            headers: {
+                'Content-Type': 'application/json' // Specify JSON content type
+            }
+        
+    });
+
+        console.log('response ', response)
 
         if (response.status === 200) {
             // Sign in successful
             // Store JWT token in AsyncStorage for future use
             await AsyncStorage.setItem('token', response.data.token);
+
+             // Log the token after it's stored
+             console.log('Token stored:', response.data.token);
 
             // Return true to indicate successful sign-in
             return true;
@@ -25,7 +79,12 @@ export const signIn = async (email, password) => {
         }
     } catch (error) {
         console.error('Error signing in:', error);
-        // Return false to indicate failed sign-in
+        // Check if the error message is "Email not found"
+        if (error.response && error.response.data.error === "Email not found") {
+            // Handle the case where the email is not found
+            console.log('Email not found');
+            // You can display an error message to the user here
+        }
         return false;
     }
 };
@@ -34,11 +93,18 @@ export const signIn = async (email, password) => {
 //backed call for signup
 export const signUp = async (username, email, password) => {
     try {
-        const response = await axios.post(`${BASE_URL}/signup`, {
+        console.log("Email:", username); // Log the email before making the request
+        console.log("Password:", email); // Log the password before making the request
+        console.log("Password:", password);
+        const response = await axios.post(`${BASE_URL}/auth/signup`, {
             username,
             email,
             password
-        });
+        },{
+            headers: {
+                'Content-Type': 'application/json' // Specify JSON content type
+            }
+    });
 
         if (response.status === 201) {
             // Sign up successful
@@ -60,41 +126,13 @@ export const signUp = async (username, email, password) => {
 };
 
 
-// Function to get token stored in AsyncStorage
-const getToken = async () => {
-    try {
-        const token = await AsyncStorage.getItem('token'); // Retrieving token using the same key used for storing it
-        return token;
-    } catch (error) {
-        console.error('Error getting token from AsyncStorage:', error);
-        throw error;
-    }
-};
 
-
-// Function to get userId from token stored in AsyncStorage
-export const getUserId = async () => {
-    try {
-        const token = await getToken();
-        if (token) {
-            // If token exists, decode it to get userId
-            const decodedToken = jwt_decode(token);
-            return decodedToken.userId;
-        } else {
-            // If token doesn't exist, return null
-            return null;
-        }
-    } catch (error) {
-        console.error('Error getting userId from token:', error);
-        throw error;
-    }
-};
 
 
 //backed call for forgotpassword
 export const forgotPassword = async (email) => {
     try {
-        const response = await axios.post(`${BASE_URL}/forgot-password`, { email });
+        const response = await axios.post(`${BASE_URL}/auth/forgot-password`, { email });
 
         if (response.status === 200) {
             // Request sent successfully
@@ -116,7 +154,7 @@ export const forgotPassword = async (email) => {
 // Function to verify the verification code
 export const verifyVerificationCode = async (verificationCode) => {
     try {
-        const response = await axios.post(`${BASE_URL}/forgot-password/verify`, {
+        const response = await axios.post(`${BASE_URL}/auth/forgot-password/verify`, {
             verificationCode: verificationCode.join('')
         });
 
@@ -140,7 +178,7 @@ export const verifyVerificationCode = async (verificationCode) => {
 // Backend call to reset password
 export const resetPassword = async (token, newPassword) => {
     try {
-        const response = await axios.post(`${BASE_URL}/reset-password`, {
+        const response = await axios.post(`${BASE_URL}/auth/reset-password`, {
             token,
             newPassword,
         });
@@ -161,4 +199,15 @@ export const resetPassword = async (token, newPassword) => {
     }
 };
 
-export default { signIn, signUp, getToken, getUserId, forgotPassword, verifyVerificationCode, resetPassword };
+
+// Function to clear token from AsyncStorage upon logout
+export const clearToken = async () => {
+    try {
+        await AsyncStorage.removeItem('token');
+    } catch (error) {
+        console.error('Error clearing token from AsyncStorage:', error);
+        throw error;
+    }
+};
+
+export default { signIn, signUp, getToken, forgotPassword, verifyVerificationCode, resetPassword, clearToken };

@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 import { Button } from 'react-native-elements';
+import * as ImagePicker from 'expo-image-picker';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { createPet } from '../api/pet'; 
+import { updatePetData, fetchPetData } from '../api/pet'; 
 import { getToken } from '../api/auth'; 
 import { useNavigation } from '@react-navigation/native';
 
-const PetInfoFormComponents = () => {
+const PetInfoEditComponents = ({ route }) => {
+    const petID = route.params.petID;
     const [petPhotoUri, setPetPhotoUri] = useState(null);
     const [birthday, setBirthday] = useState('');
     const [petName, setPetName] = useState('');
@@ -20,29 +21,49 @@ const PetInfoFormComponents = () => {
     const [petPhotoError,setPetPhotoError ] = useState('');
     const navigation = useNavigation();
 
-    const handleCreatePet = async () => {
+   // Function to handle updating the pet
+    const handleEditPet = async () => {
         try {
-            const token = await getToken(); // Retrieve the token
-            const petData = {
-                name: petName,
-                type: petType,
-                breed: petBreed,
-                gender: petGender,
-                birthday: birthday,
-                photo: petPhotoUri,
-            };
-            const createdPet = await createPet(petData, token); // Pass the token to the createPet function
-    
-            if (createdPet) {
-                // Navigate to the next screen with the created pet ID
-                navigation.navigate('PetProfile', { petId: createdPet._id });
-            }
+            const token = await getToken();
+            if (petID) {
+                // If petID exists, it means we are updating an existing pet
+                await updatePetData(petID, {
+                    photo: petPhotoUri,
+                    name: petName,
+                    type: petType,
+                    breed: petBreed,
+                    gender: petGender,
+                    birthday: birthday,
+                }, token);
+            } 
+            navigation.navigate('PetInfo', { petID: petID }); 
+
         } catch (error) {
-            console.error('Error creating pet:', error);
-            setErrorMessage('Failed to create pet. Please try again.');
+            console.error('Error creating/updating pet:', error);
+            setErrorMessage('Failed to create/update pet. Please try again.'); // Set error message
         }
     };
-    
+
+
+    // Function to fetch pet data
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = await getToken();
+                const petData = await fetchPetData(petID, token);
+                setPetPhotoUri(petData.photo);
+                setPetName(petData.name);
+                setPetType(petData.type);
+                setPetBreed(petData.breed);
+                setPetGender(petData.gender);
+                setBirthday(petData.birthday);
+            } catch (error) {
+                console.error('Error fetching pet data:', error);
+                // Handle error fetching pet data
+            }
+        };
+        fetchData();
+    }, [petID]);
 
 
     const addImage = async () => {
@@ -77,6 +98,8 @@ const PetInfoFormComponents = () => {
           // Handle error gracefully
         }
       };
+      
+
 
 
     return (
@@ -84,8 +107,9 @@ const PetInfoFormComponents = () => {
             <View style={styles.header}>
                 <View style={styles.profilePhotoContainer}>
                     <TouchableOpacity style={styles.profilePhotoContainer} 
-                   onPress={addImage}
+                    onPress={addImage}
                     >
+                       {console.log(JSON.stringify(petPhotoUri))}
                         {petPhotoUri ? (
                             <Image source={{ uri: petPhotoUri }} style={styles.profilePhoto} />
                         ) : (
@@ -159,8 +183,8 @@ const PetInfoFormComponents = () => {
                 </View>
                 <View style={styles.signInButton}>
                     <Button 
-                        title="Create"
-                        onPress={handleCreatePet}
+                        title="Edit"
+                        onPress={handleEditPet}
                         buttonStyle={styles.signInButtonStyle}
                         titleStyle={styles.signInButtonTextStyle}
                     />
@@ -205,6 +229,8 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75,
+        borderWidth: 2, // Add border width
+        borderColor: '#DEEBE9',
         backgroundColor: '#DEEBE9',
         overflow: 'hidden',
         zIndex: 1,
@@ -212,6 +238,7 @@ const styles = StyleSheet.create({
     profilePhoto: {
         width: '100%',
         height: '100%',
+        resizeMode: 'cover',
     },
     profilePhotoIcon: {
         color: '#5B8F86',
@@ -276,4 +303,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default PetInfoFormComponents;
+export default PetInfoEditComponents;

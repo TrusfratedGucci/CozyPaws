@@ -11,7 +11,7 @@ const GoWithPet = () => {
             {/* Upper Container */}
             <View style={styles.upperContainer}>
                 {/* Title */}
-                <Text style={styles.title}>Go with your pet</Text>
+                {/* <Text style={styles.title}>Go with your pet</Text> */}
             </View>
 
             {/* Lower Container */}
@@ -132,13 +132,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#649F95',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingVertical: 25,
+        // paddingVertical: 25,
     },
     lowerContainer: {
         flex: 8,
         backgroundColor: 'white',
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        marginTop: 70,
         borderWidth: 2,
         borderColor: 'white',
     },

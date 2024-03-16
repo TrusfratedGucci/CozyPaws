@@ -35,3 +35,4 @@ yarn-error.*
 *.tsbuildinfo
 
 desktop.ini
+node_modules

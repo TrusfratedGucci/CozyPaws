@@ -5,6 +5,13 @@ import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const CongratulationsScreen = () => {
+
+    const continueToAddPet = () => {
+        // Navigate to Go with pet
+        navigation.navigate('AddPet');
+    };
+
+
     const navigation = useNavigation();
     return (
         <View style={styles.container}>
@@ -22,7 +29,7 @@ const CongratulationsScreen = () => {
                     {/* Go button */}
                 <Button 
                     title="Let's Go!"
-                    // onPress={handleSignIn}
+                    onPress={continueToAddPet}
                     buttonStyle={styles.goButtonStyle} // Apply button style
                     titleStyle={styles.goButtonTextStyle} // Apply text style
                 />

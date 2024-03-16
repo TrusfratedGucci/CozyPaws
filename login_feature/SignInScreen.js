@@ -10,6 +10,7 @@ const SignInComponents = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [signInError, setSignInError] = useState(''); // State to store sign-in error message
     const navigation = useNavigation();
 
     
@@ -52,10 +53,12 @@ const SignInComponents = () => {
 
         if (success) {
             // Navigate to the next screen if sign-in was successful
-            navigation.navigate('Home');
+            navigation.navigate('AddPet');
         } else {
             // Display error message to the user
             console.log('Sign in failed');
+            // Display error message to the user
+            setSignInError('Email not found or invalid password');
         }
     };
 
@@ -96,18 +99,13 @@ const SignInComponents = () => {
                     />
                     <View style={styles.errorBox}>
                         {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-                    </View>
-                    
+                    </View>       
                 </View>
+
+                {/* Display sign-in error message */}
+                {signInError ? <Text style={styles.signInError}>{signInError}</Text> : null}
             
                 <View style={styles.rememberMeContainer}>
-                    {/* Remember Me toggle */}
-                    {/* <TouchableOpacity onPress={toggleRememberMe} style={styles.rememberMeTouchable}>
-                        <View style={[styles.checkbox, rememberMe && styles.checked]}>
-                            {rememberMe && <Text>X</Text>}
-                        </View>
-                        <Text>Remember Me</Text>
-                    </TouchableOpacity> */}
                     
                     {/* Forgot Password link */}
                     <TouchableOpacity onPress={() => navigation.navigate('VerificationEmail')}>
@@ -286,6 +284,12 @@ const styles = StyleSheet.create({
     imageStyle: {
         width: 150, // Adjust width as needed
         height: 150, // Adjust height as needed
+    },
+    signInError: {
+        color: 'red', // Set error message color to red
+        textAlign: 'center', // Center align the error message
+        marginTop: -15, // Add top margin
+        marginBottom:10,
     },
 });
 

@@ -1,3 +1,8 @@
+import { decode } from 'base-64';
+global.atob = decode;
+
+
+
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,12 +19,14 @@ import SignUpComponents from './login_feature/SignUp.js';
 import VerificationEmailComponents from './login_feature/VerificationEmail.js';
 import PetInfoFormComponents from './home_feature/PetInfoFormScreen.js';
 import PetInfoScreen from './home_feature/PetInfoScreen.js';
+import PetInfoEditComponents from './home_feature/petInfoEditScreen.js';
 import PetProfileScreen from './home_feature/PetProfileScreen.js';
 import AddPetComponents from './home_feature/AddPetProfile.js';
 import Vaccines from './vaccination_feature/VaccineListScreen.js';
 import FirstAidTips from './firstAidTips_feature/firstAidTips.js';
 import TrainingTips from './trainingTips_feature/trainingTips.js';
 import GoWithPet from './goWithPet_feature/goWithPetScreen.js';
+import HeatTrackerScreen from './heat_tracker_feature/HeatTrackerScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -190,7 +197,7 @@ const App = () => {
                   headerTintColor: '#FFFFFF', 
                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
                   headerLeft: () => ( 
-                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                              <TouchableOpacity onPress={() => navigation.navigate('AddPet')}>
                                 <View style={styles.backButton}>
                                 <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                 </View>                         
@@ -232,6 +239,25 @@ const App = () => {
                                   </TouchableOpacity>
                               )
                     })} /> 
+
+
+
+              <Stack.Screen 
+                    name="PetInfoEdit" 
+                    component={PetInfoEditComponents}
+                      options={({ navigation }) => ({
+                      title: 'Update Pet Profile',
+                      headerTitleAlign: 'center',
+                      headerTintColor: '#FFFFFF', 
+                      headerStyle: { backgroundColor: '#649F95' }, 
+                      headerLeft: () => ( 
+                                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <View style={styles.backButton}>
+                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                    </View>                         
+                                  </TouchableOpacity>
+                              )
+                    })} />            
 
             <Stack.Screen 
                   name="VaccineList" 
@@ -293,9 +319,11 @@ const App = () => {
                   name="GoWithPet" 
                   component={GoWithPet}
                     options={({ navigation }) => ({
-                    title: '',
+                    title: 'Go With Your Pet',
                     headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: '#649F95' }, // Set the background color of the header // Align the title to the center
+                    headerTintColor: '#FFFFFF', // Change the text color of the header title
+                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+                    headerTitleStyle: { fontSize: 24,  },
                     headerLeft: () => ( // Add custom headerLeft component
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                   <View style={styles.backButton}>
@@ -305,6 +333,23 @@ const App = () => {
                             )
                   })} />
 
+            <Stack.Screen 
+                name="HeatTracker" 
+                component={HeatTrackerScreen}
+                  options={({ navigation }) => ({
+                  title: 'HeatTracker',
+                  headerTitleAlign: 'center',
+                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
+                  headerTintColor: '#FFFFFF',
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                                </View>                         
+                              </TouchableOpacity>
+                          
+                          )
+                })} />
 
 
           </Stack.Navigator>
@@ -325,3 +370,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+

@@ -25,26 +25,35 @@ const PetProfile = ({ route }) => {
             }
         };
         fetchData();
-    }, [petID]);
+    }, 
+    [petID]
+    )
+    ;
 
 
     
     const handleContinue = () => {
+        console.log('petID in petInfo:', petID);
+        console.log('Type of petID in PetInfo:', typeof petID);
         // Navigate to PetInfoScreen with the petId parameter
-        navigation.navigate('PetInfoScreen', { petID: petID });
+        navigation.navigate('PetInfo', { petID: petID });
     };
 
-    const continueToMedical = (petID) => {
+    const continueToMedical = () => {
         // Navigate to Medical History
         navigation.navigate('Medical', { petId: petID });
     };
 
-    const continueToVaccines = (petID) => {
+    const continueToVaccines = () => {
+        // Log the value and type of petID
+        console.log('petID:', petID);
+        console.log('Type of petID:', typeof petID);
+        
         // Navigate to Vaccine History
         navigation.navigate('VaccineList', { petId: petID });
     };
 
-    const continueToHeatCycle = (petID) => {
+    const continueToHeatCycle = () => {
         // Navigate to Heat Cycle
         navigation.navigate('HeatCycle', { petId: petID });
     };
@@ -71,8 +80,13 @@ const PetProfile = ({ route }) => {
                 <View style={styles.addprofileContainer}>
                     {/* TouchableOpacity to navigate to pet profile details */}
                     <TouchableOpacity onPress={handleContinue}>
+                    {console.log('Pet photo URL:', petData && petData.photo)}
                         {petData && petData.photo ? (
-                            <Image source={{ uri: petData.photo }} style={styles.profilePhoto} />
+                            <Image 
+                            source={{ uri: petData.photo }} 
+                            style={styles.profilePhoto} 
+                            onError={(error) => console.error('Error loading image:', error)}
+                        />
                         ) : (
                             <FontAwesomeIcon icon={faPaw} style={styles.profilePhotoIcon} size={100} />
                         )}
@@ -263,9 +277,9 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75,
-        backgroundColor: '#DEEBE9', // Light gray background when no image selected
-        overflow: 'hidden', // Ensure the image is clipped to the border radius
-        zIndex: 1, // Ensure the profile picture container is above the body
+        backgroundColor: '#DEEBE9',
+        overflow: 'hidden',
+        zIndex: 1,
     },
     profilePhoto: {
         width: '100%',

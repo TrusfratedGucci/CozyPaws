@@ -6,11 +6,22 @@ import { useNavigation } from '@react-navigation/native';
 
 const PasswordChangedSuccessScreen = () => {
     const navigation = useNavigation();
+
+    const continueToAddPet = () => {
+        // Navigate to Training
+        navigation.navigate('AddPet');
+    };
+
+
     return (
         <View style={styles.container}>
            <LottieView 
                source={require('../assets/passwordChanged.json')} 
                style={styles.lottieView} 
+               autoPlay 
+               loop={false} // Set loop to false to play the animation only once
+               speed={1.5} // Increase speed to 2x
+               onAnimationFinish={() => console.log('Animation finished')} // Callback when animation finishes
            />
            <View style={styles.textContainer}>
            <Text style={styles.text}>Your account password has {'\n'}been successfully changed.</Text>
@@ -20,7 +31,7 @@ const PasswordChangedSuccessScreen = () => {
                {/* Continue button */}
                <Button 
                    title="Continue"
-                   // onPress={handleSignIn}
+                   onPress={continueToAddPet}
                    buttonStyle={styles.continueButtonStyle} // Apply button style
                    titleStyle={styles.continueButtonTextStyle} // Apply text style
                />

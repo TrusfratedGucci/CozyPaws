@@ -4,13 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { fetchPetData, updatePetData } from '../api/pet';
+import { getToken } from '../api/auth';
+import { useNavigation } from '@react-navigation/native';
 
 
 const PetInfoScreen= ({ route }) => {
     const petID = route.params.petID;
     const [petData, setPetData] = useState(null);
-    const [editModalVisible, setEditModalVisible] = useState(false);
-    const [editedPetData, setEditedPetData] = useState({});
+    const navigation = useNavigation(); // Access the navigation object
 
     const windowHeight = Dimensions.get('window').height;
 
@@ -27,32 +28,26 @@ const PetInfoScreen= ({ route }) => {
         fetchData();
     }, []);
 
-    
     const handleEdit = () => {
-        setEditModalVisible(true);
-        setEditedPetData(petData);
+        navigation.navigate('PetInfoEdit', { petID: petID });
     };
 
-    const handleSaveEdit = async () => {
-        try {
-            const token = await getToken();
-            await updatePetData(petID, editedPetData, token);
-            setEditModalVisible(false);
-        } catch (error) {
-            console.error('Error editing pet data:', error);
-        }
+
+    const formatDateOfBirth = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 
-    
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.profilePhotoContainer}>
-                        {petData && petData.photo ? (
-                            <Image source={{ uri: petData.photo }} style={styles.profilePhoto} />
-                        ) : (
-                            <FontAwesomeIcon icon={faPaw} style={styles.profilePhotoIcon} size={100} />
-                        )}             
+                {console.log('Pet photo URL:', petData && petData.photo)}
+                    {petData && petData.photo ? (
+                        <Image source={{ uri: petData.photo }} style={styles.profilePhoto} />
+                    ) : (
+                        <FontAwesomeIcon icon={faPaw} style={styles.profilePhotoIcon} size={100} />
+                    )}             
                 </View>
             </View>
 
@@ -95,7 +90,7 @@ const PetInfoScreen= ({ route }) => {
                             <Text style={styles.inputTextHeader}>Date of Birth</Text>
                         </View>
                         <View>
-                            <Text>{petData && petData.birthday}</Text>
+                            <Text>{petData && formatDateOfBirth(petData.birthday)}</Text>
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
@@ -104,68 +99,6 @@ const PetInfoScreen= ({ route }) => {
                         </TouchableOpacity>
                     </View>
                 </View>  
-                
-                <Modal
-                animationType="slide"
-                transparent={true}
-                visible={editModalVisible}
-                onRequestClose={() => setEditModalVisible(false)}
-            >
-                    <View style={styles.modalContainer}>
-                        <View style={styles.modalContent}>
-
-                        <TouchableOpacity onPress={() => setEditModalVisible(false)} style={styles.closeButton}>
-                            <Text style={styles.closeButtonText}>X</Text>
-                        </TouchableOpacity>
-
-                            <Text style={styles.modalHeader}>Edit Pet Details</Text>
-                            
-                            <View  style={styles.email}>
-                                <Text style={styles.inputTextHeader}>Name</Text>   
-                                <TextInput
-                                    style={styles.modalInput}
-                                    placeholder="Name"
-                                    value={editedPetData.name}
-                                    onChangeText={(text) => setEditedPetData({ ...editedPetData, name: text })}
-                                />
-                            </View>
-                            
-                            <View style={styles.email}>
-                                <Text style={styles.inputTextHeader}>Name</Text>
-                            <TextInput
-                                style={styles.modalInput}
-                                placeholder="Type"
-                                value={editedPetData.type}
-                                onChangeText={(text) => setEditedPetData({ ...editedPetData, type: text })}
-                            />
-                            </View>
-
-                            <View style={styles.email}>
-                                <Text style={styles.inputTextHeader}>Name</Text>
-                            <TextInput
-                                style={styles.modalInput}
-                                placeholder="Breed"
-                                value={editedPetData.breed}
-                                onChangeText={(text) => setEditedPetData({ ...editedPetData, breed: text })}
-                            />
-                            </View>
-
-                            <View style={styles.email}> 
-                                <Text style={styles.inputTextHeader}>Name</Text>
-                            <TextInput
-                                style={styles.modalInput}
-                                placeholder="Gender"
-                                value={editedPetData.gender}
-                                onChangeText={(text) => setEditedPetData({ ...editedPetData, gender: text })}
-                            />
-                            </View>
-
-                            <TouchableOpacity style={styles.saveButton} onPress={handleSaveEdit}>
-                                <Text style={styles.saveButtonText}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
             </View>
         </ScrollView>
     );

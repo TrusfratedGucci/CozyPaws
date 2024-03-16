@@ -8,17 +8,16 @@ import { faCirclePlus, faSquareXmark} from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePickerModal from '@react-native-community/datetimepicker';
 import { fetchVaccinationHistory, addNewVaccine } from '../api/pet';
+import { getToken } from '../api/auth';
 
-const Vaccines = () => {
-    const [showModal, setShowModal] = useState(false); // State variable to control modal visibility
+const Vaccines = ({ route }) => {
+    const petID = route.params.petId;
+    const [showModal, setShowModal] = useState(false);
     const [vaccineName, setVaccineName] = useState('');
     const [vaccineDate, setVaccineDate] = useState(new Date());
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const route = useRoute();
-    const { petId } = route.params || {}; // Handle undefined route.params
-    const navigation = useNavigation();
     const [vaccines, setVaccines] = useState([]);
-    
+
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
@@ -33,42 +32,41 @@ const Vaccines = () => {
     };
 
     const handleContinue = () => {
-        setShowModal(true); // Show modal when "Add a New Vaccine" is clicked
+        setShowModal(true);
     };
 
     useEffect(() => {
-         // Check if petId is defined
-        if (petId) {
-            // Call the fetchVaccinationHistory function with the petId
-            fetchVaccinationHistory(petId)
-                .then(data => {
-                    // Set the fetched data to the vaccines state
-                    setVaccines(data);
-                })
-                .catch(error => {
-                    // Log an error if fetching vaccines fails
-                    console.error('Error fetching vaccines:', error);
-                });
-        }
-    }, [petId]);
+        const fetchData = async () => {
+            try {
+                if (petID) {
+                    // Log the value and type of petID
+                    console.log('petID:', petID);
+                    console.log('Type of petID:', typeof petID);
     
+                    const token = await getToken();
+                    const data = await fetchVaccinationHistory(petID, token);
+                    setVaccines(data);
+                }
+            } catch (error) {
+                console.error('Error fetching vaccines:', error);
+            }
+        };
+    
+        fetchData(); // Call fetchData immediately
+    
+        // Ensure petId is included in dependencies to refetch data when it changes
+    }, [petID]);
 
     const handleAddVaccine = () => {
-        // Create a new vaccine object with the entered name, selected date, and petId
-        const newVaccine = { petId: petId, vaccineName: vaccineName, vaccinationDate: vaccineDate };
-        
-        // Call the addNewVaccine function with the new vaccine data
+        const newVaccine = { petId: petID, vaccineName: vaccineName, vaccinationDate: vaccineDate };
         addNewVaccine(newVaccine)
             .then(response => {
-                // Log success message and update vaccines state with the new vaccine
                 console.log('Vaccine added successfully:', response);
                 setVaccines([...vaccines, response]);
-                // Clear input fields after adding vaccine
                 setVaccineName('');
                 setVaccineDate(new Date());
             })
             .catch(error => {
-                // Log an error if adding vaccine fails
                 console.error('Error adding vaccine:', error);
             });
     };
