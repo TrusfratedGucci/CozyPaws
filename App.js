@@ -27,6 +27,8 @@ import FirstAidTips from './firstAidTips_feature/firstAidTips.js';
 import TrainingTips from './trainingTips_feature/trainingTips.js';
 import GoWithPet from './goWithPet_feature/goWithPetScreen.js';
 import HeatTrackerScreen from './heat_tracker_feature/HeatTrackerScreen.js';
+import MedicalHistory from './medical_history_feature/medical_history_screen.js';
+import CreateHistory from './medical_history_feature/create_history_screen.js';
 
 const Stack = createStackNavigator();
 
@@ -352,6 +354,43 @@ const App = () => {
                 })} />
 
 
+            <Stack.Screen 
+                  name="CreateHistory" 
+                  component={CreateHistory}
+                    options={({ navigation }) => ({
+                    title: 'Create Medical Record',
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#FFFFFF',
+                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+                    headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
+                    headerLeft: () => ( // Add custom headerLeft component
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                  <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  </View>                         
+                                </TouchableOpacity>
+                            )
+                  })} />  
+
+          <Stack.Screen 
+                  name="MedicalHistory" 
+                  component={MedicalHistory}
+                    options={({ navigation }) => ({
+                    title: 'Medical History',
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#FFFFFF',
+                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+                    headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
+                    headerLeft: () => ( // Add custom headerLeft component
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                  <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  </View>                         
+                                </TouchableOpacity>
+                            )
+                  })} />
+
+
           </Stack.Navigator>
       </NavigationContainer>
   );
@@ -370,4 +409,5 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+
 

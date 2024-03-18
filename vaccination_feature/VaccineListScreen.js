@@ -6,70 +6,71 @@ import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-native-elements';
 import { faCirclePlus, faSquareXmark} from '@fortawesome/free-solid-svg-icons';
 import { useNavigation } from '@react-navigation/native';
-import DateTimePickerModal from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { fetchVaccinationHistory, addNewVaccine } from '../api/pet';
 import { getToken } from '../api/auth';
 
 const Vaccines = ({ route }) => {
     const petID = route.params.petId;
     const [showModal, setShowModal] = useState(false);
-    const [vaccineName, setVaccineName] = useState('');
-    const [vaccineDate, setVaccineDate] = useState(new Date());
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [vaccines, setVaccines] = useState([]);
+    const [vaccine, setVaccine] = useState({
+        vaccineName: '',
+        vaccineDate: null // Initialize date within the record state
+    });
+    const [openCalendar, setOpenCalendar] = useState(false); // State for calendar
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
+    const openDatePicker = () => {
+        setOpenCalendar(true); // Open the date picker
     };
 
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-    };
-
-    const handleConfirm = (date) => {
-        setVaccineDate(date);
-        hideDatePicker();
+    // Function to handle date change
+    const handleDateChange = (event, selectedDate) => {
+        setOpenCalendar(false); // Close the date picker
+        if (selectedDate) {
+            setVaccine({ ...vaccine, vaccineDate: selectedDate });
+        }
     };
 
     const handleContinue = () => {
         setShowModal(true);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if (petID) {
-                    // Log the value and type of petID
-                    console.log('petID:', petID);
-                    console.log('Type of petID:', typeof petID);
-    
-                    const token = await getToken();
-                    const data = await fetchVaccinationHistory(petID, token);
-                    setVaccines(data);
-                }
-            } catch (error) {
-                console.error('Error fetching vaccines:', error);
+    const fetchData = async () => {
+        try {
+            if (petID) {
+                console.log('petID:', petID);
+                console.log('Type of petID:', typeof petID);
+
+                const token = await getToken();
+                const data = await fetchVaccinationHistory(petID, token);
+                setVaccine(data);
             }
-        };
-    
+        } catch (error) {
+            console.error('Error fetching vaccines:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchData(); // Call fetchData immediately
-    
+
         // Ensure petId is included in dependencies to refetch data when it changes
     }, [petID]);
 
-    const handleAddVaccine = () => {
-        const newVaccine = { petId: petID, vaccineName: vaccineName, vaccinationDate: vaccineDate };
-        addNewVaccine(newVaccine)
-            .then(response => {
-                console.log('Vaccine added successfully:', response);
-                setVaccines([...vaccines, response]);
-                setVaccineName('');
-                setVaccineDate(new Date());
-            })
-            .catch(error => {
-                console.error('Error adding vaccine:', error);
-            });
+    const handleAddVaccine = async () => {
+        try {
+            const token = await getToken();
+            console.log("Pet ID:", petID); // Add this line
+            const response = await addNewVaccine(vaccine, petID, token);
+            console.log("Response:", response); // Add this line
+            setShowModal(false);
+    
+            // Refetch vaccination history data
+            fetchData();
+        } catch (error) {
+            console.error('Error adding new vaccine:', error);
+        }
     };
+    
 
 
     return (
@@ -77,30 +78,30 @@ const Vaccines = ({ route }) => {
 
             <View style={styles.body}>
 
-            <View style={styles.header}>
-                <View style={styles.addVaccineContainer}>
-                    <View>
-                        {/* TouchableOpacity to navigate to pet profile creation */}
-                        <TouchableOpacity onPress={handleContinue}> 
-                            <FontAwesomeIcon icon={faCirclePlus} color="#5b8f86" size={50} />
-                        </TouchableOpacity>
-                    </View>       
+                <View style={styles.header}>
+                    <View style={styles.addVaccineContainer}>
+                        <View>
+                            {/* TouchableOpacity to navigate to pet profile creation */}
+                            <TouchableOpacity onPress={handleContinue}> 
+                                <FontAwesomeIcon icon={faCirclePlus} color="#5b8f86" size={50} />
+                            </TouchableOpacity>
+                        </View>       
 
-                    <View>
-                        <TouchableOpacity onPress={handleContinue}>
-                            <Text style={styles.addVaccineText}> Add a New Vaccine</Text>
-                        </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity onPress={handleContinue}>
+                                <Text style={styles.addVaccineText}> Add a New Vaccine</Text>
+                            </TouchableOpacity>
+                        </View>
+                        
                     </View>
-                    
                 </View>
-            </View>
 
                 <View style={styles.vaccineListCard}>
                     <View style={styles.vaccineListHeaderContainer}>
                         <Text style={styles.vaccineListHeader}>Done Vaccines</Text>
                     </View>
                     <FlatList 
-                        data={vaccines}
+                        data={vaccine}
                         renderItem={({ item }) => (
                             <View style={styles.vaccineStyle}>
 
@@ -109,7 +110,7 @@ const Vaccines = ({ route }) => {
                                 </View>
                                 
                                 <View style={styles.vaccineDateStyle}>
-                                    <Text>Date : {new Date(item.vaccinationDate).toLocaleDateString()}</Text>
+                                    <Text>Date : {new Date(item.vaccineDate).toLocaleDateString()}</Text>
                                 </View>
                                 
                             </View>
@@ -127,54 +128,49 @@ const Vaccines = ({ route }) => {
                         <View style={styles.modalContainer}>
                             <View style={styles.modalContent}>
 
-                            <TouchableOpacity onPress={() => setShowModal(false)} style={styles.closeButton}>
-                                <FontAwesomeIcon icon={faSquareXmark} style={{color: "#5b8f86",}} size={25} />
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={() => setShowModal(false)} style={styles.closeButton}>
+                                    <FontAwesomeIcon icon={faSquareXmark} style={{color: "#5b8f86",}} size={25} />
+                                </TouchableOpacity>
                                 <View >
                                     <Text style={styles.inputTextHeader}>Name</Text>
                                     <TextInput
                                         style={styles.modalInput}
                                         placeholder="Enter Vaccine Name"
-                                        value={vaccineName}
-                                        onChangeText={setVaccineName}
+                                        value={vaccine.vaccineName}
+                                        onChangeText={(text) => setVaccine({ ...vaccine, vaccineName: text })}
                                     />
                                 </View>    
                                 <View style={styles.dateContainer}>
-                                    <View>
-                                        <Text style={styles.inputTextHeader}>Date</Text>
-                                        <TextInput
-                                            style={[styles.modalInput, styles.dateInputText]}
-                                            placeholder="Selected Date"
-                                            value={vaccineDate.toLocaleDateString()} // Display selected date
-                                            editable={false} // Make it non-editable
-                                        />
-                                    </View>
-                                    <View style={styles.datePickerContainer}>
-                                        <TouchableOpacity style={styles.datePickerButton} onPress={showDatePicker}>
-                                            <FontAwesomeIcon icon={faCalendar} style={styles.calendarIcon} />
-                                        </TouchableOpacity>
-                                        {isDatePickerVisible && (
-                                            <DateTimePickerModal
-                                            value={vaccineDate} // Set the value prop to vaccineDate
-                                            mode="date"
-                                            display="spinner"
-                                            onChange={(event, date) => handleConfirm(date)}
-                                        />
-                                        
-                                            )}
-                                        </View>
-                                    </View>
-                                    <View style={styles.addButton}>
-                                    {/* Add button */}
-                                    <Button
-                                        title="Add Vaccine"
-                                        onPress={handleAddVaccine}
-                                        buttonStyle={styles.addButtonStyle} // Apply button style
-                                        titleStyle={styles.addButtonText} // Apply text style
+                                    <TouchableOpacity onPress={openDatePicker} style={styles.date}>
+                                    <TextInput
+                                        style={styles.date}
+                                        placeholder="Date"
+                                        value={vaccine.vaccineDate ? vaccine.vaccineDate.toDateString() : ''}
+                                        editable={false}
                                     />
-                            </View>  
-                        </View>
+
+                                    </TouchableOpacity>
+                                </View>
+                                    <View style={styles.addButton}>
+                                        {/* Add button */}
+                                        <Button
+                                            title="Add Vaccine"
+                                            onPress={handleAddVaccine}
+                                            buttonStyle={styles.addButtonStyle} // Apply button style
+                                            titleStyle={styles.addButtonText} // Apply text style
+                                        />
+                                    </View>  
+                            </View>
                     </View>
+                    {openCalendar && (
+                        <DateTimePicker
+                            value={vaccine.vaccineDate || new Date()}
+                            mode="date"
+                            is24Hour={true}
+                            display="default"
+                            onChange={handleDateChange}
+                        />
+                    )}
                 </Modal>
             </View>
         </View>
@@ -353,7 +349,18 @@ const styles = StyleSheet.create({
     },
     closeButton: {
         marginBottom: 20,
-    }
+    },
+    date: {
+        width: 150,
+        height: 50,
+        borderColor: '#DEEBE9',
+        borderWidth: 1,
+        backgroundColor: '#DEEBE9',
+        paddingLeft: 10,
+        marginBottom: 10,
+        borderRadius: 16,
+        color: 'black',
+    },
 });
 
 export default Vaccines;
