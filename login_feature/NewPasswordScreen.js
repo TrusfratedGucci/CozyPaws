@@ -3,43 +3,45 @@ import { StyleSheet, TextInput, TouchableOpacity, View, Text, Image } from 'reac
 import { Button } from 'react-native-elements'; // Import Button component
 import { useNavigation } from '@react-navigation/native';
 import { resetPassword } from '../api/auth'; // Import the resetPassword function from your API file
+import { getToken } from '../api/auth';
 
 const NewPasswordComponents = () => {
     const navigation = useNavigation();
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const listItems = [
-    '8 characters long',
-    'Contain at least one uppercase letter ',
-    'One lowercase letter',
-    'One digit',
-    'One special character',
-  ];
+        '8 characters long',
+        'Contain at least one uppercase letter ',
+        'One lowercase letter',
+        'One digit',
+        'One special character',
+    ];
 
-  const handleResetPassword = async () => {
-    try {
-        // Check if passwords match
-        if (newPassword !== confirmPassword) {
-            console.log('Passwords do not match');
-            return;
-        }
+    const handleResetPassword = async () => {
+        try {
+            // Check if passwords match
+            if (newPassword !== confirmPassword) {
+                console.log('Passwords do not match');
+                return;
+            }
 
-        // Send request to reset password
-        const isPasswordReset = await resetPassword('reset_token_received_from_previous_step', newPassword);
+            const token = await getToken(); // Retrieving the token
+            // Send request to reset password
+            const isPasswordReset = await resetPassword(token, newPassword);
 
-        if (isPasswordReset) {
-            // Password reset successful, navigate to success screen
-            navigation.navigate('PasswordChangedSuccessScreen');
-        } else {
+            if (isPasswordReset) {
+                // Password reset successful, navigate to success screen
+                navigation.navigate('PasswordChangedSuccess');
+            } else {
+                // Handle error
+                console.log('Password reset failed');
+            }
+        } catch (error) {
             // Handle error
-            console.log('Password reset failed');
+            console.error('Error resetting password:', error);
         }
-    } catch (error) {
-        // Handle error
-        console.error('Error resetting password:', error);
-    }
-};
-
-   
+    };
 
     return (
         <View style={styles.container}>
@@ -53,9 +55,9 @@ const NewPasswordComponents = () => {
                     Your password must be at least:
                     <View style={styles.list}>
                         {listItems.map((item, index) => (
-                        <Text key={index} style={[styles.listItem, { color: 'grey' }]}>
-                            • {item}
-                        </Text>
+                            <Text key={index} style={[styles.listItem, { color: 'grey' }]}>
+                                • {item}
+                            </Text>
                         ))}
                     </View>
                 </Text>
@@ -69,6 +71,8 @@ const NewPasswordComponents = () => {
                         style={styles.inputText}
                         placeholder="Password"
                         secureTextEntry={true}
+                        value={newPassword}
+                        onChangeText={setNewPassword}
                     />
                 </View>
 
@@ -79,9 +83,11 @@ const NewPasswordComponents = () => {
                         style={styles.inputText}
                         placeholder="Re-enter your password"
                         secureTextEntry={true}
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
                     />
                 </View>
-                
+
                 <View style={styles.continueButton}>
                     {/* Continue button */}
                     <Button 

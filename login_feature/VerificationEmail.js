@@ -17,7 +17,7 @@ const VerificationEmailComponents = () => {
         if (requestSent) {
             // Password reset request sent successfully
             // Navigate to the verification code component
-            navigation.navigate('VerificationCodeComponents');
+            navigation.navigate('VerificationCode');
         } else {
             // Show error message
             setEmailError('Failed to send password reset request');

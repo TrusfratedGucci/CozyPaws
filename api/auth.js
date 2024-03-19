@@ -128,16 +128,25 @@ export const signUp = async (username, email, password) => {
 
 
 
-
-//backed call for forgotpassword
 export const forgotPassword = async (email) => {
     try {
         const response = await axios.post(`${BASE_URL}/auth/forgot-password`, { email });
 
         if (response.status === 200) {
-            // Request sent successfully
-            // Return true to indicate successful request
-            return true;
+            if (response.data.resetToken) {
+                // Store the reset code in AsyncStorage
+                await AsyncStorage.setItem('token', response.data.resetToken);
+
+                // Log the token after it's stored
+             console.log('Token stored:', response.data.resetToken);
+                // Return true to indicate successful request
+                return true;
+            } else {
+                // Handle case where reset code is null or undefined
+                console.error('Reset code is null or undefined');
+                // Return false or handle the error appropriately
+                return false;
+            }
         } else {
             // Request failed
             // Return false to indicate failed request
@@ -151,14 +160,19 @@ export const forgotPassword = async (email) => {
 };
 
 
+
 // Function to verify the verification code
 export const verifyVerificationCode = async (verificationCode) => {
+    console.log("Verification Code:", verificationCode);
     try {
+        const joinedCode = verificationCode.join(''); // Join the array elements into a single string
+        console.log("Joined Code:", joinedCode);
         const response = await axios.post(`${BASE_URL}/auth/forgot-password/verify`, {
-            verificationCode: verificationCode.join('')
+            verificationCode: joinedCode
         });
 
         if (response.status === 200) {
+            console.log("Yay! Verified");
             // Verification successful
             // Return true to indicate successful verification
             return true;
@@ -177,11 +191,19 @@ export const verifyVerificationCode = async (verificationCode) => {
 
 // Backend call to reset password
 export const resetPassword = async (token, newPassword) => {
+    console.log("Reset Code:", token);
     try {
         const response = await axios.post(`${BASE_URL}/auth/reset-password`, {
             token,
             newPassword,
-        });
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json' 
+            }
+        }
+        
+        );
 
         if (response.status === 200) {
             // Password reset successful
