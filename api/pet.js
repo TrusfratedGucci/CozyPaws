@@ -122,17 +122,21 @@ export const addNewVaccine = async (newVaccineData, petId, token) => {
 // Backend call to fetch heat cycle data and update last heat cycle date
 export const fetchHeatCycleDataAndUpdateLastDate = async (petId, selectedDate, token) => {
     try {
-        await axios.post(`${BASE_URL}/pet/heat-cycle/${petId}`, {
+        const response = await axios.post(`${BASE_URL}/pet/heat-cycle/${petId}`, {
             selectedDate
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
+
+        return response.data; // Return the response data
     } catch (error) {
+        console.log(error);
         throw new Error('Error fetching or updating heat cycle data:', error);
     }
 };
+
 
 // Backend call to create medical history record of a specific pet
 export const createMedicalHistoryRecord = async (petId, medicalRecordData, token) => {

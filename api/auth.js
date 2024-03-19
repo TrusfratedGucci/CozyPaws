@@ -23,13 +23,13 @@ const BASE_URL = 'http://192.168.1.9:3000';
 
 // Function to get token stored in AsyncStorage
 export const getToken = async () => {
-    console.log("hello first:");
+    
     try {
         const token = await AsyncStorage.getItem('token'); // Retrieving token using the same key used for storing it
-        console.log("hello:");
+       
         if (token !== null) {
-            // Token retrieved successfully
-            console.log(token);
+            // // Token retrieved successfully
+            // console.log(token);
             return token;
             
         } else {

@@ -33,7 +33,7 @@ const AddPetComponents = () => {
             }
         };        
         fetchData();
-    }, []);
+    }, [petData]);
     
     const handleContinue = () => {
         navigation.navigate('PetInfoForm');

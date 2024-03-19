@@ -26,7 +26,10 @@ const PetInfoScreen= ({ route }) => {
             }
         };
         fetchData();
-    }, []);
+    }, [
+        petID, 
+        petData
+    ]);
 
     const handleEdit = () => {
         navigation.navigate('PetInfoEdit', { petID: petID });

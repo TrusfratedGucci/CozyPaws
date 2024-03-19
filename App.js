@@ -178,16 +178,17 @@ const App = () => {
                       options={({ navigation }) => ({
                       title: 'Add Pet Profile',
                       headerTitleAlign: 'center',
-                      headerTintColor: '#FFFFFF', 
-                      headerStyle: { backgroundColor: '#649F95' }, 
-                      headerLeft: () => ( 
-                                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                    </View>                         
-                                  </TouchableOpacity>
-                              )
-                    })} /> 
+                    headerTintColor: '#FFFFFF', // Change the text color of the header title
+                    headerStyle: { backgroundColor: '#649F95',height: 100,},
+                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                        headerLeft: () => ( // Add custom headerLeft component
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                      <View style={styles.backButton}>
+                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                      </View>                         
+                                    </TouchableOpacity>
+                                )
+                      })} /> 
 
 
           <Stack.Screen
@@ -196,16 +197,17 @@ const App = () => {
                   options={({ navigation }) => ({
                   title: 'Pet Profile',
                   headerTitleAlign: 'center',
-                  headerTintColor: '#FFFFFF', 
-                   headerStyle: { backgroundColor: '#649F95',height: 100,}, 
-                  headerLeft: () => ( 
-                              <TouchableOpacity onPress={() => navigation.navigate('AddPet')}>
-                                <View style={styles.backButton}>
-                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                </View>                         
-                              </TouchableOpacity>
-                          ),
-                })}/>
+                    headerTintColor: '#FFFFFF', // Change the text color of the header title
+                    headerStyle: { backgroundColor: '#649F95',height: 100,},
+                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                        headerLeft: () => ( // Add custom headerLeft component
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                      <View style={styles.backButton}>
+                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                      </View>                         
+                                    </TouchableOpacity>
+                                )
+                      })} /> 
 
 
 
@@ -213,17 +215,19 @@ const App = () => {
                 name="PetInfo" 
                 component={PetInfoScreen}
                   options={({ navigation }) => ({
-                  title: '',
+                  title: 'Pet Details',
                   headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: '#649F95' }, 
-                  headerLeft: () => ( 
-                              <TouchableOpacity onPress={() => navigation.goBack()}>
-                                <View style={styles.backButton}>
-                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                </View>                         
-                              </TouchableOpacity>
-                          )
-                })}/>
+                    headerTintColor: '#FFFFFF', // Change the text color of the header title
+                    headerStyle: { backgroundColor: '#649F95',height: 100,},
+                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                        headerLeft: () => ( // Add custom headerLeft component
+                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                      <View style={styles.backButton}>
+                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                      </View>                         
+                                    </TouchableOpacity>
+                                )
+                      })} /> 
 
              <Stack.Screen 
                     name="PetInfoForm" 
@@ -231,16 +235,17 @@ const App = () => {
                       options={({ navigation }) => ({
                       title: 'Create Pet Profile',
                       headerTitleAlign: 'center',
-                      headerTintColor: '#FFFFFF', 
-                      headerStyle: { backgroundColor: '#649F95' }, 
-                      headerLeft: () => ( 
-                                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                    </View>                         
-                                  </TouchableOpacity>
-                              )
-                    })} /> 
+                      headerTintColor: '#FFFFFF', // Change the text color of the header title
+                      headerStyle: { backgroundColor: '#649F95',height: 100,},
+                      headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                          headerLeft: () => ( // Add custom headerLeft component
+                                      <TouchableOpacity onPress={() => navigation.goBack()}>
+                                        <View style={styles.backButton}>
+                                        <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                        </View>                         
+                                      </TouchableOpacity>
+                                  )
+                        })} /> 
 
 
 
@@ -250,16 +255,17 @@ const App = () => {
                       options={({ navigation }) => ({
                       title: 'Update Pet Profile',
                       headerTitleAlign: 'center',
-                      headerTintColor: '#FFFFFF', 
-                      headerStyle: { backgroundColor: '#649F95' }, 
-                      headerLeft: () => ( 
-                                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                    </View>                         
-                                  </TouchableOpacity>
-                              )
-                    })} />            
+                      headerTintColor: '#FFFFFF', // Change the text color of the header title
+                      headerStyle: { backgroundColor: '#649F95',height: 100,},
+                      headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                          headerLeft: () => ( // Add custom headerLeft component
+                                      <TouchableOpacity onPress={() => navigation.goBack()}>
+                                        <View style={styles.backButton}>
+                                        <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                        </View>                         
+                                      </TouchableOpacity>
+                                  )
+                        })} />      
 
             <Stack.Screen 
                   name="VaccineList" 
@@ -283,7 +289,7 @@ const App = () => {
                   name="FirstAidTips" 
                   component={FirstAidTips}
                     options={({ navigation }) => ({
-                    title: 'Vaccination History',
+                    title: 'First-Aid Tips',
                     headerTitleAlign: 'center',
                     headerTintColor: '#FFFFFF', // Change the text color of the header title
                     headerStyle: { backgroundColor: '#649F95',height: 100,},
@@ -339,19 +345,19 @@ const App = () => {
                 name="HeatTracker" 
                 component={HeatTrackerScreen}
                   options={({ navigation }) => ({
-                  title: 'HeatTracker',
-                  headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, // Set the background color of the header // Align the title to the center
-                  headerTintColor: '#FFFFFF',
-                  headerLeft: () => ( // Add custom headerLeft component
-                              <TouchableOpacity onPress={() => navigation.goBack()}>
-                                <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
-                                </View>                         
-                              </TouchableOpacity>
-                          
-                          )
-                })} />
+                    title: 'Heat Cycle Tracker',
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#FFFFFF',
+                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+                    headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
+                    headerLeft: () => ( // Add custom headerLeft component
+                                <TouchableOpacity onPress={() => navigation.goBack()}>
+                                  <View style={styles.backButton}>
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  </View>                         
+                                </TouchableOpacity>
+                            )
+                  })} />  
 
 
             <Stack.Screen 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MyCalendar from "./MyCalendar";
+import HeatCycleCalendar from "./heatCycleCalendar";
 import { fetchHeatCycleDataAndUpdateLastDate } from '../api/pet';
+import { getToken } from '../api/auth';
 
 const HeatTrackerScreen = ({ route }) => {
     const petID = route.params.petId;
@@ -20,33 +21,36 @@ const HeatTrackerScreen = ({ route }) => {
     const [phaseDurations, setPhaseDurations] = useState({});
 
     useEffect(() => {
-        // Fetch initial heat cycle data
-        fetchHeatCycleDataAndUpdateLastDate(petID, null)
-            .then(data => {
+        const fetchData = async () => {
+            const token = await getToken();
+            try {
+                const data = await fetchHeatCycleDataAndUpdateLastDate(petID, null, token); // Pass null for selectedDate to fetch initial data
                 setCurrentPhase(data.currentPhase);
                 setPhaseDurations(data.phaseDurations);
-            })
-            .catch(error => console.error(error));
-            // Set initial phase and durations to empty or null
-            setCurrentPhase('');
-            setPhaseDurations({});
-    }, [petID]); // Including petID as a dependency so that useEffect runs when petID changes
-    
+            } catch (error) {
+                console.error('Error fetching initial heat cycle data:', error);
+            }
+        };
+
+        fetchData(); // Fetch data when the component mounts
+    }, [petID]);
+
     const onSelectDate = async (selectedDate) => {
         setShowCalendar(false); // Hide the calendar modal
     
+        const token = await getToken(); // Retrieving the token
+    
         try {
             // Fetch heat cycle data and update last heat cycle date
-            const data = await fetchHeatCycleDataAndUpdateLastDate(petID, selectedDate);
+            const data = await fetchHeatCycleDataAndUpdateLastDate(petID, selectedDate, token);
             setCurrentPhase(data.currentPhase);
             setPhaseDurations(data.phaseDurations);
+            // You may need to perform additional actions here based on your requirements
         } catch (error) {
             console.error('Error fetching or updating heat cycle data:', error);
         }
     };
     
-
-
 
     const getDescription = () => {
         switch (currentPhase) {
@@ -65,11 +69,24 @@ const HeatTrackerScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.upperContainer}>
+            {/* <View style={styles.upperContainer}>
                 <Text style={styles.headerText}>Heat Tracker</Text>
-            </View>
+            </View> */}
 
             <View style={styles.lowerContainer}>
+
+                {/* Calendar Modal */}
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={showCalendar}
+                    onRequestClose={() => setShowCalendar(false)}
+                >
+                    <View style={styles.modalBackground}>
+                        <HeatCycleCalendar onSelectDate={onSelectDate} />
+                    </View>
+                </Modal>
+
                 <View style={styles.box1}>
                     <View style={styles.row}>
                         <View style={styles.boxTextContainer}>
@@ -102,18 +119,7 @@ const HeatTrackerScreen = ({ route }) => {
 
             </View>
 
-            {/* Calendar Modal */}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={showCalendar}
-                onRequestClose={() => setShowCalendar(false)}
-            >
-                <View style={styles.modalBackground}>
-                    <MyCalendar onSelectDate={onSelectDate} />
-                </View>
-            </Modal>
-
+            
         </View>
     );
 };
@@ -121,6 +127,7 @@ const HeatTrackerScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#649F95',
     },
     upperContainer: {
         flex: 1,
@@ -133,7 +140,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        height: '83%', // Adjust the height as needed
+        height: '90%', // Adjust the height as needed
         backgroundColor: 'white',
         borderTopLeftRadius: 20, // Adjust the border radius as needed
         borderTopRightRadius: 20, // Adjust the border radius as needed
@@ -193,7 +200,7 @@ const styles = StyleSheet.create({
     },
 
     iconContainer: {
-        marginTop: 550,
+        marginTop: 520,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10, // Adjust the radius to match the icon size

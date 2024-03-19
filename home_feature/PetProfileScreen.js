@@ -25,10 +25,8 @@ const PetProfile = ({ route }) => {
             }
         };
         fetchData();
-    }, 
-    [petID]
-    )
-    ;
+    }, [petID, petData]); // Include petID and petData in the dependency array
+    
 
 
     
@@ -55,7 +53,7 @@ const PetProfile = ({ route }) => {
 
     const continueToHeatCycle = () => {
         // Navigate to Heat Cycle
-        navigation.navigate('HeatCycle', { petId: petID });
+        navigation.navigate('HeatTracker', { petId: petID });
     };
 
     const continueToFirstAid = () => {
@@ -77,27 +75,17 @@ const PetProfile = ({ route }) => {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
-                <View style={styles.addprofileContainer}>
-                    {/* TouchableOpacity to navigate to pet profile details */}
-                    <TouchableOpacity onPress={handleContinue}>
-                    {console.log('Pet photo URL:', petData && petData.photo)}
+                <TouchableOpacity onPress={handleContinue}>
+                    <View style={styles.petProfileContainer}>
                         {petData && petData.photo ? (
-                            <Image 
-                            source={{ uri: petData.photo }} 
-                            style={styles.profilePhoto} 
-                            onError={(error) => console.error('Error loading image:', error)}
-                        />
+                            <Image source={{ uri: petData.photo }} style={styles.profilePhoto} />
                         ) : (
                             <FontAwesomeIcon icon={faPaw} style={styles.profilePhotoIcon} size={100} />
                         )}
-                    </TouchableOpacity>
-
-                </View>
-
-
-                <View style={styles.addPhotoContainer}> 
-                    <TouchableOpacity onPress={handleContinue} >
-                        {/* Text link to  profile */}
+                    </View>
+                </TouchableOpacity>
+                <View style={styles.addPhotoContainer}>
+                    <TouchableOpacity onPress={handleContinue}>
                         <Text style={styles.addPhotoLink}>{petData && petData.name}</Text>
                     </TouchableOpacity>
                 </View>
@@ -253,7 +241,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative', // Make the header position relative
+        // position: 'relative', // Make the header position relative
     },
     headerText: {
         fontSize: 24,
@@ -268,25 +256,9 @@ const styles = StyleSheet.create({
         width: '100%', // Make the width equal to the device width
         padding: 20,
         paddingBottom: 40,
-        marginTop: -110, // Adjust the top margin to overlap with the profile picture container
-        position: 'relative', // Make the body position relative
-    },
-    addprofileContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 150,
-        height: 150,
-        borderRadius: 75,
-        backgroundColor: '#DEEBE9',
-        overflow: 'hidden',
-        zIndex: 1,
-    },
-    profilePhoto: {
-        width: '100%',
-        height: '100%',
-    },
-    profilePhotoIcon: {
-        color: '#5B8F86', // Placeholder icon color
+        marginTop: -130, // Adjust the top margin to overlap with the profile picture container
+        // position: 'relative', // Make the body position relative
+        zIndex: -10,
     },
     profileButtons: {
         borderRadius: 6, // Add border radius
@@ -342,13 +314,6 @@ const styles = StyleSheet.create({
         fontWeight: '600', // Semi-bold
         // textDecorationLine: 'underline',
     },
-    petProfileContainer: {
-        width: 150,
-        height: 150,
-        marginVertical: 10,
-        borderRadius: 75,
-        overflow: 'hidden',
-    },
     petProfileImage: {
         flex: 1,
         width: null,
@@ -357,6 +322,27 @@ const styles = StyleSheet.create({
     lastInRow: {
         marginRight: 10, // Adjust the margin between elements in the same row
         marginBottom: 10, // Add margin bottom to move to the next row
+    },
+    petProfileContainer: {
+        width: 150,
+        height: 150,
+        marginVertical: 10,
+        borderRadius: 75,
+        overflow: 'hidden',
+        justifyContent: 'center', // Center items vertically
+        alignItems: 'center', // Center items horizontally
+        backgroundColor: '#DEEBE9',
+        zIndex: 100,
+    },
+    profilePhoto: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover', // Ensure the image covers the entire container
+    },
+    profilePhotoIcon: {
+        color: '#5B8F86',
+        width: '100%',
+        height: '100%',
     },
 });
 
