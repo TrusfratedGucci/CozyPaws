@@ -35,7 +35,7 @@ const StartScreenComponents = () => {
                             <TouchableOpacity 
                                 style={styles.signUpButtonStyle}
                                 onPress={() => navigation.navigate('SignUp')}>
-                                <Text style={styles.signInButtonTextStyle}>Sign Up</Text>
+                                <Text style={styles.signUpButtonTextStyle}>Sign Up</Text>
                             </TouchableOpacity>
                         </View>
                           
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
         marginBottom: 40,
     },
     signUpButtonStyle: {
-        backgroundColor: '#305C55', // Change button background color to F86919
-        borderColor: '#305C55', // Change button border color
+        backgroundColor: 'white', // Change button background color to F86919
+        borderColor: 'white', // Change button border color
         borderWidth: 1, // Add button border width
         borderRadius: 20, // Add button border radius
         height: 55, // Set button height
@@ -121,6 +121,11 @@ const styles = StyleSheet.create({
     },
     signInButtonTextStyle: {
         color: 'white', // Change text color
+        fontSize: 20,
+        fontWeight: '600',
+    },
+    signUpButtonTextStyle: {
+        color: '#305C55', // Change text color
         fontSize: 20,
         fontWeight: '600',
     },
