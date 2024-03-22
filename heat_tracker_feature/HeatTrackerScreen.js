@@ -90,7 +90,7 @@ const HeatTrackerScreen = ({ route }) => {
                 <View style={styles.box1}>
                     <View style={styles.row}>
                         <View style={styles.boxTextContainer}>
-                            <Text style={styles.boxTextHeader}>Phase: {currentPhase}</Text>
+                            <Text style={styles.boxTextHeader}>Current Phase: {currentPhase}</Text>
                         </View>
                     </View>
                     <View style={styles.row}>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.6:3000';
+const BASE_URL = 'http://192.168.1.9:3000';
 
 export const fetchPetProfiles = async (token) => { 
     try {
@@ -59,6 +59,7 @@ export const fetchPetData = async (petID, token) => {
                 
             }
         });
+        console.log("Pet data", response.data)
         return response.data;
     } catch (error) {
         console.error('Error fetching pet data:', error);
@@ -68,6 +69,7 @@ export const fetchPetData = async (petID, token) => {
 
 // Backend call to update data of specific pet 
 export const updatePetData = async (petID, editedPetData, token) => {
+    console.log("Updateted pet data", editedPetData)
     try {
         const response = await axios.put(`${BASE_URL}/pet/${petID}`, editedPetData, {
             headers: {

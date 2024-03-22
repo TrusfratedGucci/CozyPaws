@@ -5,7 +5,7 @@ import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { fetchPetData, updatePetData } from '../api/pet';
 import { getToken } from '../api/auth';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 
 const PetInfoScreen= ({ route }) => {
@@ -15,21 +15,25 @@ const PetInfoScreen= ({ route }) => {
 
     const windowHeight = Dimensions.get('window').height;
 
-    useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const token = await getToken();
                 const data = await fetchPetData(petID, token);
+                console.log('Fetched data:', data); // Log the pet data here
                 setPetData(data);
             } catch (error) {
                 console.error('Error fetching pet data:', error);
             }
         };
-        fetchData();
-    }, [
-        petID, 
-        petData
-    ]);
+
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData();
+        }, [petID]) // Fetch data whenever petID changes or when the component is focused
+    );
 
     const handleEdit = () => {
         navigation.navigate('PetInfoEdit', { petID: petID });
@@ -93,6 +97,7 @@ const PetInfoScreen= ({ route }) => {
                             <Text style={styles.inputTextHeader}>Date of Birth</Text>
                         </View>
                         <View>
+                            {/* console.log(petData.birthday) */}
                             <Text>{petData && formatDateOfBirth(petData.birthday)}</Text>
                         </View>
                     </View>

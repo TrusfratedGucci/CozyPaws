@@ -43,7 +43,7 @@ const CreateHistory = ({ route }) => {
             console.log("Pet ID:", petID); // Add this line
             const response = await createMedicalHistoryRecord(petID, record, token);
             console.log("Response:", response); // Add this line
-            Alert.alert('Success', 'Medical history record created successfully');
+            // Alert.alert('Success', 'Medical history record created successfully');
             navigation.navigate('MedicalHistory', { petID: petID }); 
         } catch (error) {
             console.error('Error creating medical history:', error);

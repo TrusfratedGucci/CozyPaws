@@ -48,8 +48,12 @@ const PetInfoFormComponents = () => {
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate || birthday;
         setShowDatePicker(false); // Hide date picker on all platforms
-        setBirthday(currentDate.toISOString()); // Convert selected date to ISO String
-      };
+        if (currentDate) {
+            const dateObject = new Date(currentDate); // Convert selected date to Date object
+            setBirthday(dateObject.toISOString()); // Convert selected date to ISO String
+        }
+    };
+    
         
 
     const addImage = async () => {
@@ -155,10 +159,11 @@ const PetInfoFormComponents = () => {
                     />
                     {showDatePicker && (
                         <DateTimePicker
-                        value={birthday ? new Date(birthday) : new Date()}
+                        value={birthday || new Date()}
                         mode="date"
                         display="default"
                         onChange={onChangeDate}
+                        maximumDate={new Date()} // Set the maximum date to today's date
                         />
                     )}
                     </TouchableOpacity>

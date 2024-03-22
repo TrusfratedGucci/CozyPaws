@@ -18,7 +18,7 @@ import { decode } from 'base64-js';
 //     }
 // };
 
-const BASE_URL = 'http://192.168.1.6:3000';
+const BASE_URL = 'http://192.168.1.9:3000';
 
 
 // Function to get token stored in AsyncStorage
@@ -50,7 +50,7 @@ export const signIn = async (email, password) => {
     try {
         console.log("Email:", email); // Log the email before making the request
         console.log("Password:", password); // Log the password before making the request
-        const response = await axios.post('http://192.168.1.6:3000/auth/signin', {
+        const response = await axios.post('http://192.168.1.9:3000/auth/signin', {
             email,
             password
         }, {
