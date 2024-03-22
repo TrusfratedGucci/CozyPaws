@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+// const BASE_URL = 'http://10.31.0.89:3000';
+
 const BASE_URL = 'http://192.168.1.9:3000';
 
 export const fetchPetProfiles = async (token) => { 
@@ -121,6 +123,9 @@ export const addNewVaccine = async (newVaccineData, petId, token) => {
 
 // Backend call to fetch heat cycle data and update last heat cycle date
 export const fetchHeatCycleDataAndUpdateLastDate = async (petId, selectedDate, token) => {
+    console.log("Selected date", selectedDate,)
+    console.log("Pet ID", petId)
+    console.log("Token", token)
     try {
         const response = await axios.post(`${BASE_URL}/pet/heat-cycle/${petId}`, {
             selectedDate
@@ -130,7 +135,15 @@ export const fetchHeatCycleDataAndUpdateLastDate = async (petId, selectedDate, t
             }
         });
 
+        // Check if the response contains data
+        if (response.data && response.data.message === "No heat cycle data available.") {
+            console.log('No heat cycle data available.');
+            return null; // Return the response data indicating no data is available
+        }
+        
+        console.log("Data", response.data)
         return response.data; // Return the response data
+        
     } catch (error) {
         console.log(error);
         throw new Error('Error fetching or updating heat cycle data:', error);
@@ -175,6 +188,24 @@ export const fetchMedicalHistoriesForPet = async (petId, token) => {
     }
 };
 
+
+// Backend call to delete a pet profile
+export const deletePetProfile = async (petId, token) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/pet/${petId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        console.log('Pet deleted:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting pet:', error);
+        throw error;
+    }
+};
+
+
 export default {
     fetchPetProfiles,
     createPet,
@@ -184,5 +215,6 @@ export default {
     addNewVaccine,
     fetchHeatCycleDataAndUpdateLastDate,
     createMedicalHistoryRecord,
-    fetchMedicalHistoriesForPet
+    fetchMedicalHistoriesForPet,
+    deletePetProfile
 };
