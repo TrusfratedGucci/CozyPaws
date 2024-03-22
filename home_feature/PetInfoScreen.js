@@ -35,6 +35,12 @@ const PetInfoScreen= ({ route }) => {
         navigation.navigate('PetInfoEdit', { petID: petID });
     };
 
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const handleDelete = () => {
+        // Handle deletion logic here
+        // Once deleted, you may navigate back or perform any other action
+    };
 
     const formatDateOfBirth = (dateString) => {
         const date = new Date(dateString);
@@ -96,11 +102,39 @@ const PetInfoScreen= ({ route }) => {
                             <Text>{petData && formatDateOfBirth(petData.birthday)}</Text>
                         </View>
                     </View>
-                    <View style={styles.buttonContainer}>
+                    <View style={styles.buttonContainer1}>
                         <TouchableOpacity onPress={handleEdit}>
-                            <Text style={styles.buttonText}>Edit</Text>
+                            <Text style={styles.buttonText1}>Edit</Text>
                         </TouchableOpacity>
                     </View>
+                    <View style={styles.buttonContainer2}>
+                     <TouchableOpacity onPress={() => setShowDeleteModal(true)}>
+                <Text style={styles.buttonText2}>Delete</Text>
+            </TouchableOpacity>
+            </View>
+
+            {/* Delete Confirmation Modal */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showDeleteModal}
+                onRequestClose={() => setShowDeleteModal(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalHeader}>Confirm Deletion</Text>
+                        <Text>Are you sure you want to delete this pet?</Text>
+                        <View style={styles.modalButtons}>
+                            <TouchableOpacity onPress={() => setShowDeleteModal(false)}>
+                                <Text style={styles.cancelButton}>Cancel</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleDelete}>
+                                <Text style={styles.deleteButton}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
                 </View>  
             </View>
         </ScrollView>
@@ -207,16 +241,26 @@ const styles = StyleSheet.create({
         borderWidth: 2, // Border width
         borderRadius: 20, // Border radius
         borderColor:'#DEEBE9', // Border color
-        padding: 50, // Padding inside the box
+        paddingTop: 50, 
+        paddingBottom: 50, 
+        paddingLeft: 20, 
         backgroundColor: '#DEEBE9',
     },
-     buttonContainer:{
-        alignItems:'flex-end',
+     buttonContainer1:{
+        marginLeft:150,
         marginBottom: -20,
         marginTop: 30,
     },
-    buttonText:{
+    buttonContainer2:{
+        marginLeft:225,
+        marginBottom: -20,
+    },
+    buttonText1:{
         color: "#649F95",
+        fontWeight: 'bold',
+    },
+    buttonText2:{
+        color: "#D84F42",
         fontWeight: 'bold',
     },
     modalContainer: {
@@ -227,15 +271,14 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 20,
+        padding: 30,
         width: '80%',
     },
     modalHeader: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20,
-        textAlign: 'center',
+        textAlign: 'Left',
     },
     modalInput: {
         height: 40,
@@ -264,7 +307,17 @@ const styles = StyleSheet.create({
         fontSize: '3vw', // Adjust the font size relative to the viewport width
         fontWeight: 'bold',
         color: 'black',
-    }
+    },
+    cancelButton: {
+        color: '#649F95',
+        marginLeft:120,
+        marginTop: 20,
+    },
+    deleteButton: {
+        color: '#D84F42',
+        marginLeft:180,
+        marginTop: -19,
+    },
 });
 
 export default PetInfoScreen;

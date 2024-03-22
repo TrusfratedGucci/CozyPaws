@@ -42,9 +42,9 @@ const AddPetComponents = () => {
     const windowHeight = Dimensions.get('window').height;
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
 
-
+            
             <View style={styles.header}>
                 <View style={styles.addprofileContainer}>
                     {/* TouchableOpacity to navigate to pet profile creation */}
@@ -84,7 +84,7 @@ const AddPetComponents = () => {
                     ))}
                 </View>
             </View>
-        </ScrollView>
+            </View>
     );
 };
 
@@ -92,15 +92,28 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#649F95',
+
         // padding: 20,
     },
     header: {
-        marginTop: 20,
+        marginTop: 0,
+        paddingTop: 20,
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative', // Make the header position relative
+        
     },
+
+    headerText: {
+        marginBottom: 25,
+        fontSize: 24,
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign:'center',
+    },
+
+
     addprofileContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -135,13 +148,12 @@ const styles = StyleSheet.create({
         // textDecorationLine: 'underline',
     },
     body: {
-        paddingTop: 115,
+        marginTop: 115,
         borderTopLeftRadius: 20, // Adjust the border radius as needed
         borderTopRightRadius: 20, // Adjust the border radius as needed
         backgroundColor: 'white',
         width: '100%', // Make the width equal to the device width
-        padding: 20,
-        paddingBottom: 40,
+        padding: 400,
         marginTop: -110, // Adjust the top margin to overlap with the profile picture container
         position: 'relative', // Make the body position relative
     },
