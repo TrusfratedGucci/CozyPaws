@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, TextInput } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -8,6 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { createPet } from '../api/pet'; 
 import { getToken } from '../api/auth'; 
 import { useNavigation } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const PetInfoFormComponents = () => {
     const [petPhotoUri, setPetPhotoUri] = useState(null);
@@ -18,6 +19,7 @@ const PetInfoFormComponents = () => {
     const [petGender, setPetGender] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [petPhotoError,setPetPhotoError ] = useState('');
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const navigation = useNavigation();
 
     const handleCreatePet = async () => {
@@ -42,8 +44,13 @@ const PetInfoFormComponents = () => {
             setErrorMessage('Failed to create pet. Please try again.');
         }
     };
-    
 
+    const onChangeDate = (event, selectedDate) => {
+        const currentDate = selectedDate || birthday;
+        setShowDatePicker(false); // Hide date picker on all platforms
+        setBirthday(currentDate.toISOString()); // Convert selected date to ISO String
+      };
+        
 
     const addImage = async () => {
         try {
@@ -138,24 +145,23 @@ const PetInfoFormComponents = () => {
                 </View>
                 <View style={styles.name}>
                     <Text style={styles.inputTextHeader}>Birthday</Text>
+                    <TouchableOpacity onPress={() => setShowDatePicker(true)}>
                     <TextInput
                         style={[styles.inputText, styles.birthdayInput]}
-                        placeholder="DD/MM/YYYY"
+                        placeholder="Enter your pet's birthday"
                         maxLength={10}
                         value={birthday}
-                        onChangeText={(text) => {
-                            text = text.replace(/[^0-9]/g, '');
-                            if (text.length <= 2) {
-                                text = text;
-                            } else if (text.length <= 4) {
-                                text = text.replace(/^(\d{2})(\d{0,2})/, '$1/$2');
-                            } else {
-                                text = text.replace(/^(\d{2})(\d{0,2})(\d{0,4}).*/, '$1/$2/$3');
-                            }
-                            setBirthday(text);
-                        }}
-                        keyboardType="number-pad"
+                        editable={false}
                     />
+                    {showDatePicker && (
+                        <DateTimePicker
+                        value={birthday ? new Date(birthday) : new Date()}
+                        mode="date"
+                        display="default"
+                        onChange={onChangeDate}
+                        />
+                    )}
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.signInButton}>
                     <Button 
@@ -233,10 +239,11 @@ const styles = StyleSheet.create({
         borderRadius: 16,
     },
     name: {
-        marginBottom: 15
+        marginBottom: 15,
     },
     birthdayInput: {
         flex: 1,
+        color: 'black',
     },
     signInButton: {
         borderRadius: 6,
