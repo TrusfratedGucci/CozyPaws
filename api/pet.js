@@ -17,6 +17,10 @@ export const fetchPetProfiles = async (token) => {
             console.log("No pet profiles found for this user");
             return null; // Or any other appropriate action
         } else {
+            if (error.response && error.response.status === 404) {
+                // Pet profile not found or has been deleted
+                console.log('Pet profile not found or has been deleted');
+            }
             console.error('Error fetching pet data:', error);
             throw error;
         }
@@ -177,6 +181,29 @@ export const fetchMedicalHistoriesForPet = async (petId, token) => {
     }
 };
 
+// Function to delete a pet by ID
+export const deletePetById = async (petId, token) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/pet/${petId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json' 
+            }
+        });
+
+        if (response.status === 200) {
+            console.log('Pet deleted successfully');
+            return true;
+        } else {
+            console.error('Error deleting pet:', response.data);
+            throw new Error(response.data.message); // Throw an error with the error message
+        } 
+    } catch (error) {
+        console.error('Error deleting pet:', error);
+        throw error; // Re-throw the error for the caller to handle
+    }
+};
+
 export default {
     fetchPetProfiles,
     createPet,
@@ -186,5 +213,6 @@ export default {
     addNewVaccine,
     fetchHeatCycleDataAndUpdateLastDate,
     createMedicalHistoryRecord,
-    fetchMedicalHistoriesForPet
+    fetchMedicalHistoriesForPet,
+    deletePetById
 };

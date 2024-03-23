@@ -8,7 +8,7 @@ const CongratulationsScreen = () => {
 
     const continueToAddPet = () => {
         // Navigate to Go with pet
-        navigation.navigate('AddPet');
+        navigation.navigate('DrawerHome');
     };
 
 

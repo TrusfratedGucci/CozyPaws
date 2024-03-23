@@ -45,7 +45,6 @@ export const getToken = async () => {
 };
 
 
-//backend call for signin
 export const signIn = async (email, password) => {
     try {
         console.log("Email:", email); // Log the email before making the request
@@ -57,8 +56,7 @@ export const signIn = async (email, password) => {
             headers: {
                 'Content-Type': 'application/json' // Specify JSON content type
             }
-        
-    });
+        });
 
         console.log('response ', response)
 
@@ -67,27 +65,34 @@ export const signIn = async (email, password) => {
             // Store JWT token in AsyncStorage for future use
             await AsyncStorage.setItem('token', response.data.token);
 
-             // Log the token after it's stored
-             console.log('Token stored:', response.data.token);
+            // Log the token after it's stored
+            console.log('Token stored:', response.data.token);
 
             // Return true to indicate successful sign-in
             return true;
-        } else {
+        } else if (response.status === 401){
             // Sign in failed
             // Return false to indicate failed sign-in
             return false;
         }
     } catch (error) {
-        console.error('Error signing in:', error);
-        // Check if the error message is "Email not found"
-        if (error.response && error.response.data.error === "Email not found") {
-            // Handle the case where the email is not found
-            console.log('Email not found');
-            // You can display an error message to the user here
+        // Check if the error is from Axios and has a response with a status code of 401
+        if (error.response && error.response.status === 401) {
+            // Handle the case where the user doesn't exist
+            console.log('User not found')
+            // Return false to indicate failed sign-in
+            return false;
+        } else {
+            // Handle other errors
+            console.error('Other error:', error);
+            // Return false to indicate failed sign-in
+            return false;
         }
-        return false;
     }
 };
+
+
+
 
 
 //backed call for signup
@@ -232,4 +237,70 @@ export const clearToken = async () => {
     }
 };
 
-export default { signIn, signUp, getToken, forgotPassword, verifyVerificationCode, resetPassword, clearToken };
+
+// Function to handle logout
+export const signOut = async () => {
+    try {
+        const token = await getToken();
+        console.log('token',token)
+        const response = await axios.post(
+            `${BASE_URL}/auth/logout`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        if (response.status === 200) {
+            // Logout successful
+            // Clear token from AsyncStorage
+            await clearToken();
+            console.log('Cleared token:', await AsyncStorage.getItem('token'));
+            console.log('Sign Out', 'You have been signed out successfully.');
+            return true;
+            
+        } else {
+            // Logout failed
+            console.log('Sign Out', 'Failed to sign out. Please try again.');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error logging out:', error);
+        Alert.alert('Sign Out', 'An error occurred while signing out. Please try again.');
+    }
+};
+
+
+
+// Function to delete user account
+export const deleteAccount = async () => {
+    try {
+        const token = await getToken();
+        const response = await axios.delete(`${BASE_URL}/auth/delete-account`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (response.status === 200) {
+            // Account deletion successful
+            // Clear token from AsyncStorage
+            await clearToken();
+            console.log('Account Deleted', 'Your account has been deleted successfully.');
+            return true;
+            
+        } else {
+            // Account deletion failed
+           console.log('Account Deletion', 'Failed to delete your account. Please try again.');
+           return false;
+        }
+    } catch (error) {
+        console.error('Error deleting account:', error);
+        Alert.alert('Account Deletion', 'An error occurred while deleting your account. Please try again.');
+    }
+};
+
+
+export default { signIn, signUp, getToken, forgotPassword, verifyVerificationCode, resetPassword, clearToken, signOut, deleteAccount };

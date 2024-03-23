@@ -9,7 +9,7 @@ const PasswordChangedSuccessScreen = () => {
 
     const continueToAddPet = () => {
         // Navigate to Training
-        navigation.navigate('AddPet');
+        navigation.navigate('DrawerHome');
     };
 
 

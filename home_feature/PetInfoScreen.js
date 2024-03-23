@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Dimensions, Modal } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Dimensions, Alert } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { fetchPetData, updatePetData } from '../api/pet';
+import { fetchPetData, updatePetData, deletePetById } from '../api/pet';
 import { getToken } from '../api/auth';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
@@ -34,6 +34,42 @@ const PetInfoScreen= ({ route }) => {
             fetchData();
         }, [petID]) // Fetch data whenever petID changes or when the component is focused
     );
+
+    const handleDelete = async () => {
+        Alert.alert(
+            'Delete Pet',
+            'Are you sure you want to delete this pet?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Delete',
+                    onPress: async () => {
+                        try {
+                            const token = await getToken();
+                            const deleted = await deletePetById(petID, token);
+                            if (deleted) {
+                                // Show success message or navigate to another screen
+                                Alert.alert('Success', 'Pet deleted successfully');
+                                // Navigate to another screen if needed
+                                navigation.navigate('DrawerHome');
+                            } else {
+                                // Show error message if deletion failed
+                                Alert.alert('Error', 'Failed to delete pet');
+                            }
+                        } catch (error) {
+                            console.error('Error deleting pet:', error);
+                            // Handle error
+                            Alert.alert('Error', 'An error occurred while deleting the pet');
+                        }
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    };
 
     const handleEdit = () => {
         navigation.navigate('PetInfoEdit', { petID: petID });
@@ -103,7 +139,12 @@ const PetInfoScreen= ({ route }) => {
                     </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={handleEdit}>
-                            <Text style={styles.buttonText}>Edit</Text>
+                            <Text style={styles.buttonText}>Edit Profile</Text>
+                        </TouchableOpacity>
+
+
+                        <TouchableOpacity onPress={handleDelete}>
+                            <Text style={styles.deleteButtonText}>Delete Profile</Text>
                         </TouchableOpacity>
                     </View>
                 </View>  
@@ -216,12 +257,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#DEEBE9',
     },
      buttonContainer:{
-        alignItems:'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         marginBottom: -20,
         marginTop: 30,
     },
     buttonText:{
         color: "#649F95",
+        fontWeight: 'bold',
+    },
+    deleteButtonText: {
+        color: "red",
         fontWeight: 'bold',
     },
     modalContainer: {

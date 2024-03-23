@@ -4,11 +4,11 @@ global.atob = decode;
 
 
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'; // Correct import statement
+import { faChevronLeft, faSignOutAlt, faBars, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import SignInComponents from './login_feature/SignInScreen';
 import CongratulationsScreen from './login_feature/CongratulationsScreen.js';
 import PasswordChangedSuccessScreen from './login_feature/PasswordChangedSuccessScreen.js'
@@ -29,375 +29,477 @@ import GoWithPet from './goWithPet_feature/goWithPetScreen.js';
 import HeatTrackerScreen from './heat_tracker_feature/HeatTrackerScreen.js';
 import MedicalHistory from './medical_history_feature/medical_history_screen.js';
 import CreateHistory from './medical_history_feature/create_history_screen.js';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import { signOut, deleteAccount, } from './api/auth.js'
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const App = () => {
-  return (
-      <NavigationContainer>
-          <Stack.Navigator initialRouteName="StartScreen">
+const StackHome = (navigation) => {
 
-          <Stack.Screen 
-                  name="StartScreen" 
-                  component={StartScreenComponents}
-                    options={({ navigation }) => ({
-                    title: 'StartScreen',
-                    headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: '#FF8D4D' }, 
-                    headerShown: false,
-                  })} /> 
+  return(
+    <Stack.Navigator initialRouteName="StartScreen">
 
-                  
-          <Stack.Screen 
-                name="Congratulations" 
-                component={CongratulationsScreen}
-                  options={({ navigation }) => ({
-                  title: 'Congratulations',
-                  headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, 
-                  headerShown: false,
-                  headerLeft: () => ( // Custom headerLeft component
-                              <TouchableOpacity onPress={() => navigation.goBack()}>
-                                <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
-                                </View>                         
-                              </TouchableOpacity>
-                          
-                          )
-                })} />
-
-          <Stack.Screen 
-                  name="VerificationEmail" 
-                  component={VerificationEmailComponents}
-                    options={({ navigation }) => ({
-                    title: 'VerificationEmail',
-                    headerTitleAlign: 'center',
-                    headerStyle: { backgroundColor: 'white' }, 
-                    headerShown: false,
-                    headerLeft: () => ( // Custom headerLeft component
-                                <TouchableOpacity onPress={() => navigation.goBack()}>
-                                  <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
-                                  </View>                         
-                                </TouchableOpacity>
-                            )
-                  })} />
-
-            <Stack.Screen 
-                    name="SignUp" 
-                    component={SignUpComponents}
-                      options={({ navigation }) => ({
-                      title: 'SignUp',
-                      headerTitleAlign: 'center',
-                      headerStyle: { backgroundColor: 'white' },
-                      headerShown: false,
-                      headerLeft: () => ( // Custom headerLeft component
-                                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                                    <View style={styles.backButton}>
-                                    <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
-                                    </View>                         
-                                  </TouchableOpacity>
-                              )
-                    })} />
+    <Stack.Screen 
+            name="StartScreen" 
+            component={StartScreenComponents}
+              options={({ navigation }) => ({
+              title: 'StartScreen',
+              headerTitleAlign: 'center',
+              headerStyle: { backgroundColor: '#FF8D4D' }, 
+              headerShown: false,
+            })} /> 
 
             
+    <Stack.Screen 
+          name="Congratulations" 
+          component={CongratulationsScreen}
+            options={({ navigation }) => ({
+            title: 'Congratulations',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: 'white' }, 
+            headerShown: false,
+            headerLeft: () => ( // Custom headerLeft component
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                          <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                          </View>                         
+                        </TouchableOpacity>
+                    
+                    )
+          })} />
 
-            <Stack.Screen 
-                name="VerificationCode" 
-                component={VerificationCodeComponents}
-                  options={({ navigation }) => ({
-                  title: 'VerificationCode',
-                  headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, 
-                  headerShown: false,
-                  headerLeft: () => ( // Custom headerLeft component
+    <Stack.Screen 
+            name="VerificationEmail" 
+            component={VerificationEmailComponents}
+              options={({ navigation }) => ({
+              title: 'VerificationEmail',
+              headerTitleAlign: 'center',
+              headerStyle: { backgroundColor: 'white' }, 
+              headerShown: false,
+              headerLeft: () => ( // Custom headerLeft component
+                          <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                            </View>                         
+                          </TouchableOpacity>
+                      )
+            })} />
+
+      <Stack.Screen 
+              name="SignUp" 
+              component={SignUpComponents}
+                options={({ navigation }) => ({
+                title: 'SignUp',
+                headerTitleAlign: 'center',
+                headerStyle: { backgroundColor: 'white' },
+                headerShown: false,
+                headerLeft: () => ( // Custom headerLeft component
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
+                              <View style={styles.backButton}>
+                              <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                              </View>                         
+                            </TouchableOpacity>
+                        )
+              })} />
+
+      
+
+      <Stack.Screen 
+          name="VerificationCode" 
+          component={VerificationCodeComponents}
+            options={({ navigation }) => ({
+            title: 'VerificationCode',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: 'white' }, 
+            headerShown: false,
+            headerLeft: () => ( // Custom headerLeft component
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                          <View style={styles.backButton}>
+                          <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                          </View>                         
+                        </TouchableOpacity>
+                    )
+          })} />
+
+      <Stack.Screen 
+          name="PasswordChangedSuccess" 
+          component={PasswordChangedSuccessScreen}
+            options={({ navigation }) => ({
+            title: 'PasswordChangedSuccess',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: 'white' }, 
+            headerShown: false,
+            headerLeft: () => ( // Custom headerLeft component
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                          <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                          </View>                         
+                        </TouchableOpacity>
+                    )
+          })} />
+
+      <Stack.Screen 
+          name="NewPasswordScreen" 
+          component={NewPasswordComponents}
+            options={({ navigation }) => ({
+            title: 'NewPasswordScreen',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: 'white' }, 
+            headerShown: false,
+            headerLeft: () => ( // Custom headerLeft component
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                          <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                          </View>                         
+                        </TouchableOpacity>
+                    )
+          })} /> 
+
+      <Stack.Screen  style={styles.header}
+            name="SignIn" 
+            component={SignInComponents} 
+            options={({ navigation }) => ({
+            title: 'SignIn',
+            headerTitleAlign: 'center',
+            headerStyle: { backgroundColor: 'white' }, 
+            headerShown: false,
+            headerLeft: () => ( // Custom headerLeft component
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                          <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                          </View>                         
+                        </TouchableOpacity>
+                    )
+          })} 
+            />
+
+
+          <Stack.Screen
+                name="DrawerHome"
+                component={DrawerHome}
+                options={{ headerShown: false }}
+              />
+
+
+    <Stack.Screen
+          name="PetProfile" 
+          component={PetProfileScreen}
+            options={({ navigation }) => ({
+            title: 'Pet Profile',
+            headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF', // Change the text color of the header title
+              headerStyle: { backgroundColor: '#649F95',height: 100,},
+              headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
-                                </View>                         
-                              </TouchableOpacity>
-                          )
-                })} />
-
-            <Stack.Screen 
-                name="PasswordChangedSuccess" 
-                component={PasswordChangedSuccessScreen}
-                  options={({ navigation }) => ({
-                  title: 'PasswordChangedSuccess',
-                  headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, 
-                  headerShown: false,
-                  headerLeft: () => ( // Custom headerLeft component
-                              <TouchableOpacity onPress={() => navigation.goBack()}>
-                                <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
-                                </View>                         
-                              </TouchableOpacity>
-                          )
-                })} />
-
-            <Stack.Screen 
-                name="NewPasswordScreen" 
-                component={NewPasswordComponents}
-                  options={({ navigation }) => ({
-                  title: 'NewPasswordScreen',
-                  headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, 
-                  headerShown: false,
-                  headerLeft: () => ( // Custom headerLeft component
-                              <TouchableOpacity onPress={() => navigation.goBack()}>
-                                <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                 </View>                         
                               </TouchableOpacity>
                           )
                 })} /> 
 
-            <Stack.Screen  style={styles.header}
-                  name="SignIn" 
-                  component={SignInComponents} 
-                  options={({ navigation }) => ({
-                  title: 'SignIn',
-                  headerTitleAlign: 'center',
-                  headerStyle: { backgroundColor: 'white' }, 
-                  headerShown: false,
-                  headerLeft: () => ( // Custom headerLeft component
+
+
+      <Stack.Screen
+          name="PetInfo" 
+          component={PetInfoScreen}
+            options={({ navigation }) => ({
+            title: 'Pet Details',
+            headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF', // Change the text color of the header title
+              headerStyle: { backgroundColor: '#649F95',height: 100,},
+              headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
                               <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#305C55" />
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                 </View>                         
                               </TouchableOpacity>
                           )
-                })} 
-                  />
+                })} /> 
 
-
-                <Stack.Screen 
-                    name="AddPet" 
-                    component={AddPetComponents}
-                      options={({ navigation }) => ({
-                      title: 'Add Pet Profile',
-                      headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF', // Change the text color of the header title
-                    headerStyle: { backgroundColor: '#649F95',height: 100,},
-                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                        headerLeft: () => ( // Add custom headerLeft component
-                                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                                      <View style={styles.backButton}>
-                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                      </View>                         
-                                    </TouchableOpacity>
-                                )
-                      })} /> 
-
-
-          <Stack.Screen
-                name="PetProfile" 
-                component={PetProfileScreen}
-                  options={({ navigation }) => ({
-                  title: 'Pet Profile',
-                  headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF', // Change the text color of the header title
-                    headerStyle: { backgroundColor: '#649F95',height: 100,},
-                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                        headerLeft: () => ( // Add custom headerLeft component
-                                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                                      <View style={styles.backButton}>
-                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                      </View>                         
-                                    </TouchableOpacity>
-                                )
-                      })} /> 
-
-
-
-            <Stack.Screen
-                name="PetInfo" 
-                component={PetInfoScreen}
-                  options={({ navigation }) => ({
-                  title: 'Pet Details',
-                  headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF', // Change the text color of the header title
-                    headerStyle: { backgroundColor: '#649F95',height: 100,},
-                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                        headerLeft: () => ( // Add custom headerLeft component
-                                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                                      <View style={styles.backButton}>
-                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                      </View>                         
-                                    </TouchableOpacity>
-                                )
-                      })} /> 
-
-             <Stack.Screen 
-                    name="PetInfoForm" 
-                    component={PetInfoFormComponents}
-                      options={({ navigation }) => ({
-                      title: 'Create Pet Profile',
-                      headerTitleAlign: 'center',
-                      headerTintColor: '#FFFFFF', // Change the text color of the header title
-                      headerStyle: { backgroundColor: '#649F95',height: 100,},
-                      headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                          headerLeft: () => ( // Add custom headerLeft component
-                                      <TouchableOpacity onPress={() => navigation.goBack()}>
-                                        <View style={styles.backButton}>
-                                        <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                        </View>                         
-                                      </TouchableOpacity>
-                                  )
-                        })} /> 
-
-
-
-              <Stack.Screen 
-                    name="PetInfoEdit" 
-                    component={PetInfoEditComponents}
-                      options={({ navigation }) => ({
-                      title: 'Update Pet Profile',
-                      headerTitleAlign: 'center',
-                      headerTintColor: '#FFFFFF', // Change the text color of the header title
-                      headerStyle: { backgroundColor: '#649F95',height: 100,},
-                      headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                          headerLeft: () => ( // Add custom headerLeft component
-                                      <TouchableOpacity onPress={() => navigation.goBack()}>
-                                        <View style={styles.backButton}>
-                                        <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                        </View>                         
-                                      </TouchableOpacity>
-                                  )
-                        })} />      
-
-            <Stack.Screen 
-                  name="VaccineList" 
-                  component={Vaccines}
-                    options={({ navigation }) => ({
-                    title: 'Vaccination History',
-                    headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF', // Change the text color of the header title
-                    headerStyle: { backgroundColor: '#649F95',height: 100,},
-                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                        headerLeft: () => ( // Add custom headerLeft component
-                                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                                      <View style={styles.backButton}>
-                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                      </View>                         
-                                    </TouchableOpacity>
-                                )
-                      })} /> 
-
-              <Stack.Screen 
-                  name="FirstAidTips" 
-                  component={FirstAidTips}
-                    options={({ navigation }) => ({
-                    title: 'First-Aid Tips',
-                    headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF', // Change the text color of the header title
-                    headerStyle: { backgroundColor: '#649F95',height: 100,},
-                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                        headerLeft: () => ( // Add custom headerLeft component
-                                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                                      <View style={styles.backButton}>
-                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                      </View>                         
-                                    </TouchableOpacity>
-                                )
-                      })} /> 
-
-
-              <Stack.Screen 
-                  name="TrainingTips" 
-                  component={TrainingTips}
-                    options={({ navigation }) => ({
-                    title: 'Training Tips',
-                    headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF', // Change the text color of the header title
-                    headerStyle: { backgroundColor: '#649F95',height: 100,},
-                    headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
-                        headerLeft: () => ( // Add custom headerLeft component
-                                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                                      <View style={styles.backButton}>
-                                      <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
-                                      </View>                         
-                                    </TouchableOpacity>
-                                )
-                      })} /> 
-
-
-              <Stack.Screen 
-                  name="GoWithPet" 
-                  component={GoWithPet}
-                    options={({ navigation }) => ({
-                    title: 'Go With Your Pet',
-                    headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF', // Change the text color of the header title
-                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
-                    headerTitleStyle: { fontSize: 24,  },
+       <Stack.Screen 
+              name="PetInfoForm" 
+              component={PetInfoFormComponents}
+                options={({ navigation }) => ({
+                title: 'Create Pet Profile',
+                headerTitleAlign: 'center',
+                headerTintColor: '#FFFFFF', // Change the text color of the header title
+                headerStyle: { backgroundColor: '#649F95',height: 100,},
+                headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
                     headerLeft: () => ( // Add custom headerLeft component
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                   <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                   </View>                         
                                 </TouchableOpacity>
                             )
-                  })} />
+                  })} /> 
 
-            <Stack.Screen 
-                name="HeatTracker" 
-                component={HeatTrackerScreen}
-                  options={({ navigation }) => ({
-                    title: 'Heat Cycle Tracker',
-                    headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF',
-                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
-                    headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
+
+
+        <Stack.Screen 
+              name="PetInfoEdit" 
+              component={PetInfoEditComponents}
+                options={({ navigation }) => ({
+                title: 'Update Pet Profile',
+                headerTitleAlign: 'center',
+                headerTintColor: '#FFFFFF', // Change the text color of the header title
+                headerStyle: { backgroundColor: '#649F95',height: 100,},
+                headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
                     headerLeft: () => ( // Add custom headerLeft component
                                 <TouchableOpacity onPress={() => navigation.goBack()}>
                                   <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                   </View>                         
                                 </TouchableOpacity>
                             )
-                  })} />  
+                  })} />      
+
+      <Stack.Screen 
+            name="VaccineList" 
+            component={Vaccines}
+              options={({ navigation }) => ({
+              title: 'Vaccination History',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF', // Change the text color of the header title
+              headerStyle: { backgroundColor: '#649F95',height: 100,},
+              headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                </View>                         
+                              </TouchableOpacity>
+                          )
+                })} /> 
+
+        <Stack.Screen 
+            name="FirstAidTips" 
+            component={FirstAidTips}
+              options={({ navigation }) => ({
+              title: 'First-Aid Tips',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF', // Change the text color of the header title
+              headerStyle: { backgroundColor: '#649F95',height: 100,},
+              headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                </View>                         
+                              </TouchableOpacity>
+                          )
+                })} /> 
 
 
-            <Stack.Screen 
-                  name="CreateHistory" 
-                  component={CreateHistory}
-                    options={({ navigation }) => ({
-                    title: 'Create Medical Record',
-                    headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF',
-                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
-                    headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
-                    headerLeft: () => ( // Add custom headerLeft component
-                                <TouchableOpacity onPress={() => navigation.goBack()}>
-                                  <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
-                                  </View>                         
-                                </TouchableOpacity>
-                            )
-                  })} />  
-
-          <Stack.Screen 
-                  name="MedicalHistory" 
-                  component={MedicalHistory}
-                    options={({ navigation }) => ({
-                    title: 'Medical History',
-                    headerTitleAlign: 'center',
-                    headerTintColor: '#FFFFFF',
-                    headerStyle: { backgroundColor: '#649F95',height: 100,}, 
-                    headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
-                    headerLeft: () => ( // Add custom headerLeft component
-                                <TouchableOpacity onPress={() => navigation.goBack()}>
-                                  <View style={styles.backButton}>
-                                  <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
-                                  </View>                         
-                                </TouchableOpacity>
-                            )
-                  })} />
+        <Stack.Screen 
+            name="TrainingTips" 
+            component={TrainingTips}
+              options={({ navigation }) => ({
+              title: 'Training Tips',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF', // Change the text color of the header title
+              headerStyle: { backgroundColor: '#649F95',height: 100,},
+              headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
+                  headerLeft: () => ( // Add custom headerLeft component
+                              <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <View style={styles.backButton}>
+                                <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
+                                </View>                         
+                              </TouchableOpacity>
+                          )
+                })} /> 
 
 
-          </Stack.Navigator>
+        <Stack.Screen 
+            name="GoWithPet" 
+            component={GoWithPet}
+              options={({ navigation }) => ({
+              title: 'Go With Your Pet',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF', // Change the text color of the header title
+              headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+              headerTitleStyle: { fontSize: 24,  },
+              headerLeft: () => ( // Add custom headerLeft component
+                          <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                            </View>                         
+                          </TouchableOpacity>
+                      )
+            })} />
+
+      <Stack.Screen 
+          name="HeatTracker" 
+          component={HeatTrackerScreen}
+            options={({ navigation }) => ({
+              title: 'Heat Cycle Tracker',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF',
+              headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+              headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
+              headerLeft: () => ( // Add custom headerLeft component
+                          <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                            </View>                         
+                          </TouchableOpacity>
+                      )
+            })} />  
+
+
+      <Stack.Screen 
+            name="CreateHistory" 
+            component={CreateHistory}
+              options={({ navigation }) => ({
+              title: 'Create Medical Record',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF',
+              headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+              headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
+              headerLeft: () => ( // Add custom headerLeft component
+                          <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                            </View>                         
+                          </TouchableOpacity>
+                      )
+            })} />  
+
+    <Stack.Screen 
+            name="MedicalHistory" 
+            component={MedicalHistory}
+              options={({ navigation }) => ({
+              title: 'Medical History',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF',
+              headerStyle: { backgroundColor: '#649F95',height: 100,}, 
+              headerTitleStyle: { fontSize: 24,  }, // Set the background color of the header // Align the title to the center
+              headerLeft: () => ( // Add custom headerLeft component
+                          <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <View style={styles.backButton}>
+                            <FontAwesomeIcon icon={faChevronLeft} size={24} color="white" />
+                            </View>                         
+                          </TouchableOpacity>
+                      )
+            })} />
+
+
+    </Stack.Navigator>
+  )
+  
+}
+
+const handleSignOut = (navigation) => {
+  // const navigation = useNavigation(); // Access the navigation object
+
+  const response = signOut();
+  // navigate to start screen
+  if (response) {
+    navigation.navigate('StartScreen');
+  }
+};
+
+const handleDeleteAccount = (navigation) => {
+  // const navigation = useNavigation(); // Access the navigation object
+
+  const response = deleteAccount();
+  // navigate to start screen
+  if (response) {
+    navigation.navigate('StartScreen');
+  }
+};
+
+
+
+const CustomDrawerContent = (props) => {
+  return (
+    <DrawerContentScrollView {...props}>
+      <View style={{ padding: 20 }}>
+        {/* <Text>Drawer Header</Text> */}
+      </View>
+      <DrawerItem
+        label="Sign Out"
+        style={{ marginTop: 610 }}
+        onPress={() => {
+          Alert.alert(
+            'Sign Out',
+            'Are you sure you want to sign out?',
+            [
+              { text: 'No', onPress: () => {} },
+              { text: 'Yes', onPress: () => handleSignOut(props.navigation) }, // Fixed syntax here
+            ],
+            { cancelable: true }
+          );
+        }}
+        icon={({ color, size }) => (
+          <FontAwesomeIcon icon={faSignOutAlt} size={size} color={color} />
+        )}
+      />
+      <DrawerItem
+        label="Delete Account"
+        style={{ marginTop: 5 }}
+        labelStyle={{color:'red'}}
+        onPress={() => {
+          Alert.alert(
+            'Delete Account',
+            'Are you sure you want to delete your account? This action cannot be undone.',
+            [
+              { text: 'No', onPress: () => {} },
+              { text: 'Yes', onPress: () => handleDeleteAccount(props.navigation) },
+            ],
+            { cancelable: true }
+          );
+        }}
+        icon={({ color, size }) => (
+          <FontAwesomeIcon icon={faTrashAlt} size={size} color={'red'} />
+        )}
+      />
+    </DrawerContentScrollView>
+  );
+};
+
+
+const DrawerHome = () => {
+  return (
+    <Drawer.Navigator screenOptions={{ headerShown: true }} drawerContent={props => <CustomDrawerContent {...props} />}>
+      {/* Your other drawer screens here */}
+      <Drawer.Screen 
+            name="AddPet" 
+            component={AddPetComponents}
+            options={({ navigation }) => ({
+              title: 'Add Pet Profile',
+              headerTitleAlign: 'center',
+              headerTintColor: '#FFFFFF', // Change the text color of the header title
+              headerStyle: { backgroundColor: '#649F95',height: 100,},
+              headerTitleStyle: { fontSize: 24,  }, 
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+                  <View style={{ marginLeft: 20 }}>
+                    <FontAwesomeIcon icon={faBars} size={24} color="#FFFFFF" />
+                  </View>
+                </TouchableOpacity>
+              ),
+            })}
+          />
+    </Drawer.Navigator>
+  );
+};
+  
+
+
+
+const App = () => {
+  return (
+      <NavigationContainer>
+        
+          <StackHome/>
       </NavigationContainer>
   );
 };
