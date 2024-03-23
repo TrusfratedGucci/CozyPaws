@@ -54,7 +54,7 @@ const PetInfoScreen= ({ route }) => {
                                 // Show success message or navigate to another screen
                                 Alert.alert('Success', 'Pet deleted successfully');
                                 // Navigate to another screen if needed
-                                navigation.navigate('DrawerHome');
+                                navigation.navigate('AddPet');
                             } else {
                                 // Show error message if deletion failed
                                 Alert.alert('Error', 'Failed to delete pet');

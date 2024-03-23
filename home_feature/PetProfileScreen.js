@@ -39,7 +39,7 @@ const PetProfile = ({ route }) => {
 
     const continueToMedical = () => {
         // Navigate to Medical History
-        navigation.navigate('MedicalHistory', { petId: petID });
+        navigation.navigate('MedicalHistory', { petID: petID });
     };
 
     const continueToVaccines = () => {

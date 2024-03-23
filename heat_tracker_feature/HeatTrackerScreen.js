@@ -20,21 +20,9 @@ const HeatTrackerScreen = ({ route }) => {
     const [currentPhase, setCurrentPhase] = useState('');
     const [phaseDurations, setPhaseDurations] = useState({});
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const token = await getToken();
-            try {
-                const data = await fetchHeatCycleDataAndUpdateLastDate(petID, null, token); // Pass null for selectedDate to fetch initial data
-                setCurrentPhase(data.currentPhase);
-                setPhaseDurations(data.phaseDurations);
-            } catch (error) {
-                console.error('Error fetching initial heat cycle data:', error);
-            }
-        };
+    
 
-        fetchData(); // Fetch data when the component mounts
-    }, [petID]);
-
+    // Define onSelectDate function outside of useEffect
     const onSelectDate = async (selectedDate) => {
         setShowCalendar(false); // Hide the calendar modal
     
@@ -43,29 +31,44 @@ const HeatTrackerScreen = ({ route }) => {
         try {
             // Fetch heat cycle data and update last heat cycle date
             const data = await fetchHeatCycleDataAndUpdateLastDate(petID, selectedDate, token);
-            setCurrentPhase(data.currentPhase);
-            setPhaseDurations(data.phaseDurations);
-            // You may need to perform additional actions here based on your requirements
+            if (data == null) {
+                console.log('No heat cycle data available.');
+                // Handle the case when no heat cycle data is available
+            } else if (data && data.currentPhase && data.phaseDurations) {
+                setCurrentPhase(data.currentPhase);
+                setPhaseDurations(data.phaseDurations);
+            }
         } catch (error) {
             console.error('Error fetching or updating heat cycle data:', error);
         }
     };
+
+    useEffect(() => {
+        // Call onSelectDate function
+        onSelectDate();
+    }, [petID]);
     
 
     const getDescription = () => {
-        switch (currentPhase) {
-            case 'Proestrus':
-                return Proestrus;
-            case 'Estrus':
-                return Estrus;
-            case 'Diestrus':
-                return Diestrus;
-            case 'Anestrus':
-                return Anestrus;
-            default:
-                return '';
+        if (currentPhase && phaseDurations && phaseDurations[currentPhase]) {
+            switch (currentPhase) {
+                case 'Proestrus':
+                    return Proestrus;
+                case 'Estrus':
+                    return Estrus;
+                case 'Diestrus':
+                    return Diestrus;
+                case 'Anestrus':
+                    return Anestrus;
+                default:
+                    return '';
+            }
+        } else {
+            return '';
         }
     };
+    
+    
 
     return (
         <View style={styles.container}>
@@ -90,12 +93,13 @@ const HeatTrackerScreen = ({ route }) => {
                 <View style={styles.box1}>
                     <View style={styles.row}>
                         <View style={styles.boxTextContainer}>
-                            <Text style={styles.boxTextHeader}>Current Phase: {currentPhase}</Text>
+                            <Text style={styles.boxTextHeader}>Phase: {currentPhase}</Text>
                         </View>
                     </View>
                     <View style={styles.row}>
                         <View style={styles.boxTextContainer}>
-                            <Text style={styles.boxTextHeader}>Duration: {phaseDurations[currentPhase]}</Text>
+                            {/* Add a check to ensure phaseDurations[currentPhase] exists */}
+                            <Text style={styles.boxTextHeader}>Duration: {phaseDurations[currentPhase] || ''}</Text>
                         </View>
                     </View>
                 </View>
