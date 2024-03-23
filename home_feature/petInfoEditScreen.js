@@ -8,6 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { updatePetData, fetchPetData } from '../api/pet'; 
 import { getToken } from '../api/auth'; 
 import { useNavigation } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const PetInfoEditComponents = ({ route }) => {
     const petID = route.params.petID;
@@ -20,6 +21,7 @@ const PetInfoEditComponents = ({ route }) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [petPhotoError,setPetPhotoError ] = useState('');
     const navigation = useNavigation();
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
    // Function to handle updating the pet
     const handleEditPet = async () => {
@@ -27,6 +29,8 @@ const PetInfoEditComponents = ({ route }) => {
             const token = await getToken();
             if (petID) {
                 // If petID exists, it means we are updating an existing pet
+                // const birthdayDate = new Date(birthday);
+                // const formattedBirthday = birthdayDate.toISOString();
                 await updatePetData(petID, {
                     photo: petPhotoUri,
                     name: petName,
@@ -98,6 +102,17 @@ const PetInfoEditComponents = ({ route }) => {
           // Handle error gracefully
         }
       };
+
+
+      const onChangeDate = (event, selectedDate) => {
+        const currentDate = selectedDate || birthday;
+        setShowDatePicker(false); // Hide date picker on all platforms
+        const dateObject = new Date(currentDate); // Convert selected date to Date object
+        setBirthday(dateObject.toISOString()); // Convert selected date to ISO String
+    };
+    
+    
+      
       
 
 
@@ -162,24 +177,28 @@ const PetInfoEditComponents = ({ route }) => {
                 </View>
                 <View style={styles.name}>
                     <Text style={styles.inputTextHeader}>Birthday</Text>
-                    <TextInput
+                    <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                        <TextInput
                         style={[styles.inputText, styles.birthdayInput]}
                         placeholder="DD/MM/YYYY"
                         maxLength={10}
                         value={birthday}
-                        onChangeText={(text) => {
-                            text = text.replace(/[^0-9]/g, '');
-                            if (text.length <= 2) {
-                                text = text;
-                            } else if (text.length <= 4) {
-                                text = text.replace(/^(\d{2})(\d{0,2})/, '$1/$2');
-                            } else {
-                                text = text.replace(/^(\d{2})(\d{0,2})(\d{0,4}).*/, '$1/$2/$3');
-                            }
-                            setBirthday(text);
-                        }}
-                        keyboardType="number-pad"
+                        // onChangeText={setBirthday}
+                        editable={false}
+                
                     />
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={birthday ? new Date(birthday) : new Date()} // Ensure a valid Date object
+                            mode="date"
+                            display="default"
+                            onChange={onChangeDate}
+                            maximumDate={new Date()} // Set the maximum date to today's date
+                        />
+                    )}
+
+                    </TouchableOpacity>
+                    
                 </View>
                 <View style={styles.signInButton}>
                     <Button 

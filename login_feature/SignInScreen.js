@@ -48,19 +48,27 @@ const SignInComponents = () => {
             return;
         }
 
-        // Call the signIn function from the api.js file
-        const success = await signIn(email, password);
-
-        if (success) {
-            // Navigate to the next screen if sign-in was successful
-            navigation.navigate('AddPet');
-        } else {
-            // Display error message to the user
-            console.log('Sign in failed');
-            // Display error message to the user
-            setSignInError('Email not found or invalid password');
+        try {
+            // Call the signIn function from the api.js file
+            const success = await signIn(email, password);
+    
+            if (success) {
+                /// Navigate to the next screen if sign-in was successful
+                navigation.navigate('AddPet');
+            } 
+        } catch (error) {
+            // Handle the error from signIn function
+            if (error.response && error.response.status === 401) {
+                // Display error message to the user
+                console.log('Sign in failed');
+                setSignInError('Email not found or invalid password');
+            } else {
+                console.log('Other error:', error);
+                setSignInError('An error occurred. Please try again.'); // Displaying a generic error message to the user
+            }
         }
     };
+
 
 
     return (

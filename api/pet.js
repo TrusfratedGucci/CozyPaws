@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// const BASE_URL = 'http://10.31.0.89:3000';
-
 const BASE_URL = 'http://192.168.1.9:3000';
 
 export const fetchPetProfiles = async (token) => { 
@@ -19,6 +17,10 @@ export const fetchPetProfiles = async (token) => {
             console.log("No pet profiles found for this user");
             return null; // Or any other appropriate action
         } else {
+            if (error.response && error.response.status === 404) {
+                // Pet profile not found or has been deleted
+                console.log('Pet profile not found or has been deleted');
+            }
             console.error('Error fetching pet data:', error);
             throw error;
         }
@@ -61,6 +63,7 @@ export const fetchPetData = async (petID, token) => {
                 
             }
         });
+        console.log("Pet data", response.data)
         return response.data;
     } catch (error) {
         console.error('Error fetching pet data:', error);
@@ -70,6 +73,7 @@ export const fetchPetData = async (petID, token) => {
 
 // Backend call to update data of specific pet 
 export const updatePetData = async (petID, editedPetData, token) => {
+    console.log("Updateted pet data", editedPetData)
     try {
         const response = await axios.put(`${BASE_URL}/pet/${petID}`, editedPetData, {
             headers: {
@@ -123,9 +127,6 @@ export const addNewVaccine = async (newVaccineData, petId, token) => {
 
 // Backend call to fetch heat cycle data and update last heat cycle date
 export const fetchHeatCycleDataAndUpdateLastDate = async (petId, selectedDate, token) => {
-    console.log("Selected date", selectedDate,)
-    console.log("Pet ID", petId)
-    console.log("Token", token)
     try {
         const response = await axios.post(`${BASE_URL}/pet/heat-cycle/${petId}`, {
             selectedDate
@@ -135,15 +136,7 @@ export const fetchHeatCycleDataAndUpdateLastDate = async (petId, selectedDate, t
             }
         });
 
-        // Check if the response contains data
-        if (response.data && response.data.message === "No heat cycle data available.") {
-            console.log('No heat cycle data available.');
-            return null; // Return the response data indicating no data is available
-        }
-        
-        console.log("Data", response.data)
         return response.data; // Return the response data
-        
     } catch (error) {
         console.log(error);
         throw new Error('Error fetching or updating heat cycle data:', error);
@@ -188,23 +181,28 @@ export const fetchMedicalHistoriesForPet = async (petId, token) => {
     }
 };
 
-
-// Backend call to delete a pet profile
-export const deletePetProfile = async (petId, token) => {
+// Function to delete a pet by ID
+export const deletePetById = async (petId, token) => {
     try {
         const response = await axios.delete(`${BASE_URL}/pet/${petId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
-            },
+                'Content-Type': 'application/json' 
+            }
         });
-        console.log('Pet deleted:', response.data);
-        return response.data;
+
+        if (response.status === 200) {
+            console.log('Pet deleted successfully');
+            return true;
+        } else {
+            console.error('Error deleting pet:', response.data);
+            throw new Error(response.data.message); // Throw an error with the error message
+        } 
     } catch (error) {
         console.error('Error deleting pet:', error);
-        throw error;
+        throw error; // Re-throw the error for the caller to handle
     }
 };
-
 
 export default {
     fetchPetProfiles,
@@ -216,5 +214,6 @@ export default {
     fetchHeatCycleDataAndUpdateLastDate,
     createMedicalHistoryRecord,
     fetchMedicalHistoriesForPet,
-    deletePetProfile
+    deletePetById,
+    
 };

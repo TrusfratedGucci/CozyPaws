@@ -3,18 +3,18 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, Modal, TextInput } 
 import { useRoute } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCirclePlus, faSquareXmark} from '@fortawesome/free-solid-svg-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { fetchMedicalHistoriesForPet } from '../api/pet';
 import { getToken } from '../api/auth';
 
 const MedicalHistory = ({ route }) => {
-    const petID = route.params.petId;
+    const petID = route.params.petID;
     const navigation = useNavigation(); 
 
     
     const [records, setRecords] = useState([]);
 
-    useEffect(() => {
+   
         const loadMedicalHistories = async () => {
             try {
                 const token = await getToken(); // Get the token
@@ -33,8 +33,15 @@ const MedicalHistory = ({ route }) => {
             }
         };
     
-        loadMedicalHistories();
-    }, [petID]); // Call useEffect whenever petId changes
+    
+
+
+    // Load medical histories when the screen gains focus
+    useFocusEffect(
+        React.useCallback(() => {
+            loadMedicalHistories();
+        }, [])
+    );
     
 
     const handleContinue = () => {
@@ -82,7 +89,7 @@ const MedicalHistory = ({ route }) => {
                                 <View>
                                     <Text style={styles.medicalDescStyle}>{item.medicalDescription}</Text>
                                 </View>
-                                <View style={styles.vaccineDateStyle}>
+                                <View style={styles.DateStyle}>
                                     <Text>Date: {new Date(item.medicalDate).toLocaleDateString()}</Text>
                                 </View>
                             </View>
@@ -185,6 +192,9 @@ const styles = StyleSheet.create({
     medicalCategoryStyle: {
         marginTop: -20,
         marginBottom: 20,
+    }, 
+    medicalDescStyle: {
+        marginBottom: 10,
     }
 });
 

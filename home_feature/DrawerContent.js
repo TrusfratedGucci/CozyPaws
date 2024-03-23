@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LottieView from 'lottie-react-native';
+import { signOut, deleteAccount, } from './api/auth.js'
 
 function DrawerContent(props) {
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);
@@ -18,17 +19,25 @@ function DrawerContent(props) {
     };
 
     const confirmLogout = () => {
-        // Perform logout tasks here, such as expiring JWT token
-        // Example:
-        // clearAuthenticationTokens();
-        // resetSessionData();
-        setLogoutModalVisible(false);
-        props.navigation.navigate('StartScreen'); // Navigate to the start screen after logout
+        const response = signOut();
+        // navigate to start screen
+        if (response) {
+            setLogoutModalVisible(false);
+            props.navigation.navigate('StartScreen');
+        }
+        
     };
 
     const confirmDelete = () => {
-        // Perform delete tasks here
-        setDeleteModalVisible(false);
+        // const navigation = useNavigation(); // Access the navigation object
+
+            const response = deleteAccount();
+            // navigate to start screen
+            if (response) {
+                setDeleteModalVisible(false);
+                props.navigation.navigate('StartScreen');
+            }
+        
     };
 
     const cancelAction = () => {

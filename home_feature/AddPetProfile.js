@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'rea
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCirclePlus} from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { fetchPetProfiles } from '../api/pet';
 import { getToken } from '../api/auth';
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
@@ -13,27 +13,32 @@ const AddPetComponents = () => {
     const [petData, setPetData] = useState([]);
     const navigation = useNavigation();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = await getToken(); // Retrieving the token
-                const data = await fetchPetProfiles(token); // Passing token 
-            
-                // Check if the response contains pet profiles or a message indicating none found
-                if (data !== null && data.length > 0) {
-                    setPetData(data);
-                } else {
-                    // Display a message to the user
-                    console.log("No pet profiles found for this user");
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchData = async () => {
+                try {
+                    const token = await getToken();
+                    const data = await fetchPetProfiles(token);
+                    
+                    if (data !== null && data.length > 0) {
+                        setPetData(data);
+                    } else {
+                        console.log("No pet profiles found for this user");
+                    }
+                } catch (error) {
+                    if (error.response && error.response.status === 404) {
+                        // Pet profile not found or has been deleted
+                        console.log('Pet profile not found or has been deleted');
+                    }
+                    console.error('Error getting pet data:', error);
+                    console.log("Error occurred while fetching pet data:", error);
                 }
-            } catch (error) {
-                console.error('Error fetching pet data:', error);
-                // Add a console log to ensure the catch block is reached
-                console.log("Error occurred while fetching pet data:", error);
-            }
-        };        
-        fetchData();
-    }, [petData]);
+            };
+            
+            fetchData();
+        }, [])
+    );
+    
     
     const handleContinue = () => {
         navigation.navigate('PetInfoForm');
@@ -42,9 +47,9 @@ const AddPetComponents = () => {
     const windowHeight = Dimensions.get('window').height;
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
 
-            
+
             <View style={styles.header}>
                 <View style={styles.addprofileContainer}>
                     {/* TouchableOpacity to navigate to pet profile creation */}
@@ -84,7 +89,7 @@ const AddPetComponents = () => {
                     ))}
                 </View>
             </View>
-            </View>
+        </ScrollView>
     );
 };
 
@@ -92,28 +97,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#649F95',
-
         // padding: 20,
     },
     header: {
-        marginTop: 0,
-        paddingTop: 20,
+        marginTop: 20,
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative', // Make the header position relative
-        
     },
-
-    headerText: {
-        marginBottom: 25,
-        fontSize: 24,
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign:'center',
-    },
-
-
     addprofileContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -148,12 +140,13 @@ const styles = StyleSheet.create({
         // textDecorationLine: 'underline',
     },
     body: {
-        marginTop: 115,
+        paddingTop: 115,
         borderTopLeftRadius: 20, // Adjust the border radius as needed
         borderTopRightRadius: 20, // Adjust the border radius as needed
         backgroundColor: 'white',
         width: '100%', // Make the width equal to the device width
-        padding: 400,
+        padding: 20,
+        paddingBottom: 40,
         marginTop: -110, // Adjust the top margin to overlap with the profile picture container
         position: 'relative', // Make the body position relative
     },

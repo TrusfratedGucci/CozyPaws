@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Dimensions, Modal } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Dimensions, Alert } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { fetchPetData, updatePetData } from '../api/pet';
+import { fetchPetData, updatePetData, deletePetById } from '../api/pet';
 import { getToken } from '../api/auth';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 
 const PetInfoScreen= ({ route }) => {
@@ -15,32 +15,66 @@ const PetInfoScreen= ({ route }) => {
 
     const windowHeight = Dimensions.get('window').height;
 
-    useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const token = await getToken();
                 const data = await fetchPetData(petID, token);
+                console.log('Fetched data:', data); // Log the pet data here
                 setPetData(data);
             } catch (error) {
                 console.error('Error fetching pet data:', error);
             }
         };
-        fetchData();
-    }, [
-        petID, 
-        petData
-    ]);
+
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchData();
+        }, [petID]) // Fetch data whenever petID changes or when the component is focused
+    );
+
+    const handleDelete = async () => {
+        Alert.alert(
+            'Delete Pet',
+            'Are you sure you want to delete this pet?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Delete',
+                    onPress: async () => {
+                        try {
+                            const token = await getToken();
+                            const deleted = await deletePetById(petID, token);
+                            if (deleted) {
+                                // Show success message or navigate to another screen
+                                Alert.alert('Success', 'Pet deleted successfully');
+                                // Navigate to another screen if needed
+                                navigation.navigate('DrawerHome');
+                            } else {
+                                // Show error message if deletion failed
+                                Alert.alert('Error', 'Failed to delete pet');
+                            }
+                        } catch (error) {
+                            console.error('Error deleting pet:', error);
+                            // Handle error
+                            Alert.alert('Error', 'An error occurred while deleting the pet');
+                        }
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    };
 
     const handleEdit = () => {
         navigation.navigate('PetInfoEdit', { petID: petID });
     };
 
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-    const handleDelete = () => {
-        // Handle deletion logic here
-        // Once deleted, you may navigate back or perform any other action
-    };
 
     const formatDateOfBirth = (dateString) => {
         const date = new Date(dateString);
@@ -99,42 +133,20 @@ const PetInfoScreen= ({ route }) => {
                             <Text style={styles.inputTextHeader}>Date of Birth</Text>
                         </View>
                         <View>
+                            {/* console.log(petData.birthday) */}
                             <Text>{petData && formatDateOfBirth(petData.birthday)}</Text>
                         </View>
                     </View>
-                    <View style={styles.buttonContainer1}>
+                    <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={handleEdit}>
-                            <Text style={styles.buttonText1}>Edit</Text>
+                            <Text style={styles.buttonText}>Edit Profile</Text>
+                        </TouchableOpacity>
+
+
+                        <TouchableOpacity onPress={handleDelete}>
+                            <Text style={styles.deleteButtonText}>Delete Profile</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.buttonContainer2}>
-                     <TouchableOpacity onPress={() => setShowDeleteModal(true)}>
-                <Text style={styles.buttonText2}>Delete</Text>
-            </TouchableOpacity>
-            </View>
-
-            {/* Delete Confirmation Modal */}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={showDeleteModal}
-                onRequestClose={() => setShowDeleteModal(false)}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalHeader}>Confirm Deletion</Text>
-                        <Text>Are you sure you want to delete this pet?</Text>
-                        <View style={styles.modalButtons}>
-                            <TouchableOpacity onPress={() => setShowDeleteModal(false)}>
-                                <Text style={styles.cancelButton}>Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleDelete}>
-                                <Text style={styles.deleteButton}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
                 </View>  
             </View>
         </ScrollView>
@@ -241,26 +253,21 @@ const styles = StyleSheet.create({
         borderWidth: 2, // Border width
         borderRadius: 20, // Border radius
         borderColor:'#DEEBE9', // Border color
-        paddingTop: 50, 
-        paddingBottom: 50, 
-        paddingLeft: 20, 
+        padding: 50, // Padding inside the box
         backgroundColor: '#DEEBE9',
     },
-     buttonContainer1:{
-        marginLeft:150,
+     buttonContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         marginBottom: -20,
         marginTop: 30,
     },
-    buttonContainer2:{
-        marginLeft:225,
-        marginBottom: -20,
-    },
-    buttonText1:{
+    buttonText:{
         color: "#649F95",
         fontWeight: 'bold',
     },
-    buttonText2:{
-        color: "#D84F42",
+    deleteButtonText: {
+        color: "red",
         fontWeight: 'bold',
     },
     modalContainer: {
@@ -271,14 +278,15 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         backgroundColor: 'white',
-        padding: 30,
+        borderRadius: 20,
+        padding: 20,
         width: '80%',
     },
     modalHeader: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20,
-        textAlign: 'Left',
+        textAlign: 'center',
     },
     modalInput: {
         height: 40,
@@ -307,17 +315,7 @@ const styles = StyleSheet.create({
         fontSize: '3vw', // Adjust the font size relative to the viewport width
         fontWeight: 'bold',
         color: 'black',
-    },
-    cancelButton: {
-        color: '#649F95',
-        marginLeft:120,
-        marginTop: 20,
-    },
-    deleteButton: {
-        color: '#D84F42',
-        marginLeft:180,
-        marginTop: -19,
-    },
+    }
 });
 
 export default PetInfoScreen;
