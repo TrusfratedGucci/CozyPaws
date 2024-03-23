@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LottieView from 'lottie-react-native';
-import { signOut, deleteAccount, } from './api/auth.js'
+import { signOut, deleteAccount, } from '../api/auth.js'
 
 function DrawerContent(props) {
     const [logoutModalVisible, setLogoutModalVisible] = useState(false);

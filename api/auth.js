@@ -18,7 +18,7 @@ import { decode } from 'base64-js';
 //     }
 // };
 
-const BASE_URL = 'http://192.168.1.9:3000';
+const BASE_URL = 'http://192.168.1.2:3000';
 
 
 // Function to get token stored in AsyncStorage
@@ -49,7 +49,7 @@ export const signIn = async (email, password) => {
     try {
         console.log("Email:", email); // Log the email before making the request
         console.log("Password:", password); // Log the password before making the request
-        const response = await axios.post('http://192.168.1.9:3000/auth/signin', {
+        const response = await axios.post('http://192.168.1.2:3000/auth/signin', {
             email,
             password
         }, {
@@ -77,17 +77,18 @@ export const signIn = async (email, password) => {
         }
     } catch (error) {
         // Check if the error is from Axios and has a response with a status code of 401
-        if (error.response && error.response.status === 401) {
-            // Handle the case where the user doesn't exist
-            console.log('User not found')
-            // Return false to indicate failed sign-in
-            return false;
-        } else {
-            // Handle other errors
-            console.error('Other error:', error);
-            // Return false to indicate failed sign-in
-            return false;
-        }
+        // if (error.response && error.response.status === 401) {
+        //     // Handle the case where the user doesn't exist
+        //     console.log('User not found')
+        //     // Return false to indicate failed sign-in
+        //     return false;
+        // } else {
+        //     // Handle other errors
+        //     console.error('Other error:', error);
+        //     // Return false to indicate failed sign-in
+        //     return false;
+        // }
+        throw error;
     }
 };
 
