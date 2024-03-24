@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCirclePlus} from '@fortawesome/free-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -12,16 +12,20 @@ import { faPaw } from '@fortawesome/free-solid-svg-icons';
 const AddPetComponents = () => {
     const [petData, setPetData] = useState([]);
     const navigation = useNavigation();
+
+    
 // Prevent going back
     useEffect(() => {
-        const backAction = () => {
-            return true; // Disable back navigation
-        };
         const backHandler = navigation.addListener('beforeRemove', (e) => {
             e.preventDefault(); // Prevent the default action
         });
-        return () => backHandler.remove(); // Remove the listener on unmount
-    }, []);
+    
+        // Check if backHandler is defined before attempting to remove it
+        if (backHandler && typeof backHandler.remove === 'function') {
+            return () => backHandler.remove(); // Remove the listener on unmount
+        }
+    }, [navigation]); 
+    
 
     useFocusEffect(
         React.useCallback(() => {
@@ -36,10 +40,6 @@ const AddPetComponents = () => {
                         console.log("No pet profiles found for this user");
                     }
                 } catch (error) {
-                    if (error.response && error.response.status === 404) {
-                        // Pet profile not found or has been deleted
-                        console.log('Pet profile not found or has been deleted');
-                    }
                     console.error('Error getting pet data:', error);
                     console.log("Error occurred while fetching pet data:", error);
                 }

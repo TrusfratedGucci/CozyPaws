@@ -10,7 +10,7 @@ const StartScreenComponents = () => {
         <View style={styles.container}>
 
             <View style={styles.header}>
-                <Image source={require('../assets/CozyPawsLogo.png')} style={styles.icon}/>
+                <Image source={require('../assets/Logo.png')} style={styles.icon}/>
                 <Text style={styles.headerText}>COZYPAWS</Text>
                 <Text style={styles.sentence}>We take care of your pet</Text>
             </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         width: 300,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 40,
+        marginBottom: 20,
     },
     signUpButtonStyle: {
         backgroundColor: 'white', // Change button background color to F86919
@@ -129,6 +129,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '600',
     },
+    icon: {
+        height: 255,
+        width: 255,
+        marginTop: -50,
+        marginBottom: -90,
+    }
 
 });
 

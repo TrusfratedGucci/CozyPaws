@@ -210,7 +210,7 @@ const StackNav = () => {
                     headerStyle: { backgroundColor: '#649F95',height: 100,},
                     headerTitleStyle: { fontSize: 24,  }, // Set the font size and weight of the header title // Set the background color of the header // Align the title to the center
                         headerLeft: () => ( // Add custom headerLeft component
-                                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('AddPet')}>
                                       <View style={styles.backButton}>
                                       <FontAwesomeIcon icon={faChevronLeft} size={24} color="#FFFFFF" />
                                       </View>                         

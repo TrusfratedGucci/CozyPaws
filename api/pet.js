@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.2:3000';
+const BASE_URL = 'http://192.168.1.9:3000';
 
 export const fetchPetProfiles = async (token) => { 
     try {
@@ -11,21 +11,19 @@ export const fetchPetProfiles = async (token) => {
             }
         });
 
+        console.log(response.data)
         return response.data; // Return the data for successful requests
     } catch (error) {
         if (error.response && error.response.status === 404) {
             console.log("No pet profiles found for this user");
-            return null; // Or any other appropriate action
+            return []; // Return an empty array when no pet profiles are found
         } else {
-            if (error.response && error.response.status === 404) {
-                // Pet profile not found or has been deleted
-                console.log('Pet profile not found or has been deleted');
-            }
             console.error('Error fetching pet data:', error);
-            throw error;
+            throw error; // Throw the error to handle it further up the call stack
         }
     }
 };
+
 
 
 
