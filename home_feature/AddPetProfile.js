@@ -12,17 +12,7 @@ import { faPaw } from '@fortawesome/free-solid-svg-icons';
 const AddPetComponents = () => {
     const [petData, setPetData] = useState([]);
     const navigation = useNavigation();
-// Prevent going back
-    // useEffect(() => {
-    //     const backAction = () => {
-    //         return true; // Disable back navigation
-    //     };
-    //     const backHandler = navigation.addListener('beforeRemove', (e) => {
-    //         e.preventDefault(); // Prevent the default action
-    //     });
-    //     return () => backHandler.remove(); // Remove the listener on unmount
-    // }, []);
-
+  
     useFocusEffect(
         React.useCallback(() => {
             const fetchData = async () => {
