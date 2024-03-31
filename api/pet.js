@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.9:3000';
+const BASE_URL = 'http://13.50.247.139:3000';
 
 export const fetchPetProfiles = async (token) => { 
     try {
