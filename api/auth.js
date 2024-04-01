@@ -18,7 +18,7 @@ import { decode } from 'base64-js';
 //     }
 // };
 
-const BASE_URL = 'http://13.50.247.139:3000';
+const BASE_URL = 'http://13.50.102.133:3000';
 
 
 // Function to get token stored in AsyncStorage

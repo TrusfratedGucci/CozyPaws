@@ -28,17 +28,22 @@ const PetInfoEditComponents = ({ route }) => {
         try {
             const token = await getToken();
             if (petID) {
-                // If petID exists, it means we are updating an existing pet
-                // const birthdayDate = new Date(birthday);
-                // const formattedBirthday = birthdayDate.toISOString();
-                await updatePetData(petID, {
-                    photo: petPhotoUri,
-                    name: petName,
-                    type: petType,
-                    breed: petBreed,
-                    gender: petGender,
-                    birthday: birthday,
-                }, token);
+                // If petID exists, 
+                const petData = new FormData();
+                petData.append('photo', {
+                    uri: petPhotoUri,
+                    name: 'photo.jpg',
+                    type: 'image/jpeg',
+                });
+                petData.append('name', petName);
+                petData.append('type', petType);
+                petData.append('breed', petBreed);
+                petData.append('gender', petGender);
+                petData.append('birthday', birthday);
+                
+                const updatedPet = await updatePetData(petID, petData, token);
+                console.log('Pet updated successfully:', updatedPet);
+
             } 
             navigation.navigate('PetInfo', { petID: petID }); 
 

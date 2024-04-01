@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://13.50.247.139:3000';
+const BASE_URL = 'http://13.50.102.133:3000';
 
 export const fetchPetProfiles = async (token) => { 
     try {
@@ -32,26 +32,34 @@ export const fetchPetProfiles = async (token) => {
 
 // Backend call to creating a new pet
 export const createPet = async (petData, token) => { // Include token parameter
+    console.log('petData ', petData);
+
     try {
-        const response = await axios.post(`${BASE_URL}/pet/new-pet`, petData, {
+        // Make an HTTP POST request to the backend
+        const response = await fetch(`${BASE_URL}/pet/new-pet`, {
+            method: 'POST',
             headers: {
+                Accept: 'application/json',
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json' // Specify JSON content type
-            }
+            },
+            body: petData,
         });
-        console.log('Pet created:', response.data);
+
+        const responseData = await response.json();
+
         if (response.status === 201) {
             console.log('Pet created successfully');
-            return response.data.pet; // Return the created pet object
+            return responseData.pet; // Return the created pet object
         } else {
-            console.error('Error creating pet:', response.data);
-            throw new Error(response.data.message); // Throw an error with the error message
+            console.error('Error creating pet:', responseData);
+            throw new Error(responseData.message); // Throw an error with the error message
         } 
     } catch (error) {
-        console.error('Error creating pet:', error);
+        console.error('Error creating pet:', error.message);
         throw error; // Re-throw the error for the caller to handle
     }
 };
+
 
 
 // Backend call to get data of specific pet 
@@ -73,21 +81,28 @@ export const fetchPetData = async (petID, token) => {
 
 // Backend call to update data of specific pet 
 export const updatePetData = async (petID, editedPetData, token) => {
-    console.log("Updateted pet data", editedPetData)
+    console.log("Updated pet data", editedPetData);
     try {
-        const response = await axios.put(`${BASE_URL}/pet/${petID}`, editedPetData, {
+        const response = await fetch(`${BASE_URL}/pet/${petID}`, {
+            method: 'PUT', // or 'PATCH' depending on your backend API
             headers: {
+                Accept: 'application/json',
                 Authorization: `Bearer ${token}`,
-               
-            }
+                'Content-Type': 'multipart/form-data', // Ensure correct content type for FormData
+            },
+            body: editedPetData,
         });
-        console.log('Edited pet data:', response.data);
-        return response.data;
+
+        // Parse response body as JSON
+        const responseData = await response.json();
+        console.log('Edited pet data:', responseData);
+        return responseData;
     } catch (error) {
         console.error('Error editing pet data:', error);
         throw error;
     }
 };
+
 
 
 // Backend call to fetch vaccination history for the specified pet

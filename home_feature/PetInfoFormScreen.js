@@ -25,14 +25,17 @@ const PetInfoFormComponents = () => {
     const handleCreatePet = async () => {
         try {
             const token = await getToken(); // Retrieve the token
-            const petData = {
-                name: petName,
-                type: petType,
-                breed: petBreed,
-                gender: petGender,
-                birthday: birthday,
-                photo: petPhotoUri,
-            };
+            const petData = new FormData();
+            petData.append('photo', {
+                uri: petPhotoUri,
+                name: 'photo.jpg',
+                type: 'image/jpeg',
+            });
+            petData.append('name', petName);
+            petData.append('type', petType);
+            petData.append('breed', petBreed);
+            petData.append('gender', petGender);
+            petData.append('birthday', birthday);
             const createdPet = await createPet(petData, token); // Pass the token to the createPet function
     
             if (createdPet) {

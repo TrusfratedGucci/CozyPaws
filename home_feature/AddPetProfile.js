@@ -22,6 +22,7 @@ const AddPetComponents = () => {
                     
                     if (data !== null && data.length > 0) {
                         setPetData(data);
+                        console.log("Pet data : ", petData)
                     } else {
                         console.log("No pet profiles found for this user");
                     }
