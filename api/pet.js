@@ -39,8 +39,9 @@ export const createPet = async (petData, token) => { // Include token parameter
         const response = await fetch(`${BASE_URL}/pet/new-pet`, {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
+                Accept: '*/*',
                 Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
             },
             body: petData,
         });
