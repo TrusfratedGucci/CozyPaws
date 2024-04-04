@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "cozypaws",
+    "name": "CozyPaws",
     "slug": "cozypaws",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/appIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -19,12 +19,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/AdaptiveIcon.png",
+        "backgroundColor": "#649F95"
+      },
+      "package": "com.myapp.cozypaws",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bab649ca-15db-4323-9a2b-617544ff75b0"
+      }
     }
   }
 }
