@@ -10,12 +10,6 @@ CozyPaws is a mobile app designed to help pet owners manage various aspects of t
 ### 2. Vaccinations
 - Record your pets' done, due and upcomming vaccinations and allow to add vaccinations.
 
-### 3. Litter Information
-- Manage information related to your pets' litter, family history details.
-
-### 4. Reminders
-- Set reminders for important pet-related tasks, such as feeding, grooming, and administering medication.
-
 ### 5. First Aid
 - Access a first aid guide for pets, including information on common emergencies and how to respond.
 
